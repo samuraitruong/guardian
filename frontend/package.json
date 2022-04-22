@@ -26,7 +26,7 @@
     "interfaces": "file:../interfaces",
     "js-yaml": "^4.1.0",
     "moment": "^2.29.1",
-    "ngx-toastr": "^14.1.0",
+    "ngx-toastr": "^14.3.0",
     "process": "^0.11.10",
     "rxjs": "~6.6.0",
     "stream-browserify": "^3.0.0",
