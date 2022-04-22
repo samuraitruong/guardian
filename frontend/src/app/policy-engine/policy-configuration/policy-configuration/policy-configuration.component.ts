@@ -140,12 +140,12 @@ export class PolicyConfigurationComponent implements OnInit {
                 setTimeout(() => { this.loading = false; }, 500);
                 return;
             }
-
-            if (!this.compareStateAndConfig(this.objectToJson(policy?.config)) && !this.readonly) {
-                const applyChanesDialog = this.dialog.open(ConfirmationDialogComponent, {
-                    data: {
-                        dialogTitle: "Apply latest changes",
-                        dialogText: "Do you want to apply latest changes?"
+            this.schemaService.getSchemes(policy.topicId).subscribe((data2: any) => {
+                const schemes = data2 || [];
+                this.schemes = SchemaHelper.map(schemes) || [];
+                this.schemes.unshift({ type: "" } as any);
+                setTimeout(() => { this.loading = false; }, 500);
+            }, (e) => {
                     }
                 })
                 applyChanesDialog.afterClosed().subscribe((result) => {
@@ -660,18 +660,15 @@ export class PolicyConfigurationComponent implements OnInit {
         if (!stateValues) {
             return;
         }
-
         if (await this.loadState(stateValues, stateValues.length - 2 - this._undoDepth)) {
             this._undoDepth++;
         }
     }
-
     async redoPolicy() {
         const stateValues = localStorage[this.policyId] && JSON.parse(localStorage[this.policyId]);
         if (!stateValues) {
             return;
         }
-
         if (await this.loadState(stateValues, stateValues.length - this._undoDepth)) {
             this._undoDepth--;
         }

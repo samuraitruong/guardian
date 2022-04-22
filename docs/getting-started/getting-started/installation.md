@@ -65,16 +65,37 @@ npm install
 npm run build
 ```
 
-#### **From the logger-helper folder**
+**From the Message broker folder (Need to run first)**
 
-Build package
+To build the service:
 
 ```
 npm install
 npm run build
 ```
 
-**From the Message broker folder (Need to run first)**
+To start the service:
+
+```
+npm start
+```
+
+#### From the Logger service folder
+
+To build the service:
+
+```
+npm install
+npm run build
+```
+
+To start the service:
+
+```
+npm start
+```
+
+#### From the Auth service folder
 
 To build the service:
 

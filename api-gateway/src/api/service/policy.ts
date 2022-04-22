@@ -204,7 +204,7 @@ policyAPI.post('/import/message', async (req: AuthenticatedRequest, res: Respons
     const engineService = new PolicyEngine();
     try {
         const policies = await engineService.importMessage(req.user, req.body.messageId);
-        res.status(201).send(policies);
+        res.send(policies);
     } catch (e) {
         console.error(e);
         new Logger().error(e.message, ['API_GATEWAY']);
@@ -216,7 +216,7 @@ policyAPI.post('/import/file', async (req: AuthenticatedRequest, res: Response) 
     const engineService = new PolicyEngine();
     try {
         const policies = await engineService.importFile(req.user, req.body);
-        res.status(201).send(policies);
+        res.send(policies);
     } catch (e) {
         console.error(e);
         new Logger().error(e.message, ['API_GATEWAY']);

@@ -37,8 +37,8 @@ export class InterfaceStepBlock {
         }
 
         ref.updateBlock(blockState, user);
-        ref.callDependencyCallbacks(user);
-        ref.callParentContainerCallback(user);
+        PolicyComponentsUtils.CallDependencyCallbacks(ref.tag, ref.policyId, user);
+        PolicyComponentsUtils.CallParentContainerCallback(ref, user);
     }
 
     async getData(user: IAuthUser): Promise<any> {

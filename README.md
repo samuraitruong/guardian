@@ -89,7 +89,52 @@ To get a local copy up and running, follow these simple example steps. When buil
    npm run build
    ```
 
+   **From the interfaces folder**
+
+   Build package
+   ```
+   npm install
+   npm run build
+   ```
+
+
+   Build package
+   ```
+   npm install
+   npm run build
+   ```
+
    **From the Message broker folder (Need to run first)**
+
+   To build the service:
+
+   ```
+   npm install
+   npm run build
+   ```
+
+   To start the service:
+
+   ```
+   npm start
+   ```
+
+   **From the Logger service folder**
+
+   To build the service:
+
+   ```
+   npm install
+   npm run build
+   ```
+
+   To start the service:
+
+   ```
+   npm start
+   ```
+
+   **From the Auth service folder**
 
    To build the service:
 
