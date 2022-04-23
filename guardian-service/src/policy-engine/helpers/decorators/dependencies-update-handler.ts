@@ -10,7 +10,5 @@ export function DependenciesUpdateHandler() {
             });
         }
         target.updateHandlers.push(descriptor.value);
-    }
-
-
+    };
 }

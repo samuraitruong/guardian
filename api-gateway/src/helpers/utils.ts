@@ -1,11 +1,11 @@
-export function findAllEntities(obj: {[key:string]: any}, name: string): string[] {
+export function findAllEntities(obj: { [key: string]: any }, name: string): string[] {
     const result = [];
 
-    function finder(o: {[key:string]: any}): void {
-        if(!o) {
+    function finder(o: { [key: string]: any }): void {
+        if (!o) {
             return;
         }
-        if(o.hasOwnProperty(name)) {
+        if (o.hasOwnProperty(name)) {
             result.push(o[name]);
         }
 
@@ -25,13 +25,13 @@ export function findAllEntities(obj: {[key:string]: any}, name: string): string[
 }
 
 export function replaceAllEntities(
-    obj: {[key:string]: any},
+    obj: { [key: string]: any },
     name: string,
     oldValue: string,
     newValue: string
 ): void {
-    function finder(o: {[key:string]: any}): void {
-        if(o.hasOwnProperty(name) && o[name] == oldValue) {
+    function finder(o: { [key: string]: any }): void {
+        if (o.hasOwnProperty(name) && o[name] == oldValue) {
             o[name] = newValue;
         }
 

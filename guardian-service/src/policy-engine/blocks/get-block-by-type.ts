@@ -5,9 +5,9 @@ import * as blocks from './';
  * @param blockType
  */
 export function GetBlockByType(blockType: string): NewableFunction {
-    const constructor = Object.values(blocks).find(block => blockType === block['blockType']);
+    const constructor = Object.values(blocks).find((block) => blockType === block['blockType']);
     if (!constructor) {
-        throw new Error(`${blockType} block is unknown`)
+        throw new Error(`${blockType} block is unknown`);
     }
     return constructor;
 }

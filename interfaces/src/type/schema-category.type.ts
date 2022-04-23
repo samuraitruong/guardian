@@ -1,4 +1,4 @@
 export enum SchemaCategory {
-    USER = "USER",
-    SYSTEM = "SYSTEM"
+    USER = 'USER',
+    SYSTEM = 'SYSTEM',
 }

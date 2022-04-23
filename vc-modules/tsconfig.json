@@ -2,10 +2,7 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es6",
-        "lib": [
-            "es5",
-            "es6"
-        ],
+        "lib": ["es5", "es6"],
         "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "dist/",
@@ -14,11 +11,7 @@
         "esModuleInterop": true,
         "declaration": true
     },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules"
-    ],
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"],
     "compileOnSave": true
 }

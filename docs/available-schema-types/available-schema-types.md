@@ -13,4 +13,3 @@
 | URL         | Specifies a website.                                                                                                                        | https://github.com/hashgraph/guardian.                                                                                                                               |
 | Email       | Specifies a email address.                                                                                                                  | email@exampleemail.com.                                                                                                                                              |
 | Image       | Specifies IPFS URL of an uploaded image.                                                                                                    | [https://ipfs.io/ipfs/bafkreiebnkjylfsdds5oicxpk5vdink5tduwbxed5552xcmeyrbzpewfuu](https://ipfs.io/ipfs/bafkreiebnkjylfsdds5oicxpk5vdink5tduwbxed5552xcmeyrbzpewfuu) |
-

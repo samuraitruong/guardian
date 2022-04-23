@@ -1,6 +1,6 @@
 # Policy Workflow Step 24
 
-Next, we click on the “mint\_events”, and then add a mint action by clicking on the “Tokens” drop-down in the top navigation bar and selecting the “Mint” action.
+Next, we click on the “mint_events”, and then add a mint action by clicking on the “Tokens” drop-down in the top navigation bar and selecting the “Mint” action.
 
 Select the token you want to mint from the token drop down.
 
@@ -31,4 +31,3 @@ Then we click on the “Save” button on the left side in the top navigation ba
   ]
 }
 ```
-

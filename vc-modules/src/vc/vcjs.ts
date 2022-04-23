@@ -17,11 +17,11 @@ export interface ISuite {
 export class VCJS {
     /**
      * Create Suite by DID
-     * 
+     *
      * @param {string} id - Root DID
      * @param {string} did - DID
      * @param {PrivateKey} privateKey - Private Key
-     * 
+     *
      * @returns {Ed25519Signature2018} - Ed25519Signature2018
      */
     public static async createSuite(id: string, did: string, didKey: PrivateKey): Promise<Ed25519Signature2018> {
@@ -44,14 +44,18 @@ export class VCJS {
 
     /**
      * Issue VC Document
-     * 
+     *
      * @param {HcsVcDocument<T>} vcDocument - VC Document
      * @param {Ed25519Signature2018} suite - suite
      * @param {DocumentLoaderFunction} documentLoader - Document Loader
-     * 
+     *
      * @returns {HcsVcDocument<T>} - VC Document
      */
-    public static async issue<T extends CredentialSubject>(vcDocument: HcsVcDocument<T>, suite: Ed25519Signature2018, documentLoader: DocumentLoaderFunction): Promise<HcsVcDocument<T>> {
+    public static async issue<T extends CredentialSubject>(
+        vcDocument: HcsVcDocument<T>,
+        suite: Ed25519Signature2018,
+        documentLoader: DocumentLoaderFunction
+    ): Promise<HcsVcDocument<T>> {
         const vc = vcDocument.toJsonTree();
         const verifiableCredential = await vcjs.createVerifiableCredential({
             credential: vc,
@@ -64,10 +68,10 @@ export class VCJS {
 
     /**
      * Verify VC Document
-     * 
+     *
      * @param {HcsVcDocument<T>} vcDocument - VC Document
      * @param {DocumentLoaderFunction} documentLoader - Document Loader
-     * 
+     *
      * @returns {boolean} - status
      */
     public static async verify(vc: any, documentLoader: DocumentLoaderFunction): Promise<boolean> {
@@ -81,14 +85,18 @@ export class VCJS {
 
     /**
      * Issue VP Document
-     * 
+     *
      * @param {HcsVpDocument} vpDocument - VP Document
      * @param {Ed25519Signature2018} suite - suite
      * @param {DocumentLoaderFunction} documentLoader - Document Loader
-     * 
+     *
      * @returns {HcsVpDocument} - VP Document
      */
-    public static async issuePresentation(vpDocument: HcsVpDocument, suite: Ed25519Signature2018, documentLoader: DocumentLoaderFunction): Promise<HcsVpDocument> {
+    public static async issuePresentation(
+        vpDocument: HcsVpDocument,
+        suite: Ed25519Signature2018,
+        documentLoader: DocumentLoaderFunction
+    ): Promise<HcsVpDocument> {
         const vp = vpDocument.toJsonTree();
         const verifiablePresentation = await vcjs.createVerifiablePresentation({
             presentation: vp,

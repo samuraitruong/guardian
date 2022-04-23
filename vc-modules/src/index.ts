@@ -1,5 +1,5 @@
 export { HederaHelper, IHederaNetwork, IHederaHelper } from './helpers/hedera-helper';
-export { VCHelper} from './helpers/hedera-vc-helper';
+export { VCHelper } from './helpers/hedera-vc-helper';
 export { HederaMirrorNodeHelper } from './helpers/hedera-mirror-node.helper';
 export { HederaSenderHelper } from './helpers/hedera-sender.helper';
 export { ISubmitModelMessage, ModelActionType } from './interfaces/submit-model-message.interface';

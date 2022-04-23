@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { Guardians } from '@helpers/guardians';
 import { Users } from '@helpers/users';
-import { Logger } from 'logger-helper';
+import { Logger } from 'common';
 
 /**
  * Route for demo api

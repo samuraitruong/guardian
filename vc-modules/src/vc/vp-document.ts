@@ -75,7 +75,7 @@ export class HcsVpDocument {
         map[HcsVcDocumentJsonProperties.ID] = this.id;
         map[HcsVcDocumentJsonProperties.TYPE] = this.type;
         if (this.verifiableCredential) {
-            map[VERIFIABLE_CREDENTIAL] = this.verifiableCredential.map(e => e.toCredentialHash());
+            map[VERIFIABLE_CREDENTIAL] = this.verifiableCredential.map((e) => e.toCredentialHash());
         }
         const json: string = JSON.stringify(map);
         const hash: Uint8Array = Hashing.sha256.digest(json);
@@ -84,10 +84,8 @@ export class HcsVpDocument {
 
     public toJsonTree(): any {
         const rootObject = {};
-        if (this.id)
-            rootObject[HcsVcDocumentJsonProperties.ID] = this.id;
-        if (this.type)
-            rootObject[HcsVcDocumentJsonProperties.TYPE] = this.type;
+        if (this.id) rootObject[HcsVcDocumentJsonProperties.ID] = this.id;
+        if (this.type) rootObject[HcsVcDocumentJsonProperties.TYPE] = this.type;
 
         const context = [];
         if (this.context) {
@@ -119,19 +117,16 @@ export class HcsVpDocument {
     }
 
     public static fromJsonTree(root: any, result?: HcsVpDocument): HcsVpDocument {
-        if (!result)
-            result = new HcsVpDocument();
-        if (root[HcsVcDocumentJsonProperties.ID])
-            result.id = root[HcsVcDocumentJsonProperties.ID];
-        if (root[HcsVcDocumentJsonProperties.TYPE])
-            result.type = root[HcsVcDocumentJsonProperties.TYPE];
+        if (!result) result = new HcsVpDocument();
+        if (root[HcsVcDocumentJsonProperties.ID]) result.id = root[HcsVcDocumentJsonProperties.ID];
+        if (root[HcsVcDocumentJsonProperties.TYPE]) result.type = root[HcsVcDocumentJsonProperties.TYPE];
 
         const jsonVerifiableCredential = root[VERIFIABLE_CREDENTIAL] as any[];
         const verifiableCredential: HcsVcDocument<VcSubject>[] = [];
         for (let i = 0; i < jsonVerifiableCredential.length; i++) {
             const item = jsonVerifiableCredential[i];
             const vc = HcsVcDocument.fromJsonTree<VcSubject>(item, null, VcSubject);
-            verifiableCredential.push(vc)
+            verifiableCredential.push(vc);
         }
         result.verifiableCredential = verifiableCredential;
         result.proof = root[HcsVcDocumentJsonProperties.PROOF] || null;
@@ -144,7 +139,6 @@ export class HcsVpDocument {
         try {
             const root = JSON.parse(json);
             result = this.fromJsonTree(root);
-
         } catch (e) {
             throw new Error('Given JSON string is not a valid VpDocument ' + e.message);
         }

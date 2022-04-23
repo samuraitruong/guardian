@@ -12,6 +12,7 @@ An Object that contains the identifier of the Hedera message which contains the 
 {% endswagger-parameter %}
 
 {% swagger-response status="201: Created" description="Successful Operation" %}
+
 ```javascript
 {
     content:
@@ -22,25 +23,31 @@ An Object that contains the identifier of the Hedera message which contains the 
                   $ref: '#/components/schemas/Schema'
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="401: Unauthorized" description="Unauthorized" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="403: Forbidden" description="Forbidden" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="Internal Server Error" %}
+
 ```javascript
 {
     content:
@@ -49,5 +56,6 @@ An Object that contains the identifier of the Hedera message which contains the 
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

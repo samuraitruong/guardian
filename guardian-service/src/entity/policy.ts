@@ -1,4 +1,4 @@
-import {BeforeInsert, Column, Entity, ObjectIdColumn} from 'typeorm';
+import { BeforeInsert, Column, Entity, ObjectIdColumn } from 'typeorm';
 import { ModelHelper } from 'interfaces';
 
 /**
@@ -49,10 +49,10 @@ export class Policy {
     topicId: string;
 
     @Column({
-        unique: true
+        unique: true,
     })
     policyTag: string;
-    
+
     @Column()
     messageId: string;
 

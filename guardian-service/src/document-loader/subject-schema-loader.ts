@@ -7,9 +7,7 @@ import { ISchema } from 'interfaces';
  * Subject schema loader
  */
 export class SubjectSchemaLoader extends SchemaLoader {
-    constructor(
-        private readonly context: string
-    ) {
+    constructor(private readonly context: string) {
         super();
     }
 
@@ -63,11 +61,10 @@ export class SubjectSchemaLoader extends SchemaLoader {
                 return null;
             }
             const schema = await getMongoRepository(Schema).find({
-                where: { contextURL: { $in: context } }
+                where: { contextURL: { $in: context } },
             });
-            return schema
-        }
-        catch (error) {
+            return schema;
+        } catch (error) {
             return null;
         }
     }

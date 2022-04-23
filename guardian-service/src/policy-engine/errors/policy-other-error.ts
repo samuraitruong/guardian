@@ -12,7 +12,7 @@ export class PolicyOtherError extends Error {
             type: 'policyOtherError',
             code: this.code,
             policyId: this.policyId,
-            message: this.message
-        }
+            message: this.message,
+        };
     }
 }

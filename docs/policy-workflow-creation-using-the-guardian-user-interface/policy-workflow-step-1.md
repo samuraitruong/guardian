@@ -2,7 +2,7 @@
 
 Navigate to the top row of the interface, and click on the “Step” button which creates the 1st policy action – called Block2 – in the policy workflow, we just created.
 
-You can edit the policy action name and the UI will automatically adjust the graphical representation of the policy action on the left side to “initi\_installer\_steps”.
+You can edit the policy action name and the UI will automatically adjust the graphical representation of the policy action on the left side to “initi_installer_steps”.
 
 We then select the “Permissions” for this new Policy Action.
 

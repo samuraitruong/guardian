@@ -45,4 +45,3 @@ Contained blocks array
 Current Step
 {% endswagger-parameter %}
 {% endswagger %}
-

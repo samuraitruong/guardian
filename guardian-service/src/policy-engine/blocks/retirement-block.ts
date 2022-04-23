@@ -7,26 +7,26 @@ import { VcHelper } from '@helpers/vcHelper';
 import * as mathjs from 'mathjs';
 import { BlockActionError } from '@policy-engine/errors';
 import { DocumentSignature, SchemaEntity, SchemaHelper } from 'interfaces';
-import {PolicyValidationResultsContainer} from '@policy-engine/policy-validation-results-container';
-import {PolicyComponentsUtils} from '../policy-components-utils';
+import { PolicyValidationResultsContainer } from '@policy-engine/policy-validation-results-container';
+import { PolicyComponentsUtils } from '../policy-components-utils';
 import { IAuthUser } from '@auth/auth.interface';
 import { CatchErrors } from '@policy-engine/helpers/decorators/catch-errors';
 
 function evaluate(formula: string, scope: any) {
-    return (function (formula: string, scope: any) {
+    return function (formula: string, scope: any) {
         try {
             return this.evaluate(formula, scope);
         } catch (error) {
             return 'Incorrect formula';
         }
-    }).call(mathjs, formula, scope);
+    }.call(mathjs, formula, scope);
 }
 
 enum DataTypes {
     MRV = 'mrv',
     REPORT = 'report',
     MINT = 'mint',
-    RETIREMENT = 'retirement'
+    RETIREMENT = 'retirement',
 }
 
 /**
@@ -34,7 +34,7 @@ enum DataTypes {
  */
 @BasicBlock({
     blockType: 'retirementDocumentBlock',
-    commonBlock: true
+    commonBlock: true,
 })
 export class RetirementBlock {
     @Inject()
@@ -74,17 +74,17 @@ export class RetirementBlock {
                 owner: owner,
                 document: vc.toJsonTree(),
                 type: DataTypes.RETIREMENT as any,
-                policyId:  ref.policyId,
+                policyId: ref.policyId,
                 tag: ref.tag,
-                schema: `#${vc.getCredentialSubject()[0].getType()}`
-            })
+                schema: `#${vc.getCredentialSubject()[0].getType()}`,
+            });
             return true;
         } catch (error) {
             return false;
         }
     }
 
-    private async saveVP(vp: HcsVpDocument, sensorDid: string, type: DataTypes, ref:any): Promise<boolean> {
+    private async saveVP(vp: HcsVpDocument, sensorDid: string, type: DataTypes, ref: any): Promise<boolean> {
         try {
             if (!vp) {
                 return false;
@@ -94,9 +94,9 @@ export class RetirementBlock {
                 document: vp.toJsonTree(),
                 owner: sensorDid,
                 type: type as any,
-                policyId:  ref.policyId,
-                tag: ref.tag
-            })
+                policyId: ref.policyId,
+                tag: ref.tag,
+            });
             return true;
         } catch (error) {
             return false;
@@ -109,28 +109,19 @@ export class RetirementBlock {
         const policySchema = await this.guardians.getSchemaByEntity(SchemaEntity.WIPE_TOKEN);
         const vcSubject = {
             ...SchemaHelper.getContext(policySchema),
-            date: (new Date()).toISOString(),
+            date: new Date().toISOString(),
             tokenId: token.tokenId,
-            amount: data.toString()
-        }
+            amount: data.toString(),
+        };
 
-        const wipeVC = await vcHelper.createVC(
-            root.did,
-            root.hederaAccountKey,
-            vcSubject
-        );
+        const wipeVC = await vcHelper.createVC(root.did, root.hederaAccountKey, vcSubject);
         return wipeVC;
     }
 
     private async createVP(root, uuid: string, vcs: HcsVcDocument<VcSubject>[]) {
         const vcHelper = new VcHelper();
 
-        const vp = await vcHelper.createVP(
-            root.did,
-            root.hederaAccountKey,
-            vcs,
-            uuid
-        );
+        const vp = await vcHelper.createVP(root.did, root.hederaAccountKey, vcs, uuid);
         return vp;
     }
 
@@ -144,13 +135,11 @@ export class RetirementBlock {
         const amount = this.aggregate(rule, document);
         const tokenValue = this.tokenAmount(token, amount);
 
-        const hederaHelper = HederaHelper.setOperator(
-            root.hederaAccountId, root.hederaAccountKey
-        );
+        const hederaHelper = HederaHelper.setOperator(root.hederaAccountId, root.hederaAccountKey);
 
         let wipeVC: HcsVcDocument<VcSubject>;
         if (token.tokenType == 'non-fungible') {
-            throw "unsupported operation";
+            throw 'unsupported operation';
         } else {
             await hederaHelper.SDK.wipe(tokenId, user.hederaAccountId, wipeKey, tokenValue, uuid);
             wipeVC = await this.createWipeVC(root, token, tokenValue);
@@ -166,12 +155,9 @@ export class RetirementBlock {
     }
 
     @CatchErrors()
-    async runAction(state: any, user:IAuthUser) {
+    async runAction(state: any, user: IAuthUser) {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
-        const {
-            tokenId,
-            rule
-        } = ref.options;
+        const { tokenId, rule } = ref.options;
         const token = (await this.guardians.getTokens({ tokenId }))[0];
         if (!token) {
             throw new BlockActionError('Bad token id', ref.blockType, ref.uuid);
@@ -192,7 +178,7 @@ export class RetirementBlock {
         const vcs: HcsVcDocument<VcSubject>[] = [];
         for (let i = 0; i < docs.length; i++) {
             const element = docs[i];
-            if(element.signature === DocumentSignature.INVALID) {
+            if (element.signature === DocumentSignature.INVALID) {
                 throw new BlockActionError('Invalid VC proof', ref.blockType, ref.uuid);
             }
             vcs.push(HcsVcDocument.fromJsonTree(element.document, null, VcSubject));
@@ -207,8 +193,10 @@ export class RetirementBlock {
         try {
             const doc = await this.retirementProcessing(token, vcs, rule, root, curUser, ref);
             ref.runNext(null, { data: doc }).then(
-                function () { },
-                function (error: any) { console.error(error); }
+                function () {},
+                function (error: any) {
+                    console.error(error);
+                }
             );
         } catch (e) {
             throw e;

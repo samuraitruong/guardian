@@ -1,8 +1,7 @@
-const axios = require("axios");
-const BASE_URL = 'http://localhost:3002'
+const axios = require('axios');
+const BASE_URL = 'http://localhost:3002';
 
-let tokens = [
-];
+let tokens = [];
 
 async function GenerateTokens() {
     tokens = [];
@@ -11,12 +10,12 @@ async function GenerateTokens() {
         GetURL('accounts', 'login'),
         JSON.stringify({
             username: 'RootAuthority',
-            password: 'test'
+            password: 'test',
         }),
         {
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
         }
     );
     SaveToken(result.data.username, result.data.accessToken);
@@ -24,12 +23,12 @@ async function GenerateTokens() {
         GetURL('accounts', 'login'),
         JSON.stringify({
             username: 'Installer',
-            password: 'test'
+            password: 'test',
         }),
         {
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
         }
     );
     SaveToken(result.data.username, result.data.accessToken);
@@ -37,12 +36,12 @@ async function GenerateTokens() {
         GetURL('accounts', 'login'),
         JSON.stringify({
             username: 'Installer2',
-            password: 'test'
+            password: 'test',
         }),
         {
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
         }
     );
     SaveToken(result.data.username, result.data.accessToken);
@@ -50,31 +49,31 @@ async function GenerateTokens() {
         GetURL('accounts', 'login'),
         JSON.stringify({
             username: 'Auditor',
-            password: 'test'
+            password: 'test',
         }),
         {
             headers: {
                 'Content-Type': 'application/json',
-            }
+            },
         }
     );
     SaveToken(result.data.username, result.data.accessToken);
 }
 
 function SaveToken(name, token) {
-    tokens.push({token, name});
+    tokens.push({ token, name });
 }
 
 function GetToken(name) {
-    return (tokens.find(t => t.name === name) || {}).token;
+    return (tokens.find((t) => t.name === name) || {}).token;
 }
 
 function sleep(time) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         setTimeout(() => {
             resolve();
-        }, time)
-    })
+        }, time);
+    });
 }
 
 function GetURL(service, ...methods) {
@@ -84,7 +83,8 @@ function GetURL(service, ...methods) {
 
 function GenerateUUIDv4() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        const r = (Math.random() * 16) | 0,
+            v = c == 'x' ? r : (r & 0x3) | 0x8;
         return v.toString(16);
     });
 }
@@ -95,5 +95,5 @@ module.exports = {
     SaveToken,
     GetToken,
     GenerateTokens,
-    GenerateUUIDv4
-}
+    GenerateUUIDv4,
+};

@@ -20,7 +20,6 @@ import { IPolicyAddonBlock, IPolicyInterfaceBlock } from '@policy-engine/policy-
     commonBlock: false,
 })
 export class InterfaceDocumentActionBlock {
-
     @Inject()
     private guardians: Guardians;
 
@@ -35,7 +34,9 @@ export class InterfaceDocumentActionBlock {
         let data = [];
         for (let child of ref.children) {
             if (child.blockClassName === 'SourceAddon') {
-                data = data.concat(await PolicyComponentsUtils.GetBlockRef<IPolicyAddonBlock>(child).getFromSource(user))
+                data = data.concat(
+                    await PolicyComponentsUtils.GetBlockRef<IPolicyAddonBlock>(child).getFromSource(user)
+                );
             }
         }
         return data;
@@ -48,8 +49,8 @@ export class InterfaceDocumentActionBlock {
             id: ref.uuid,
             blockType: ref.blockType,
             type: ref.options.type,
-            uiMetaData: ref.options.uiMetaData
-        }
+            uiMetaData: ref.options.uiMetaData,
+        };
 
         if (ref.options.type == 'selector') {
             data.field = ref.options.field;
@@ -64,7 +65,7 @@ export class InterfaceDocumentActionBlock {
                 return {
                     name: findOptions(e, ref.options.name),
                     value: findOptions(e, ref.options.value),
-                }
+                };
             });
         }
         return data;
@@ -98,23 +99,23 @@ export class InterfaceDocumentActionBlock {
             return {
                 fileName: ref.options.filename || `${sensorDid}.config.json`,
                 body: {
-                    'url': ref.options.targetUrl || process.env.MRV_ADDRESS,
-                    'topic': policy.topicId,
-                    'hederaAccountId': hederaAccountId,
-                    'hederaAccountKey': hederaAccountKey,
-                    'installer': userDID,
-                    'did': sensorDid,
-                    'key': sensorKey,
-                    'type': schema.type,
-                    'schema': schema.contextObject,
-                    'context': {
-                        'type': schema.type,
-                        '@context': [schema.contextURL]
+                    url: ref.options.targetUrl || process.env.MRV_ADDRESS,
+                    topic: policy.topicId,
+                    hederaAccountId: hederaAccountId,
+                    hederaAccountKey: hederaAccountKey,
+                    installer: userDID,
+                    did: sensorDid,
+                    key: sensorKey,
+                    type: schema.type,
+                    schema: schema.contextObject,
+                    context: {
+                        type: schema.type,
+                        '@context': [schema.contextURL],
                     },
-                    'policyId': ref.policyId,
-                    'policyTag': policy.policyTag
-                }
-            }
+                    policyId: ref.policyId,
+                    policyTag: policy.policyTag,
+                },
+            };
         }
 
         if (ref.options.type == 'dropdown') {
@@ -137,7 +138,7 @@ export class InterfaceDocumentActionBlock {
                 value = value[key];
             }
         }
-        return options.find(e => e.value == value);
+        return options.find((e) => e.value == value);
     }
 
     public async validate(resultsContainer: PolicyValidationResultsContainer): Promise<void> {
@@ -148,7 +149,7 @@ export class InterfaceDocumentActionBlock {
         } else {
             switch (ref.options.type) {
                 case 'selector':
-                    if (!ref.options.uiMetaData || (typeof ref.options.uiMetaData !== 'object')) {
+                    if (!ref.options.uiMetaData || typeof ref.options.uiMetaData !== 'object') {
                         resultsContainer.addBlockError(ref.uuid, 'Option "uiMetaData" does not set');
                     } else {
                         if (!ref.options.field) {
@@ -158,7 +159,7 @@ export class InterfaceDocumentActionBlock {
                             resultsContainer.addBlockError(ref.uuid, 'Option "uiMetaData.options" does not set');
                         }
                         if (Array.isArray(ref.options.uiMetaData.options)) {
-                            for (let tag of ref.options.uiMetaData.options.map(i => i.bindBlock)) {
+                            for (let tag of ref.options.uiMetaData.options.map((i) => i.bindBlock)) {
                                 if (tag && !resultsContainer.isTagExist(tag)) {
                                     resultsContainer.addBlockError(ref.uuid, `Tag "${tag}" does not exist`);
                                 }
@@ -189,7 +190,10 @@ export class InterfaceDocumentActionBlock {
 
                     const schema = await this.guardians.getSchemaByIRI(ref.options.schema);
                     if (!schema) {
-                        resultsContainer.addBlockError(ref.uuid, `Schema with id "${ref.options.schema}" does not exist`);
+                        resultsContainer.addBlockError(
+                            ref.uuid,
+                            `Schema with id "${ref.options.schema}" does not exist`
+                        );
                         break;
                     }
                     break;

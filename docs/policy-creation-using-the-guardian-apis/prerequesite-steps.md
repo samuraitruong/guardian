@@ -38,6 +38,7 @@ test
 {% endswagger-parameter %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     {
@@ -48,6 +49,7 @@ test
 }
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -59,14 +61,16 @@ test
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="" %}
+
 ```javascript
 {
-    
+
 	"id":"0.0.29511776",
 	"key":"302e020100300506032b6570042204200c8d2abbdd9aee64eed6e4891c276aa50248ab182c0cd7dfbec8506e5eaaaef8"
 
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -95,9 +99,7 @@ RootAuthority
 
 {% swagger-parameter in="body" name="context" type="String" required="true" %}
 
-
 [https://localhost/schema](https://localhost/schema)
-
 
 {% endswagger-parameter %}
 
@@ -107,9 +109,7 @@ Test Identity SDK appnet
 
 {% swagger-parameter in="body" name="didSrverURL" required="true" type="URL" %}
 
-
 [http://localhost:3000/api/v1](http://localhost:3000/api/v1)
-
 
 {% endswagger-parameter %}
 
@@ -166,6 +166,7 @@ VC
 {% endswagger-parameter %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     ...
@@ -175,6 +176,7 @@ VC
 	}
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -238,14 +240,16 @@ true
 {% endswagger-parameter %}
 
 {% swagger-response status="200: OK" description="" %}
+
 ```javascript
 {
-    
+
 		"id":"61ee817b9c02660014fa662f",
 		"tokenId":"0.0.29511821",
 		...
-	
+
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

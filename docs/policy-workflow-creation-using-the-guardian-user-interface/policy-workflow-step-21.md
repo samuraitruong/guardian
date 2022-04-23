@@ -1,16 +1,16 @@
 # Policy Workflow Step 21
 
-Upon completion, we click back on the “approve\_page” field and add an approval action step by clicking on the “Action” button in the top navigation bar.
+Upon completion, we click back on the “approve_page” field and add an approval action step by clicking on the “Action” button in the top navigation bar.
 
 Again we add a tag and permission. Note that we choose the action type of “selector.” This allows us to add Options as fields to the UI for different types of selections – approval/rejection.
 
-Note that for the approve option we are binding the action to the “update\_approve\_document\_status” we defined before.
+Note that for the approve option we are binding the action to the “update_approve_document_status” we defined before.
 
-Note that for the reject option we are binding the action to the “installer\_rejected” action we previously defined.
+Note that for the reject option we are binding the action to the “installer_rejected” action we previously defined.
 
 ![](https://i.imgur.com/qMY0via.png)
 
-Next, we return to the “approve\_documents\_grid” step and add the “approve\_documents\_btn” action as a binding block to Field 4 since Field 4 captures the approval or rejection of the document. Note, the choice of block for Field 4 makes sense now, because the bound action is a block itself.
+Next, we return to the “approve_documents_grid” step and add the “approve_documents_btn” action as a binding block to Field 4 since Field 4 captures the approval or rejection of the document. Note, the choice of block for Field 4 makes sense now, because the bound action is a block itself.
 
 ![](https://i.imgur.com/szoRpPF.png)
 

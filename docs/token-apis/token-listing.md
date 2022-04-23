@@ -8,6 +8,7 @@ Returns all tokens. For the Root Authority role it returns only the list of toke
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     application/json:
@@ -17,25 +18,31 @@ Returns all tokens. For the Root Authority role it returns only the list of toke
                   $ref: '#/components/schemas/TokenInfo'
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="401: Unauthorized" description="Unauthorized" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="403: Forbidden" description="Forbidden" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="Internal Server Error" %}
+
 ```javascript
 {
     content:
@@ -44,5 +51,6 @@ Returns all tokens. For the Root Authority role it returns only the list of toke
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

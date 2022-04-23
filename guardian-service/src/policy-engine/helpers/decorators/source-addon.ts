@@ -1,13 +1,12 @@
-import {PolicyBlockDecoratorOptions} from '@policy-engine/interfaces';
-import {BasicBlock} from '@policy-engine/helpers/decorators/basic-block';
-import {IPolicyBlock} from '@policy-engine/policy-engine.interface';
+import { PolicyBlockDecoratorOptions } from '@policy-engine/interfaces';
+import { BasicBlock } from '@policy-engine/helpers/decorators/basic-block';
+import { IPolicyBlock } from '@policy-engine/policy-engine.interface';
 
 export function SourceAddon(options: Partial<PolicyBlockDecoratorOptions>) {
     return function (constructor: new (...args: any) => any): any {
         const basicClass = BasicBlock(options)(constructor);
 
         return class extends basicClass {
-
             public readonly blockClassName = 'SourceAddon';
 
             protected getAddons(): IPolicyBlock[] {
@@ -22,7 +21,7 @@ export function SourceAddon(options: Partial<PolicyBlockDecoratorOptions>) {
                 return filters;
             }
 
-            protected getFilters(user): {[key: string]: string} {
+            protected getFilters(user): { [key: string]: string } {
                 const filters = {};
 
                 for (let addon of this.getAddons()) {
@@ -34,10 +33,10 @@ export function SourceAddon(options: Partial<PolicyBlockDecoratorOptions>) {
 
             public getFromSource(...args): any[] {
                 if (typeof super.getFromSource === 'function') {
-                    return super.getFromSource(...args)
+                    return super.getFromSource(...args);
                 }
                 return [];
             }
-        }
-    }
+        };
+    };
 }

@@ -7,7 +7,6 @@ export function ReportItem(options: Partial<PolicyBlockDecoratorOptions>) {
         const basicClass = BasicBlock(options)(constructor);
 
         return class extends basicClass {
-
             public readonly blockClassName = 'ReportItemBlock';
 
             public async run(fieldsResult: any[], mapVariables: any, userMap: any): Promise<any> {
@@ -26,6 +25,6 @@ export function ReportItem(options: Partial<PolicyBlockDecoratorOptions>) {
                 }
                 return items;
             }
-        }
-    }
+        };
+    };
 }

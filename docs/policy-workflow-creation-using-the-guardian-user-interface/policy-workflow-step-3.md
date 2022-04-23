@@ -1,8 +1,8 @@
 # Step 3
 
-Now we want to add another step in the Policy Action. To do this we go back to the Policy Action we are defining by clicking on the “init\_installer\_steps” Policy Action icon on the left.
+Now we want to add another step in the Policy Action. To do this we go back to the Policy Action we are defining by clicking on the “init_installer_steps” Policy Action icon on the left.
 
-After having created the “add\_new\_installer\_request”, we need to send the request for saving the document to the Guardian. To do this we click on the “Send” icon in the top navigation bar to add another Policy Action step that allows us to send the request we created in the previous step for processing.
+After having created the “add_new_installer_request”, we need to send the request for saving the document to the Guardian. To do this we click on the “Send” icon in the top navigation bar to add another Policy Action step that allows us to send the request we created in the previous step for processing.
 
 Again, we name the “Tag” under the “Properties” for this step.
 

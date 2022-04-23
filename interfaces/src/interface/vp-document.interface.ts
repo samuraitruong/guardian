@@ -1,7 +1,7 @@
-import {DocumentSignature} from '../type/document-signature.type';
-import {DocumentStatus} from '../type/document-status.type';
-import {SchemaEntity} from '../type/schema-entity.type';
-import {IVP} from './vp.interface';
+import { DocumentSignature } from '../type/document-signature.type';
+import { DocumentStatus } from '../type/document-status.type';
+import { SchemaEntity } from '../type/schema-entity.type';
+import { IVP } from './vp.interface';
 
 export interface IVPDocument {
     id?: string;

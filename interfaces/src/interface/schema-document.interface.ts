@@ -18,7 +18,7 @@ export enum SchemaDataFormat {
     ipv4 = 'ipv4',
     ipv6 = 'ipv6',
     regex = 'regex',
-    uuid = 'uuid'
+    uuid = 'uuid',
 }
 
 export interface ISchemaDocument {
@@ -32,12 +32,12 @@ export interface ISchemaDocument {
     readOnly?: boolean;
     properties?: {
         [x: string]: ISchemaDocument;
-    }
+    };
     required?: string[];
     additionalProperties?: boolean;
     $defs?: {
         [x: string]: ISchemaDocument;
-    }
+    };
     $ref?: string;
     items?: ISchemaDocument;
     oneOf?: ISchemaDocument[];

@@ -1,8 +1,8 @@
-import { Policy } from "@entity/policy";
-import { Guardians } from "@helpers/guardians";
-import { findAllEntities, regenerateIds, replaceAllEntities, SchemaFields } from "@helpers/utils";
-import JSZip from "jszip";
-import { getMongoRepository } from "typeorm";
+import { Policy } from '@entity/policy';
+import { Guardians } from '@helpers/guardians';
+import { findAllEntities, regenerateIds, replaceAllEntities, SchemaFields } from '@helpers/utils';
+import JSZip from 'jszip';
+import { getMongoRepository } from 'typeorm';
 import { GenerateUUIDv4 } from '@policy-engine/helpers/uuidv4';
 
 export class PolicyImportExportHelper {
@@ -26,11 +26,11 @@ export class PolicyImportExportHelper {
         const schemes = await guardians.getSchemaByIRIs(schemesIds, true);
 
         const zip = new JSZip();
-        zip.folder('tokens')
+        zip.folder('tokens');
         for (let token of tokens) {
             zip.file(`tokens/${token.tokenName}.json`, JSON.stringify(token));
         }
-        zip.folder('schemes')
+        zip.folder('schemes');
         for (let schema of schemes) {
             const item = { ...schema };
             delete item.id;
@@ -52,19 +52,23 @@ export class PolicyImportExportHelper {
         const zip = new JSZip();
         const content = await zip.loadAsync(zipFile);
         let policyString = await content.files['policy.json'].async('string');
-        const tokensStringArray = await Promise.all(Object.entries(content.files)
-            .filter(file => !file[1].dir)
-            .filter(file => /^tokens\/.+/.test(file[0]))
-            .map(file => file[1].async('string')));
+        const tokensStringArray = await Promise.all(
+            Object.entries(content.files)
+                .filter((file) => !file[1].dir)
+                .filter((file) => /^tokens\/.+/.test(file[0]))
+                .map((file) => file[1].async('string'))
+        );
 
-        const schemesStringArray = await Promise.all(Object.entries(content.files)
-            .filter(file => !file[1].dir)
-            .filter(file => /^schemes\/.+/.test(file[0]))
-            .map(file => file[1].async('string')));
+        const schemesStringArray = await Promise.all(
+            Object.entries(content.files)
+                .filter((file) => !file[1].dir)
+                .filter((file) => /^schemes\/.+/.test(file[0]))
+                .map((file) => file[1].async('string'))
+        );
 
         const policy = JSON.parse(policyString);
-        const tokens = tokensStringArray.map(item => JSON.parse(item));
-        const schemes = schemesStringArray.map(item => JSON.parse(item));
+        const tokens = tokensStringArray.map((item) => JSON.parse(item));
+        const schemes = schemesStringArray.map((item) => JSON.parse(item));
 
         return { policy, tokens, schemes };
     }

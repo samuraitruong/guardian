@@ -1,4 +1,4 @@
-import { LogType } from "../type/log.type"
+import { LogType } from '../type/log.type';
 
 export interface ILog {
     message?: string;

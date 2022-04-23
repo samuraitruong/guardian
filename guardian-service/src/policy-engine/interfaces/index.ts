@@ -1,8 +1,10 @@
 export {
-    PolicyBlockDependencies, PolicyBlockMap,
+    PolicyBlockDependencies,
+    PolicyBlockMap,
     PolicyBlockState,
     PolicyBlockStateCommon,
-    PolicyBlockStateData, PolicyTagMap
+    PolicyBlockStateData,
+    PolicyTagMap,
 } from './block-state';
 
 export {
@@ -10,10 +12,7 @@ export {
     PolicyBlockConstructorParams,
     PolicyBlockDecoratorOptions,
     PolicyBlockFullArgumentList,
-    PolicyBlockOptionsPartial
+    PolicyBlockOptionsPartial,
 } from './block-options';
 
-export {
-    BlockError,
-    BlockErrorDTO
-} from './block-error';
+export { BlockError, BlockErrorDTO } from './block-error';

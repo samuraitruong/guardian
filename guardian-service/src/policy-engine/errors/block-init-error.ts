@@ -1,4 +1,4 @@
-import {BlockError} from '@policy-engine/interfaces';
+import { BlockError } from '@policy-engine/interfaces';
 
 /**
  * Error fires when block init
@@ -14,7 +14,7 @@ export class BlockInitError extends Error implements BlockError {
             code: 500,
             uuid: this.uuid,
             blockType: this.blockType,
-            message: this.message
-        }
+            message: this.message,
+        };
     }
 }

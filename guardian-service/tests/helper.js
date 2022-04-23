@@ -8,17 +8,20 @@ function createChannel() {
         value: null,
         map: {},
         response: function (name, callback) {
-            channel.map[name] = callback
+            channel.map[name] = callback;
         },
         run: async function (name, param) {
-            await channel.map[name]({
-                payload: param
-            }, channel);
+            await channel.map[name](
+                {
+                    payload: param,
+                },
+                channel
+            );
             return channel.value;
         },
         send: function (value) {
             channel.value = value;
-        }
+        },
     };
     return channel;
 }
@@ -40,30 +43,30 @@ function createTable() {
         },
         save: async function (item) {
             return item;
-        }
+        },
     };
 }
 
 function checkMessage(result, value, text) {
-    if(!result) {
+    if (!result) {
         assert.fail(text);
     }
-    if(result.error) {
+    if (result.error) {
         assert.fail(result.error);
     }
-    if(result.body != value) {
+    if (result.body != value) {
         assert.deepEqual(result.body, value, text);
     }
 }
 
 function checkError(result, value, text) {
-    if(!result) {
+    if (!result) {
         assert.fail(text || value);
     }
-    if(!result.error) {
+    if (!result.error) {
         assert.fail(text || value);
     }
-    if(result.error != value) {
+    if (result.error != value) {
         assert.equal(result.error, value, text);
     }
 }

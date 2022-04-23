@@ -2,7 +2,7 @@ import { DidDocument } from '@entity/did-document';
 import { VcDocument } from '@entity/vc-document';
 import { VpDocument } from '@entity/vp-document';
 import { IChainItem, MessageAPI, MessageError, MessageResponse, SchemaEntity } from 'interfaces';
-import { Logger } from 'logger-helper';
+import { Logger, MessageBrokerChannel } from 'common';
 import { MongoRepository } from 'typeorm';
 import { HcsVpDocument } from 'vc-modules';
 
@@ -36,21 +36,21 @@ function checkPolicy(vcDocument: VcDocument, policyId: string) {
 
 /**
  * Connecting to the message broker methods of working with trust chain.
- * 
+ *
  * @param channel - channel
  * @param didDocumentRepository - table with DID Documents
  * @param vcDocumentRepository - table with VC Documents
  * @param vpDocumentRepository - table with VP Documents
  */
 export const trustChainAPI = async function (
-    channel: any,
+    channel: MessageBrokerChannel,
     didDocumentRepository: MongoRepository<DidDocument>,
     vcDocumentRepository: MongoRepository<VcDocument>,
     vpDocumentRepository: MongoRepository<VpDocument>
 ): Promise<void> {
     /**
      * Search parent by VC or VP Document
-     * 
+     *
      * @param {IChainItem[]} chain - current trust chain
      * @param {VcDocument | VpDocument} vc - Document
      * @param {Object} map - ids map
@@ -78,10 +78,12 @@ export const trustChainAPI = async function (
             owner: vc.owner,
             schema: schema,
             tag: vc.tag,
-            label: 'HASH'
+            label: 'HASH',
         });
 
-        const didDocuments = await didDocumentRepository.find({ where: { did: { $eq: issuer } } });
+        const didDocuments = await didDocumentRepository.find({
+            where: { did: { $eq: issuer } },
+        });
 
         chain.push({
             type: 'DID',
@@ -91,17 +93,17 @@ export const trustChainAPI = async function (
             schema: null,
             label: 'DID',
             entity: 'DID',
-            tag: null
+            tag: null,
         });
 
         let parents = await vcDocumentRepository.find({
             where: {
-                'document.credentialSubject.id': { $eq: issuer }
-            }
+                'document.credentialSubject.id': { $eq: issuer },
+            },
         });
 
         if (policyId) {
-            parents = parents.filter(vc => checkPolicy(vc, policyId));
+            parents = parents.filter((vc) => checkPolicy(vc, policyId));
         }
 
         const parent = parents[0];
@@ -112,7 +114,7 @@ export const trustChainAPI = async function (
 
     /**
      * Return Policy Info by Policy Id
-     * 
+     *
      * @param {IChainItem[]} chain - current trust chain
      * @param {string} policyId - policy Id
      */
@@ -123,15 +125,15 @@ export const trustChainAPI = async function (
             const policyCreated = await vcDocumentRepository.findOne({
                 where: {
                     type: { $eq: SchemaEntity.POLICY },
-                    policyId: { $eq: policyId }
-                }
+                    policyId: { $eq: policyId },
+                },
             });
 
             const policyImported = await vcDocumentRepository.findOne({
                 where: {
                     type: { $eq: SchemaEntity.POLICY_IMPORTED },
-                    policyId: { $eq: policyId }
-                }
+                    policyId: { $eq: policyId },
+                },
             });
 
             if (policyCreated) {
@@ -144,7 +146,7 @@ export const trustChainAPI = async function (
                     schema: getField(policyCreated, 'type'),
                     label: 'HASH',
                     entity: 'Policy',
-                    tag: "Policy Created"
+                    tag: 'Policy Created',
                 });
             } else if (policyImported) {
                 issuer = getIssuer(policyImported);
@@ -156,17 +158,19 @@ export const trustChainAPI = async function (
                     schema: getField(policyImported, 'type'),
                     label: 'HASH',
                     entity: 'Policy',
-                    tag: "Policy Imported"
+                    tag: 'Policy Imported',
                 });
             }
-            
+
             if (issuer) {
-                const didDocuments = await didDocumentRepository.find({ where: { did: { $eq: issuer } } });
+                const didDocuments = await didDocumentRepository.find({
+                    where: { did: { $eq: issuer } },
+                });
                 const rootAuthority = await vcDocumentRepository.findOne({
                     where: {
                         type: { $eq: SchemaEntity.ROOT_AUTHORITY },
-                        owner: { $eq: issuer }
-                    }
+                        owner: { $eq: issuer },
+                    },
                 });
                 if (didDocuments) {
                     chain.push({
@@ -177,7 +181,7 @@ export const trustChainAPI = async function (
                         schema: null,
                         label: 'DID',
                         entity: 'DID',
-                        tag: null
+                        tag: null,
                     });
                 }
                 if (rootAuthority) {
@@ -189,7 +193,7 @@ export const trustChainAPI = async function (
                         schema: getField(rootAuthority, 'type'),
                         label: 'HASH',
                         entity: 'RootAuthority',
-                        tag: "Account Creation"
+                        tag: 'Account Creation',
                     });
                 }
             }
@@ -198,27 +202,31 @@ export const trustChainAPI = async function (
 
     /**
      * Return trust chain
-     * 
+     *
      * @param {string} payload - hash or uuid
-     * 
+     *
      * @returns {IChainItem[]} - trust chain
      */
-    channel.response(MessageAPI.GET_CHAIN, async (msg, res) => {
+    channel.response(MessageAPI.GET_CHAIN, async (msg) => {
         try {
-            const hash = msg.payload;
+            const hash = msg;
             const chain: IChainItem[] = [];
             let root: VcDocument | VpDocument;
 
-            root = await vcDocumentRepository.findOne({ where: { hash: { $eq: hash } } });
+            root = await vcDocumentRepository.findOne({
+                where: { hash: { $eq: hash } },
+            });
             if (root) {
                 const policyId = root.policyId;
                 await getParents(chain, root, {}, policyId);
                 await getPolicyInfo(chain, policyId);
-                res.send(new MessageResponse(chain));
+                return new MessageResponse(chain);
                 return;
             }
 
-            root = await vpDocumentRepository.findOne({ where: { hash: { $eq: hash } } });
+            root = await vpDocumentRepository.findOne({
+                where: { hash: { $eq: hash } },
+            });
             if (root) {
                 const policyId = root.policyId;
                 chain.push({
@@ -229,19 +237,23 @@ export const trustChainAPI = async function (
                     schema: 'VerifiablePresentation',
                     label: 'HASH',
                     entity: 'VP',
-                    tag: root.tag
+                    tag: root.tag,
                 });
                 const vpDocument = HcsVpDocument.fromJsonTree(root.document);
                 const vcpDocument = vpDocument.getVerifiableCredential()[0];
                 const hashVc = vcpDocument.toCredentialHash();
-                const vc = await vcDocumentRepository.findOne({ where: { hash: { $eq: hashVc } } });
+                const vc = await vcDocumentRepository.findOne({
+                    where: { hash: { $eq: hashVc } },
+                });
                 await getParents(chain, vc, {}, policyId);
                 await getPolicyInfo(chain, policyId);
-                res.send(new MessageResponse(chain));
+                return new MessageResponse(chain);
                 return;
             }
 
-            root = await vpDocumentRepository.findOne({ where: { 'document.id': { $eq: hash } } });
+            root = await vpDocumentRepository.findOne({
+                where: { 'document.id': { $eq: hash } },
+            });
             if (root) {
                 const policyId = root.policyId;
                 chain.push({
@@ -252,24 +264,26 @@ export const trustChainAPI = async function (
                     schema: 'VerifiablePresentation',
                     label: 'ID',
                     entity: 'VP',
-                    tag: root.tag
+                    tag: root.tag,
                 });
                 const vpDocument = HcsVpDocument.fromJsonTree(root.document);
                 const vcpDocument = vpDocument.getVerifiableCredential()[0];
                 const hashVc = vcpDocument.toCredentialHash();
-                const vc = await vcDocumentRepository.findOne({ where: { hash: { $eq: hashVc } } });
+                const vc = await vcDocumentRepository.findOne({
+                    where: { hash: { $eq: hashVc } },
+                });
                 await getParents(chain, vc, {}, policyId);
                 await getPolicyInfo(chain, policyId);
-                res.send(new MessageResponse(chain));
+                return new MessageResponse(chain);
                 return;
             }
 
             await getPolicyInfo(chain, null);
-            res.send(new MessageResponse(chain));
+            return new MessageResponse(chain);
         } catch (error) {
             new Logger().error(error.toString(), ['GUARDIAN_SERVICE']);
             console.error(error);
-            res.send(new MessageError(error.message));
+            return new MessageError(error.message);
         }
     });
-}
+};

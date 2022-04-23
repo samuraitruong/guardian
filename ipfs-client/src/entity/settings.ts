@@ -6,7 +6,7 @@ export class Settings {
     id: string;
 
     @Column({
-        unique: true
+        unique: true,
     })
     name: string;
 

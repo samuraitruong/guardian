@@ -1,8 +1,8 @@
-import {EventBlock} from '@policy-engine/helpers/decorators';
-import {IAuthUser} from '../../auth/auth.interface';
-import {getMongoRepository} from 'typeorm';
-import {Policy} from '@entity/policy';
-import {PolicyComponentsUtils} from '../policy-components-utils';
+import { EventBlock } from '@policy-engine/helpers/decorators';
+import { IAuthUser } from '../../auth/auth.interface';
+import { getMongoRepository } from 'typeorm';
+import { Policy } from '@entity/policy';
+import { PolicyComponentsUtils } from '../policy-components-utils';
 
 @EventBlock({
     blockType: 'policyRolesBlock',
@@ -13,8 +13,8 @@ export class PolicyRolesBlock {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
         return {
             roles: Array.isArray(ref.options.roles) ? ref.options.roles : [],
-            uiMetaData: ref.options.uiMetaData
-        }
+            uiMetaData: ref.options.uiMetaData,
+        };
     }
 
     async setData(user: IAuthUser, document: any): Promise<any> {

@@ -1,10 +1,10 @@
 export enum ModelActionType {
-    PUBLISH = "PUBLISH"
+    PUBLISH = 'PUBLISH',
 }
 
 export interface ISubmitModelMessage {
-    name: string,
-    owner: string,
-    version: string,
-    operation: ModelActionType
+    name: string;
+    owner: string;
+    version: string;
+    operation: ModelActionType;
 }

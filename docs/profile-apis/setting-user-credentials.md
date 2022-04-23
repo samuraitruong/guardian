@@ -12,30 +12,37 @@ The name of the user for whom to update the information
 {% endswagger-parameter %}
 
 {% swagger-response status="201: Created" description="Successful Operation" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="401: Unauthorized" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="403: Forbidden" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="" %}
+
 ```javascript
 {
     content:
@@ -44,5 +51,6 @@ The name of the user for whom to update the information
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

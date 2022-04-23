@@ -13,7 +13,7 @@ export class BlockActionError extends Error {
             code: 500,
             uuid: this.uuid,
             blockType: this.blockType,
-            message: this.message
-        }
+            message: this.message,
+        };
     }
 }

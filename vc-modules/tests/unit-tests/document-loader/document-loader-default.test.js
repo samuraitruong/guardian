@@ -1,6 +1,4 @@
-const {
-    DefaultDocumentLoader,
-} = require('../../../dist/index');
+const { DefaultDocumentLoader } = require('../../../dist/index');
 const { expect, assert } = require('chai');
 
 describe('VCHelper', function () {

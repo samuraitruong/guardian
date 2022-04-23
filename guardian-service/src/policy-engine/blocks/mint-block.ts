@@ -8,25 +8,25 @@ import * as mathjs from 'mathjs';
 import { BlockActionError } from '@policy-engine/errors';
 import { DocumentSignature, SchemaEntity, SchemaHelper } from 'interfaces';
 import { PolicyValidationResultsContainer } from '@policy-engine/policy-validation-results-container';
-import {PolicyComponentsUtils} from '../policy-components-utils';
+import { PolicyComponentsUtils } from '../policy-components-utils';
 import { IAuthUser } from '@auth/auth.interface';
 import { CatchErrors } from '@policy-engine/helpers/decorators/catch-errors';
 
 function evaluate(formula: string, scope: any) {
-    return (function (formula: string, scope: any) {
+    return function (formula: string, scope: any) {
         try {
             return this.evaluate(formula, scope);
         } catch (error) {
             return 'Incorrect formula';
         }
-    }).call(mathjs, formula, scope);
+    }.call(mathjs, formula, scope);
 }
 
 enum DataTypes {
     MRV = 'mrv',
     REPORT = 'report',
     MINT = 'mint',
-    RETIREMENT = 'retirement'
+    RETIREMENT = 'retirement',
 }
 
 /**
@@ -34,7 +34,7 @@ enum DataTypes {
  */
 @BasicBlock({
     blockType: 'mintDocumentBlock',
-    commonBlock: true
+    commonBlock: true,
 })
 export class MintBlock {
     @Inject()
@@ -87,8 +87,8 @@ export class MintBlock {
                 type: DataTypes.MINT as any,
                 policyId: ref.policyId,
                 tag: ref.tag,
-                schema: `#${vc.getCredentialSubject()[0].getType()}`
-            })
+                schema: `#${vc.getCredentialSubject()[0].getType()}`,
+            });
             return true;
         } catch (error) {
             return false;
@@ -106,15 +106,15 @@ export class MintBlock {
                 owner: sensorDid,
                 type: type as any,
                 policyId: ref.policyId,
-                tag: ref.tag
-            })
+                tag: ref.tag,
+            });
             return true;
         } catch (error) {
             return false;
         }
     }
 
-    private async createMintVC(root:any, token:any, data: number | number[]): Promise<HcsVcDocument<VcSubject>> {
+    private async createMintVC(root: any, token: any, data: number | number[]): Promise<HcsVcDocument<VcSubject>> {
         const vcHelper = new VcHelper();
 
         let vcSubject: any;
@@ -123,37 +123,28 @@ export class MintBlock {
             const serials = data as number[];
             vcSubject = {
                 ...SchemaHelper.getContext(policySchema),
-                date: (new Date()).toISOString(),
+                date: new Date().toISOString(),
                 tokenId: token.tokenId,
-                serials: serials
-            }
+                serials: serials,
+            };
         } else {
             const policySchema = await this.guardians.getSchemaByEntity(SchemaEntity.MINT_TOKEN);
             const amount = data as number;
             vcSubject = {
                 ...SchemaHelper.getContext(policySchema),
-                date: (new Date()).toISOString(),
+                date: new Date().toISOString(),
                 tokenId: token.tokenId,
-                amount: amount.toString()
-            }
+                amount: amount.toString(),
+            };
         }
-        const mintVC = await vcHelper.createVC(
-            root.did,
-            root.hederaAccountKey,
-            vcSubject
-        );
+        const mintVC = await vcHelper.createVC(root.did, root.hederaAccountKey, vcSubject);
         return mintVC;
     }
 
     private async createVP(root, uuid: string, vcs: HcsVcDocument<VcSubject>[]) {
         const vcHelper = new VcHelper();
 
-        const vp = await vcHelper.createVP(
-            root.did,
-            root.hederaAccountKey,
-            vcs,
-            uuid
-        );
+        const vp = await vcHelper.createVP(root.did, root.hederaAccountKey, vcs, uuid);
         return vp;
     }
 
@@ -166,9 +157,7 @@ export class MintBlock {
         const amount = this.aggregate(rule, document);
         const [tokenValue, tokenAmount] = this.tokenAmount(token, amount);
 
-        const hederaHelper = HederaHelper.setOperator(
-            root.hederaAccountId, root.hederaAccountKey
-        );
+        const hederaHelper = HederaHelper.setOperator(root.hederaAccountId, root.hederaAccountKey);
 
         let vcDate: any;
         console.log('Mint: Start');
@@ -185,7 +174,7 @@ export class MintBlock {
                 try {
                     const newSerials = await hederaHelper.SDK.mintNFT(tokenId, supplyKey, element, uuid);
                     for (let j = 0; j < newSerials.length; j++) {
-                        serials.push(newSerials[j])
+                        serials.push(newSerials[j]);
                     }
                 } catch (error) {
                     console.log(`Mint: Mint Error (${error.message})`);
@@ -228,12 +217,9 @@ export class MintBlock {
     }
 
     @CatchErrors()
-    async runAction(state: any, user:IAuthUser) {
+    async runAction(state: any, user: IAuthUser) {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
-        const {
-            tokenId,
-            rule
-        } = ref.options;
+        const { tokenId, rule } = ref.options;
 
         const token = (await this.guardians.getTokens({ tokenId }))[0];
         if (!token) {
@@ -270,8 +256,10 @@ export class MintBlock {
         try {
             const doc = await this.mintProcessing(token, vcs, rule, root, curUser, ref);
             ref.runNext(null, state).then(
-                function () { },
-                function (error: any) { console.error(error); }
+                function () {},
+                function (error: any) {
+                    console.error(error);
+                }
             );
         } catch (e) {
             throw e;

@@ -16,5 +16,5 @@ export enum PolicyEngineEvents {
     POLICY_IMPORT_MESSAGE = 'policy-import-message',
     GET_POLICIES = 'get-policies',
     GET_POLICY = 'get-policy',
-    GET_BLOCK_PARENTS = 'get-block-parents'
+    GET_BLOCK_PARENTS = 'get-block-parents',
 }

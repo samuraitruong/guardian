@@ -4,7 +4,7 @@ import { PolicyComponentsUtils } from '../policy-components-utils';
 
 @DataSourceBlock({
     blockType: 'informationBlock',
-    commonBlock: false
+    commonBlock: false,
 })
 export class InformationBlock {
     async getData(user: IAuthUser): Promise<any> {

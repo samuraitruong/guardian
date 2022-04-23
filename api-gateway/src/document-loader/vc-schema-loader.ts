@@ -15,7 +15,7 @@ export class VCSchemaLoader extends ISchemaLoader {
     }
 
     public async has(context: string | string[], iri: string, type: string): Promise<boolean> {
-        if(type !== 'vc') {
+        if (type !== 'vc') {
             return false;
         }
         if (Array.isArray(context)) {
@@ -57,105 +57,105 @@ export class VCSchemaLoader extends ISchemaLoader {
         throw new Error('Schema not found');
     }
 
-    private vcSchema(document: any) : any {
+    private vcSchema(document: any): any {
         const def = {};
         def[document['$id']] = document;
         return {
-            'type': 'object',
-            'properties': {
+            type: 'object',
+            properties: {
                 '@context': {
-                    'oneOf': [
+                    oneOf: [
                         {
-                            'type': 'string',
+                            type: 'string',
                         },
                         {
-                            'type': 'array',
-                            'items': {
-                                'type': 'string',
-                            }
-                        },
-                    ],
-                },
-                'id': {
-                    'type': 'string',
-                },
-                'type': {
-                    'oneOf': [
-                        {
-                            'type': 'string',
-                        },
-                        {
-                            'type': 'array',
-                            'items': {
-                                'type': 'string',
-                            }
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
                         },
                     ],
                 },
-                'issuer': {
-                    'oneOf': [
+                id: {
+                    type: 'string',
+                },
+                type: {
+                    oneOf: [
                         {
-                            'type': 'string',
+                            type: 'string',
                         },
                         {
-                            'type': 'object',
-                            'properties': {
-                                'id': {
-                                    'type': 'string',
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
+                        },
+                    ],
+                },
+                issuer: {
+                    oneOf: [
+                        {
+                            type: 'string',
+                        },
+                        {
+                            type: 'object',
+                            properties: {
+                                id: {
+                                    type: 'string',
                                 },
                             },
                         },
                     ],
                 },
-                'issuanceDate': { 'type': 'string' },
-                'credentialSubject': {
-                    'oneOf': [
+                issuanceDate: { type: 'string' },
+                credentialSubject: {
+                    oneOf: [
                         {
-                            "$ref": document['$id']
+                            $ref: document['$id'],
                         },
                         {
-                            'type': 'array',
-                            'items': {
-                                "$ref": document['$id']
+                            type: 'array',
+                            items: {
+                                $ref: document['$id'],
                             },
-                        }
+                        },
                     ],
                 },
-                'proof': {
-                    'type': 'object',
-                    'properties': {
-                        'type': {
-                            'oneOf': [
+                proof: {
+                    type: 'object',
+                    properties: {
+                        type: {
+                            oneOf: [
                                 {
-                                    'type': 'string',
+                                    type: 'string',
                                 },
                                 {
-                                    'type': 'array',
-                                    'items': {
-                                        'type': 'string',
-                                    }
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                    },
                                 },
                             ],
                         },
-                        'created': {
-                            'type': 'string',
+                        created: {
+                            type: 'string',
                         },
-                        'proofPurpose': {
-                            'type': 'string',
+                        proofPurpose: {
+                            type: 'string',
                         },
-                        'verificationMethod': {
-                            'type': 'string',
+                        verificationMethod: {
+                            type: 'string',
                         },
-                        'jws': {
-                            'type': 'string',
+                        jws: {
+                            type: 'string',
                         },
                     },
-                    'additionalProperties': false,
-                }
+                    additionalProperties: false,
+                },
             },
-            'required': ['@context'],
-            'additionalProperties': false,
-            '$defs': def
+            required: ['@context'],
+            additionalProperties: false,
+            $defs: def,
         };
     }
 }

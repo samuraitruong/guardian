@@ -5,7 +5,8 @@
     ```
     git clone https://github.com/hashgraph/guardian.git
     ```
-2. Update the following files with your Hedera Testnet account info (see prerequisites) as indicated. Please keep in mind that this Hedera Operator ID and Operator Key is used for this reference implementation as a placeholder until there is a wallet integration. There will be other steps in the Demo Usage Guide that will require the generation of Operator IDs and Operator Keys. It is important to mention that the Operator IDs and Operator Keys in the .env will be used to generate demo accounts.
+
+2.  Update the following files with your Hedera Testnet account info (see prerequisites) as indicated. Please keep in mind that this Hedera Operator ID and Operator Key is used for this reference implementation as a placeholder until there is a wallet integration. There will be other steps in the Demo Usage Guide that will require the generation of Operator IDs and Operator Keys. It is important to mention that the Operator IDs and Operator Keys in the .env will be used to generate demo accounts.
 
 For example:
 
@@ -69,7 +70,7 @@ npm install
 npm run build
 ```
 
-#### **From the logger-helper folder**
+#### **From the common folder**
 
 Build package
 
@@ -164,7 +165,7 @@ npm start
 To run **guardian-service** unit tests, following commands needs to be executed:
 
 ```
-cd guardian-service 
+cd guardian-service
 npm run test
 ```
 

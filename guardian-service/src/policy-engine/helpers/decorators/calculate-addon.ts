@@ -7,7 +7,6 @@ export function CalculateAddon(options: Partial<PolicyBlockDecoratorOptions>) {
         const basicClass = BasicBlock(options)(constructor);
 
         return class extends basicClass {
-
             public readonly blockClassName = 'CalculateAddon';
 
             public async run(scope: any): Promise<any> {
@@ -18,24 +17,24 @@ export function CalculateAddon(options: Partial<PolicyBlockDecoratorOptions>) {
             }
 
             public evaluate(formula: string, scope: any): any {
-                return (function (formula: string, scope: any) {
+                return function (formula: string, scope: any) {
                     try {
                         return this.evaluate(formula, scope);
                     } catch (error) {
                         return 'Incorrect formula';
                     }
-                }).call(mathjs, formula, scope);
+                }.call(mathjs, formula, scope);
             }
 
             public parse(formula: string): boolean {
-                return (function (formula: string) {
+                return function (formula: string) {
                     try {
                         const tree = this.parse(formula);
                         return true;
                     } catch (error) {
                         return false;
                     }
-                }).call(mathjs, formula);
+                }.call(mathjs, formula);
             }
 
             public getVariables(variables: any): any {
@@ -44,6 +43,6 @@ export function CalculateAddon(options: Partial<PolicyBlockDecoratorOptions>) {
                 }
                 return variables;
             }
-        }
-    }
+        };
+    };
 }

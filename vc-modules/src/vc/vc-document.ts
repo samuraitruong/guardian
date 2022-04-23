@@ -30,7 +30,7 @@ export class HcsVcDocument<T extends CredentialSubject> extends HcsVcDocumentBas
 
     public toJsonTree(): any {
         const root = super.toJsonTree();
-        const json = {}
+        const json = {};
         if (root[HcsVcDocumentJsonProperties.CONTEXT])
             json[HcsVcDocumentJsonProperties.CONTEXT] = root[HcsVcDocumentJsonProperties.CONTEXT];
         if (root[HcsVcDocumentJsonProperties.ID])
@@ -53,7 +53,11 @@ export class HcsVcDocument<T extends CredentialSubject> extends HcsVcDocumentBas
         return JSON.stringify(this.toJsonTree());
     }
 
-    public static fromJsonTree<U extends CredentialSubject>(root: any, result?: HcsVcDocument<U>, credentialSubjectClass?: JsonClass<U>): HcsVcDocument<U> {
+    public static fromJsonTree<U extends CredentialSubject>(
+        root: any,
+        result?: HcsVcDocument<U>,
+        credentialSubjectClass?: JsonClass<U>
+    ): HcsVcDocument<U> {
         let baseClass = result;
         if (!baseClass) {
             baseClass = new HcsVcDocument();
@@ -63,7 +67,10 @@ export class HcsVcDocument<T extends CredentialSubject> extends HcsVcDocumentBas
         return result;
     }
 
-    public static fromJson<U extends CredentialSubject>(json: string, credentialSubjectClass: JsonClass<U>): HcsVcDocument<U> {
+    public static fromJson<U extends CredentialSubject>(
+        json: string,
+        credentialSubjectClass: JsonClass<U>
+    ): HcsVcDocument<U> {
         const root = JSON.parse(json);
         return this.fromJsonTree(root, null, credentialSubjectClass);
     }

@@ -1,5 +1,5 @@
-import {DocumentSignature, DocumentStatus, IVCDocument, SchemaEntity} from 'interfaces';
-import {BeforeInsert, Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn} from 'typeorm';
+import { DocumentSignature, DocumentStatus, IVCDocument, SchemaEntity } from 'interfaces';
+import { BeforeInsert, Column, CreateDateColumn, Entity, ObjectIdColumn, UpdateDateColumn } from 'typeorm';
 
 @Entity()
 export class VcDocument implements IVCDocument {
@@ -13,7 +13,7 @@ export class VcDocument implements IVCDocument {
     assign: string;
 
     @Column({
-        unique: true
+        unique: true,
     })
     hash: string;
 

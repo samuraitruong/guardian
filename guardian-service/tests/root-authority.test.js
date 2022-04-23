@@ -1,11 +1,6 @@
 const { expect, assert } = require('chai');
 const { rootAuthorityAPI } = require('../dist/api/root-authority.service');
-const { 
-    createChannel, 
-    createTable, 
-    checkMessage, 
-    checkError 
-} = require('./helper');
+const { createChannel, createTable, checkMessage, checkError } = require('./helper');
 
 describe('Root Authority service', function () {
     let service, channel;
@@ -20,11 +15,7 @@ describe('Root Authority service', function () {
         const didDocumentRepository = createTable();
         const vcDocumentRepository = createTable();
         configRepository.findOne = async function (param) {
-            if (param &&
-                param.where &&
-                param.where.did &&
-                param.where.did['$eq'] == 'did'
-            ) {
+            if (param && param.where && param.where.did && param.where.did['$eq'] == 'did') {
                 return {
                     hederaAccountId: 'hederaAccountId',
                     hederaAccountKey: 'hederaAccountKey',
@@ -36,16 +27,12 @@ describe('Root Authority service', function () {
                     didTopicMemo: 'didTopicMemo',
                     vcTopicMemo: 'vcTopicMemo',
                     did: 'did',
-                    state: 0
-                }
+                    state: 0,
+                };
             }
             return null;
         };
-        service = rootAuthorityAPI(channel,
-            configRepository,
-            didDocumentRepository,
-            vcDocumentRepository,
-        );
+        service = rootAuthorityAPI(channel, configRepository, didDocumentRepository, vcDocumentRepository);
     });
 
     it('Config service init', async function () {
@@ -70,7 +57,7 @@ describe('Root Authority service', function () {
             didTopicMemo: 'didTopicMemo',
             vcTopicMemo: 'vcTopicMemo',
             did: 'did',
-            state: 0
+            state: 0,
         });
     });
 
@@ -86,10 +73,10 @@ describe('Root Authority service', function () {
             didTopicMemo: 'didTopicMemo',
             vcTopicMemo: 'vcTopicMemo',
             did: 'did',
-            state: 0
+            state: 0,
         });
         checkMessage(value, {
-            '_id': '1',
+            _id: '1',
             hederaAccountId: 'hederaAccountId',
             hederaAccountKey: 'hederaAccountKey',
             addressBook: 'addressBook',
@@ -100,7 +87,7 @@ describe('Root Authority service', function () {
             didTopicMemo: 'didTopicMemo',
             vcTopicMemo: 'vcTopicMemo',
             did: 'did',
-            state: 0
+            state: 0,
         });
     });
 
@@ -112,7 +99,7 @@ describe('Root Authority service', function () {
             owner: 'did',
             addressBook: 'addressBook',
             vcTopic: 'vcTopic',
-            didTopic: 'didTopic'
+            didTopic: 'didTopic',
         });
     });
 });

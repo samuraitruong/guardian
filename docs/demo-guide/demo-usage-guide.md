@@ -11,8 +11,8 @@ This folder contains sample files that are referenced in the Demo Usage Guide
 
 1.The Guardian reference implementation comes with two predefined users:
 
-* **Root Authority**: A standard registry, or a Root Authority in our scenario, is an organization that establishes science-based standards for measuring, reporting, and verifying (MRV) ecological benefit claims and issues value in the form of credit for claims that meet the standard set. A standard registry also authorizes validation and verification bodies (VVBs) to collect and process claims based on the established standard. The creation of scientific-based standards for MRV is a rigorous discipline that requires independence from commercial influence in the pursuit of accurate accounting of benefit or emissions claims. A standard registry organization can also maintain a central registry of credits they have issued that can be sold directly via the registry itself or established as reference value on networks, exchanges, or marketplaces.
-* **Auditor**: This is a 3rd part who will need to view/audit the entire chain of events; from the establishment of the science-based standards through creation of the credit.
+-   **Root Authority**: A standard registry, or a Root Authority in our scenario, is an organization that establishes science-based standards for measuring, reporting, and verifying (MRV) ecological benefit claims and issues value in the form of credit for claims that meet the standard set. A standard registry also authorizes validation and verification bodies (VVBs) to collect and process claims based on the established standard. The creation of scientific-based standards for MRV is a rigorous discipline that requires independence from commercial influence in the pursuit of accurate accounting of benefit or emissions claims. A standard registry organization can also maintain a central registry of credits they have issued that can be sold directly via the registry itself or established as reference value on networks, exchanges, or marketplaces.
+-   **Auditor**: This is a 3rd part who will need to view/audit the entire chain of events; from the establishment of the science-based standards through creation of the credit.
 
 There is also a _Custom Role_ which is called _User_. This role can be used to create any role which is necessary in a specific policy. For the reference implement below, we created a custom role called _Installer_ (later explained when we create a policy down below).
 
@@ -38,9 +38,9 @@ There is a new feature as of version 1.0.2 which allows for the _Importing of Po
 
 ![](https://user-images.githubusercontent.com/84465157/153246591-80933214-a742-42cd-bce2-a1c8de71bf53.png)
 
-* `1644847084.945541771` (iRec Application Details)
-* `1644847093.979895804` (Inverter)
-* `1644847107.415192828` (MRV)
+-   `1644847084.945541771` (iRec Application Details)
+-   `1644847093.979895804` (Inverter)
+-   `1644847107.415192828` (MRV)
 
 Those Hedera message IDs correspond respectively to the iRec Application Details, Inverter and MRV Schemas.
 
@@ -52,8 +52,8 @@ Again this step is not needed if you import the entire policy (see step 6 and th
 
 6\. This could be one of the most interesting parts of the reference implementation. Now we will be creating the Policy. We have two ways to "create policies." The first way is to import an existing policy. This is the easiest way to get started. When you import a policy, as noted above, all schemas and tokens that are required in the policy are automatically populated. To do this, you can use the sample policy that we have already uploaded to IPFS. Click on the **import** button and enter the following Hedera message ID:
 
-* `1644847114.111298000` (iRec Policy)
-* `1648223036.051204000`(Verra REDD Policy)
+-   `1644847114.111298000` (iRec Policy)
+-   `1648223036.051204000`(Verra REDD Policy)
 
 ![](https://user-images.githubusercontent.com/40637665/153242444-c16f357f-d12c-4b92-a9f9-b50788c47b2c.png)
 
@@ -65,10 +65,10 @@ Click **Create Policy** and fill the required information in the dialog box. Ple
 
 7\. On the right-hand side of the Policies tab, click the **Edit** button. This will open the Guardian's Policy workflow editor. As described in the Hedera Improvement Proposal 28 (HIP-28), a Policy Workflow contains:
 
-* Policy Workflow Workgroups
-* Policy Workflow Actions
-* Policy Workflow State Objects
-* Policy Workflow State Transactions
+-   Policy Workflow Workgroups
+-   Policy Workflow Actions
+-   Policy Workflow State Objects
+-   Policy Workflow State Transactions
 
 The quickest way to go through this demo while learning how to configure a Policy Workflow is to import the configPolicy.ts file. To do so, copy everything inside the `irec-policy-config.txt` file found within this folder. Go back into the Policy editor and click on the "code" icon on the upper right-hand side. Paste the mock configuration.
 
@@ -76,7 +76,7 @@ The quickest way to go through this demo while learning how to configure a Polic
 
 If you build and run the Guardian manually (without using Docker containers), you need to replace the entry `http://message-broker:3003/mrv` with `http://localhost:3003/mrv` in the pasted text.
 
-***
+---
 
 ![](https://user-images.githubusercontent.com/40637665/137964384-6e05ee6e-1e5a-41c3-801b-ec94a50de916.png)
 
@@ -86,7 +86,7 @@ In step 1 we discussed creating a custom role called installer. There is a defau
 
 ![](https://user-images.githubusercontent.com/40637665/148967965-8c633248-c16f-4fe8-9d0a-8855849de23f.png)
 
-To demonstrate how you can edit other workflow actions, you will need to click on the **mint\_token** block and select the token we created.
+To demonstrate how you can edit other workflow actions, you will need to click on the **mint_token** block and select the token we created.
 
 ![](https://user-images.githubusercontent.com/40637665/142920856-cfdaa439-2ca0-4c49-a696-87882d317a2b.png)
 

@@ -20,10 +20,10 @@ To get a local copy up and running, follow these simple example steps. When buil
 
 #### Prerequisites
 
-* [Docker](https://www.docker.com) (To build with one command)
-* [MongoDB](https://www.mongodb.com) and [NodeJS](https://nodejs.org) (If you would like to manually build every component)
-* [Hedera Testnet Account](https://portal.hedera.com)
-* [NFT.Storage Account](https://nft.storage/#getting-started)
+-   [Docker](https://www.docker.com) (To build with one command)
+-   [MongoDB](https://www.mongodb.com) and [NodeJS](https://nodejs.org) (If you would like to manually build every component)
+-   [Hedera Testnet Account](https://portal.hedera.com)
+-   [NFT.Storage Account](https://nft.storage/#getting-started)
 
 #### Installation
 
@@ -32,6 +32,7 @@ To get a local copy up and running, follow these simple example steps. When buil
     ```
     git clone https://github.com/hashgraph/guardian.git
     ```
+
 2.  Update the following files with your Hedera Testnet account info (see prerequisites) as indicated. Please keep in mind that this Hedera Operator ID and Operator Key is used for this reference implementation as a placeholder until there is a wallet integration. There will be other steps in the Demo Usage Guide that will require the generation of Operator IDs and Operator Keys. It is important to mention that the Operator IDs and Operator Keys in the .env will be used to generate demo accounts.
 
     For example:
@@ -54,156 +55,163 @@ To get a local copy up and running, follow these simple example steps. When buil
 
     Note: You can use the Schema Topic ID listed above or you can enter your own if you have one.
 
-3. Update the following files with your NFT.Storage API KEY. Please follow the steps from https://nft.storage/#getting-started to obtain it.
+3.  Update the following files with your NFT.Storage API KEY. Please follow the steps from https://nft.storage/#getting-started to obtain it.
 
-   For example:
+    For example:
 
-   in `ipfs-client/.env`:
+    in `ipfs-client/.env`:
 
-   ```
-   NFT_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGVhNzVBQzEwMmM2QTlCQjc4NDI5NDNlMmMzMUNEMzBmRUNmNUVmMTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0MjQyODUxMDUzMywibmFtZSI6IklQRlMifQ.BjD1EJM1OBWmYClDbRoR1O9vrU3_5-Isb292w3PSSAI"
-   ```
+    ```
+    NFT_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGVhNzVBQzEwMmM2QTlCQjc4NDI5NDNlMmMzMUNEMzBmRUNmNUVmMTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0MjQyODUxMDUzMywibmFtZSI6IklQRlMifQ.BjD1EJM1OBWmYClDbRoR1O9vrU3_5-Isb292w3PSSAI"
+    ```
 
-   in `ipfs-client/.env.docker`:
+    in `ipfs-client/.env.docker`:
 
-   ```
-   NFT_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGVhNzVBQzEwMmM2QTlCQjc4NDI5NDNlMmMzMUNEMzBmRUNmNUVmMTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0MjQyODUxMDUzMywibmFtZSI6IklQRlMifQ.BjD1EJM1OBWmYClDbRoR1O9vrU3_5-Isb292w3PSSAI"
-   ``` 
-4. If you want to build with Docker. Please note that the Docker build is meant to be used in production and will not contain any debug information. (Once this step you are finished)
-   ```
-   docker-compose up -d --build
-   ```
-   
-5. If you want to manually build every component with debug information, then build and run the services and packages in the following sequence: Interfaces, Logger Helper, Message Broker, Logger Service, Auth Service, IPFS, Guardian Service, UI Service, and lastly, the MRV Sender Service. See below for commands.
+    ```
+    NFT_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGVhNzVBQzEwMmM2QTlCQjc4NDI5NDNlMmMzMUNEMzBmRUNmNUVmMTIiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY0MjQyODUxMDUzMywibmFtZSI6IklQRlMifQ.BjD1EJM1OBWmYClDbRoR1O9vrU3_5-Isb292w3PSSAI"
+    ```
 
-   **From the interfaces folder**
+4.  If you want to build with Docker. Please note that the Docker build is meant to be used in production and will not contain any debug information. (Once this step you are finished)
+    ```
+    docker-compose up -d --build
+    ```
+5.  If you want to manually build every component with debug information, then build and run the services and packages in the following sequence: Interfaces, Logger Helper, Message Broker, Logger Service, Auth Service, IPFS, Guardian Service, UI Service, and lastly, the MRV Sender Service. See below for commands.
 
-   Build package
-   ```
-   npm install
-   npm run build
-   ```
+    **From the interfaces folder**
 
-  **From the vc-modules folder**
+    Build package
 
-  Build package
-  ```
-  npm install
-  npm run build
-  ```
+    ```
+    npm install
+    npm run build
+    ```
 
-   **From the logger-helper folder**
+    **From the vc-modules folder**
 
-   Build package
-   ```
-   npm install
-   npm run build
-   ```
+Build package
 
-   **From the Message broker folder (Need to run first)**
+```
+npm install
+npm run build
+```
 
-   To build the service:
+**From the common folder**
 
-   ```
-   npm install
-   npm run build
-   ```
+Build package
 
-   To start the service:
+```
+npm install
+npm run build
+```
 
-   ```
-   npm start
-   ```
+**From the Message broker folder (Need to run first)**
 
-   **From the IPFS Client folder**
+To build the service:
 
-   To build the service:
+```
+npm install
+npm run build
+```
 
-   ```
-   npm install
-   npm run build
-   ```
+To start the service:
 
-   To start the service:
+```
+npm start
+```
 
-   ```
-   npm start
-   ```
- 
- **From the Guardian Service folder**
+**From the IPFS Client folder**
 
-   To build the service:
+To build the service:
 
-   ```
-   npm install
-   npm run build
-   ```
+```
+npm install
+npm run build
+```
 
-   To start the service (found on http://localhost:3004):
+To start the service:
 
-   ```
-   npm start
-   ```
+```
+npm start
+```
 
-   **From the API Gateway Service folder**
+**From the Guardian Service folder**
 
-   To build the service:
+To build the service:
 
-   ```
-   npm install
-   npm run build
-   ```
+```
+npm install
+npm run build
+```
 
-   To start the service (found on http://localhost:3002):
+To start the service (found on http://localhost:3004):
 
-   ```
-   npm start
-   ```
+```
+npm start
+```
 
-   **From the MRV Sender Service folder**
+**From the API Gateway Service folder**
 
-   To build the service:
+To build the service:
 
-   ```
-   npm install
-   npm run build
-   ```
+```
+npm install
+npm run build
+```
 
-   To start the service (found on http://localhost:3005):
+To start the service (found on http://localhost:3002):
 
-   ```
-   npm start
-   ```
+```
+npm start
+```
 
-   **From the Frontend folder**
+**From the MRV Sender Service folder**
 
-   To build the service:
+To build the service:
 
-   ```
-   npm install
-   npm run build
-   ```
+```
+npm install
+npm run build
+```
 
-   To start the service (found on http://localhost:4200):
+To start the service (found on http://localhost:3005):
 
-   ```
-   npm start
-   ```
-  ### Note: Once you start the service, please wait for the Initialization Process to be completed.
-  
-  ### Troubleshoot 
-  
-  **To delete all the Containers**
-   ```
-   docker builder prune --all
-   
-   ```
-   **To run by cleaning Docker Cache**
-   
-   ```
-   docker-compose build --no-cache
-   
-   ```
+```
+npm start
+```
+
+**From the Frontend folder**
+
+To build the service:
+
+```
+npm install
+npm run build
+```
+
+To start the service (found on http://localhost:4200):
+
+```
+npm start
+```
+
+### Note: Once you start the service, please wait for the Initialization Process to be completed.
+
+### Troubleshoot
+
+**To delete all the Containers**
+
+```
+docker builder prune --all
+
+```
+
+**To run by cleaning Docker Cache**
+
+```
+docker-compose build --no-cache
+
+```
+
 ([back to top](broken-reference))
 
 ### Unit Tests
@@ -211,7 +219,7 @@ To get a local copy up and running, follow these simple example steps. When buil
 To run **guardian-service** unit tests, following commands needs to be executed:
 
 ```
-cd guardian-service 
+cd guardian-service
 npm run test
 ```
 
@@ -245,25 +253,25 @@ npm run test
 
 For complete documentation on following points. Please refer https://docs.hedera.com/guardian
 
-* Swagger API
-* Postman Collection
-* Demo Usage guide
-* Contribute a New Policy
-* Reference Implementation
-* Technologies Built on
-* Roadmap
-* Change Log
-* Contributing
-* License
-* Security
+-   Swagger API
+-   Postman Collection
+-   Demo Usage guide
+-   Contribute a New Policy
+-   Reference Implementation
+-   Technologies Built on
+-   Roadmap
+-   Change Log
+-   Contributing
+-   License
+-   Security
+
 ### Contact
 
 For any questions, please reach out to the Envision Blockchain Solutions team at:
 
-* Website: \<www.envisionblockchain.com>
-* Email: [info@envisionblockchain.com](mailto:info@envisionblockchain.com)
+-   Website: \<www.envisionblockchain.com>
+-   Email: [info@envisionblockchain.com](mailto:info@envisionblockchain.com)
 
 ([back to top](broken-reference))
-
 
 [license-url]: https://github.com/hashgraph/guardian/blob/main/LICENSE

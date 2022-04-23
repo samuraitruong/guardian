@@ -11,7 +11,6 @@ export function EventBlock(options: Partial<PolicyBlockDecoratorOptions>) {
         const basicClass = BasicBlock(options)(constructor);
 
         return class extends basicClass {
-
             public readonly blockClassName = 'EventBlock';
 
             async getData(...args) {
@@ -38,11 +37,11 @@ export function EventBlock(options: Partial<PolicyBlockDecoratorOptions>) {
                 let data = [];
                 for (let child of this.children) {
                     if (child.blockClassName === 'SourceAddon') {
-                        data = data.concat(await child.getFromSource(...args))
+                        data = data.concat(await child.getFromSource(...args));
                     }
                 }
                 return data;
             }
-        }
-    }
+        };
+    };
 }

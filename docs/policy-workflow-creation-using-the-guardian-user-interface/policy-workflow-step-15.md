@@ -2,7 +2,7 @@
 
 We need to add another step to close out the sub-steps in the cycle. This is accomplished by creating the IREC document CSD002 – Device Registration. This is created just like the document from earlier steps called CSD001 as a verifiable credential and stored in the guardian.
 
-We click back to the “create\_new\_sensors\_steps” process step and add a “Send” action by clicking on the “Send” button in the top navigation bar.
+We click back to the “create_new_sensors_steps” process step and add a “Send” action by clicking on the “Send” button in the top navigation bar.
 
 We then add a tag, type - of course, a verifiable credential, and entity – our inverter sensor. And done. We have completed the steps to add an inverter sensor to a project.
 
@@ -43,7 +43,7 @@ Lastly, just create a new Container Block to group all components on the page wi
           "defaultActive": true,
           "permissions": [
             "INSTALLER"
-          ],  
+          ],
           "uiMetaData": {
             "type": "blank",
             "title": "MRV"

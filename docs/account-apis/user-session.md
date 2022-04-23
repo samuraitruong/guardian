@@ -8,6 +8,7 @@ Returns current user session
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     content:
@@ -16,25 +17,31 @@ Returns current user session
                 $ref: '#/components/schemas/Session'
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="401: Unauthorized" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="403: Forbidden" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="" %}
+
 ```javascript
 {
     content:
@@ -43,5 +50,6 @@ Returns current user session
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

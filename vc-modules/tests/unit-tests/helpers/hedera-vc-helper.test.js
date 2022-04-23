@@ -1,7 +1,4 @@
-const {
-    VCHelper,
-    DefaultDocumentLoader
-} = require('../../../dist/index');
+const { VCHelper, DefaultDocumentLoader } = require('../../../dist/index');
 const { expect, assert } = require('chai');
 
 class _DocumentLoader {
@@ -62,7 +59,6 @@ class _SchemaLoader {
     }
 }
 
-
 describe('VCHelper', function () {
     let vcHelper, did, privateKey, data;
 
@@ -72,10 +68,10 @@ describe('VCHelper', function () {
         privateKey = '302e020100300506032b6570042204203e33c2cdb749c95c121ce151a39ecb4a1cf6b1241c3e8e20edc3df06f7275509';
         data = {
             '@context': ['https://localhost/schema'],
-            'type': 'Test',
-            'field1': 'field1',
-            'field2': 'field2'
-        }
+            type: 'Test',
+            field1: 'field1',
+            field2: 'field2',
+        };
     });
 
     it('Test DocumentLoaderBuild', async function () {
@@ -83,195 +79,189 @@ describe('VCHelper', function () {
         const schemaDocument = {
             '@context': {
                 '@version': 1.1,
-                'id': '@id',
-                'type': '@type',
-                'name': 'https://schema.org/name',
-                'Test': {
+                id: '@id',
+                type: '@type',
+                name: 'https://schema.org/name',
+                Test: {
                     '@id': 'https://localhost/schema#Test',
                     '@context': {
-                        'field1': {
-                            '@id': 'https://www.schema.org/text'
+                        field1: {
+                            '@id': 'https://www.schema.org/text',
                         },
-                        'field2': {
-                            '@id': 'https://www.schema.org/text'
+                        field2: {
+                            '@id': 'https://www.schema.org/text',
                         },
-                    }
+                    },
                 },
-            }
-        }
+            },
+        };
 
         const didDoc = {
-            '@context': [
-                'https://www.w3.org/ns/did/v1',
-                'https://ns.did.ai/transmute/v1'
-            ],
-            'id': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-            'verificationMethod': [
+            '@context': ['https://www.w3.org/ns/did/v1', 'https://ns.did.ai/transmute/v1'],
+            id: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+            verificationMethod: [
                 {
-                    'id': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key',
-                    'type': 'Ed25519VerificationKey2018',
-                    'controller': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-                    'publicKeyBase58': '2kDCE2VVVdSQbbu217aa6yg6rTTbv4vvpw1nDyEQHCLu'
-                }
+                    id: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key',
+                    type: 'Ed25519VerificationKey2018',
+                    controller:
+                        'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+                    publicKeyBase58: '2kDCE2VVVdSQbbu217aa6yg6rTTbv4vvpw1nDyEQHCLu',
+                },
             ],
-            'authentication': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key',
-            'assertionMethod': [
-                '#did-root-key'
-            ]
-        }
+            authentication:
+                'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key',
+            assertionMethod: ['#did-root-key'],
+        };
 
         const schema = {
-            'type': 'object',
-            'properties': {
+            type: 'object',
+            properties: {
                 '@context': {
-                    'oneOf': [
+                    oneOf: [
                         {
-                            'type': 'string',
+                            type: 'string',
                         },
                         {
-                            'type': 'array',
-                            'items': {
-                                'type': 'string',
-                            }
-                        },
-                    ],
-                },
-                'id': {
-                    'type': 'string',
-                },
-                'type': {
-                    'oneOf': [
-                        {
-                            'type': 'string',
-                        },
-                        {
-                            'type': 'array',
-                            'items': {
-                                'type': 'string',
-                            }
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
                         },
                     ],
                 },
-                'issuer': {
-                    'oneOf': [
+                id: {
+                    type: 'string',
+                },
+                type: {
+                    oneOf: [
                         {
-                            'type': 'string',
+                            type: 'string',
                         },
                         {
-                            'type': 'object',
-                            'properties': {
-                                'id': {
-                                    'type': 'string',
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
+                        },
+                    ],
+                },
+                issuer: {
+                    oneOf: [
+                        {
+                            type: 'string',
+                        },
+                        {
+                            type: 'object',
+                            properties: {
+                                id: {
+                                    type: 'string',
                                 },
                             },
                         },
                     ],
                 },
-                'issuanceDate': { 'type': 'string' },
-                'credentialSubject': {
-                    'oneOf': [
+                issuanceDate: { type: 'string' },
+                credentialSubject: {
+                    oneOf: [
                         {
-                            '$ref': '#Test'
+                            $ref: '#Test',
                         },
                         {
-                            'type': 'array',
-                            'items': {
-                                '$ref': '#Test'
+                            type: 'array',
+                            items: {
+                                $ref: '#Test',
                             },
-                        }
+                        },
                     ],
                 },
-                'proof': {
-                    'type': 'object',
-                    'properties': {
-                        'type': {
-                            'oneOf': [
+                proof: {
+                    type: 'object',
+                    properties: {
+                        type: {
+                            oneOf: [
                                 {
-                                    'type': 'string',
+                                    type: 'string',
                                 },
                                 {
-                                    'type': 'array',
-                                    'items': {
-                                        'type': 'string',
-                                    }
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                    },
                                 },
                             ],
                         },
-                        'created': {
-                            'type': 'string',
+                        created: {
+                            type: 'string',
                         },
-                        'proofPurpose': {
-                            'type': 'string',
+                        proofPurpose: {
+                            type: 'string',
                         },
-                        'verificationMethod': {
-                            'type': 'string',
+                        verificationMethod: {
+                            type: 'string',
                         },
-                        'jws': {
-                            'type': 'string',
+                        jws: {
+                            type: 'string',
                         },
                     },
-                    'additionalProperties': false,
-                }
+                    additionalProperties: false,
+                },
             },
-            'required': ['@context'],
-            'additionalProperties': false,
-            '$defs': {
+            required: ['@context'],
+            additionalProperties: false,
+            $defs: {
                 '#Test': {
-                    '$id': '#Test',
-                    '$comment': '{"term": "Test", "@id": "https://localhost/schema#Test"}',
-                    'title': '',
-                    'description': '',
-                    'type': 'object',
-                    'properties': {
+                    $id: '#Test',
+                    $comment: '{"term": "Test", "@id": "https://localhost/schema#Test"}',
+                    title: '',
+                    description: '',
+                    type: 'object',
+                    properties: {
                         '@context': {
-                            'oneOf': [
+                            oneOf: [
                                 {
-                                    'type': 'string'
+                                    type: 'string',
                                 },
                                 {
-                                    'type': 'array',
-                                    'items': {
-                                        'type': 'string'
-                                    }
-                                }
-                            ]
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                    },
+                                },
+                            ],
                         },
-                        'type': {
-                            'oneOf': [
+                        type: {
+                            oneOf: [
                                 {
-                                    'type': 'string'
+                                    type: 'string',
                                 },
                                 {
-                                    'type': 'array',
-                                    'items': {
-                                        'type': 'string'
-                                    }
-                                }
-                            ]
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                    },
+                                },
+                            ],
                         },
-                        'id': {
-                            'type': 'string'
+                        id: {
+                            type: 'string',
                         },
-                        'field1': {
-                            '$comment': '{"term": "field1", "@id": "https://www.schema.org/text"}',
-                            'title': '',
-                            'description': '',
-                            'type': 'string'
+                        field1: {
+                            $comment: '{"term": "field1", "@id": "https://www.schema.org/text"}',
+                            title: '',
+                            description: '',
+                            type: 'string',
                         },
-                        'field2': {
-                            '$comment': '{"term": "field2", "@id": "https://www.schema.org/text"}',
-                            'title': '',
-                            'description': '',
-                            'type': 'string'
-                        }
+                        field2: {
+                            $comment: '{"term": "field2", "@id": "https://www.schema.org/text"}',
+                            title: '',
+                            description: '',
+                            type: 'string',
+                        },
                     },
-                    'required': [
-                        'field1',
-                        'field2'
-                    ],
-                    'additionalProperties': false
-                }
-            }
+                    required: ['field1', 'field2'],
+                    additionalProperties: false,
+                },
+            },
         };
 
         vcHelper.addContext(context);
@@ -288,7 +278,11 @@ describe('VCHelper', function () {
         assert.exists(await vcHelper.loader('https://www.w3.org/ns/did/v1'));
         assert.exists(await vcHelper.loader('https://ns.did.ai/transmute/v1'));
         assert.exists(await vcHelper.loader('https://localhost/schema'));
-        assert.exists(await vcHelper.loader('did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001'));
+        assert.exists(
+            await vcHelper.loader(
+                'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001'
+            )
+        );
         let errorIRI = null;
         try {
             errorIRI = await vcHelper.loader('...');
@@ -302,25 +296,19 @@ describe('VCHelper', function () {
         const vc = await vcHelper.createCredential(did, 'Test', data);
         assert.exists(vc);
         assert.deepEqual(vc, {
-            '@context': [
-                'https://www.w3.org/2018/credentials/v1'
-            ],
-            'id': vc.id,
-            'type': [
-                'VerifiableCredential'
-            ],
-            'credentialSubject': [
+            '@context': ['https://www.w3.org/2018/credentials/v1'],
+            id: vc.id,
+            type: ['VerifiableCredential'],
+            credentialSubject: [
                 {
-                    '@context': [
-                        'https://localhost/schema'
-                    ],
-                    'type': 'Test',
-                    'field1': 'field1',
-                    'field2': 'field2'
-                }
+                    '@context': ['https://localhost/schema'],
+                    type: 'Test',
+                    field1: 'field1',
+                    field2: 'field2',
+                },
             ],
-            'issuer': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-            'issuanceDate': vc.issuanceDate
+            issuer: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+            issuanceDate: vc.issuanceDate,
         });
     });
 
@@ -331,26 +319,20 @@ describe('VCHelper', function () {
         assert.exists(vc.getProof());
         const root = vc.toJsonTree();
         assert.deepEqual(root, {
-            '@context': [
-                'https://www.w3.org/2018/credentials/v1'
-            ],
-            'id': root.id,
-            'type': [
-                'VerifiableCredential'
-            ],
-            'credentialSubject': [
+            '@context': ['https://www.w3.org/2018/credentials/v1'],
+            id: root.id,
+            type: ['VerifiableCredential'],
+            credentialSubject: [
                 {
-                    '@context': [
-                        'https://localhost/schema'
-                    ],
-                    'type': 'Test',
-                    'field1': 'field1',
-                    'field2': 'field2'
-                }
+                    '@context': ['https://localhost/schema'],
+                    type: 'Test',
+                    field1: 'field1',
+                    field2: 'field2',
+                },
             ],
-            'issuer': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-            'issuanceDate': root.issuanceDate,
-            'proof': root.proof
+            issuer: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+            issuanceDate: root.issuanceDate,
+            proof: root.proof,
         });
     });
 
@@ -360,26 +342,20 @@ describe('VCHelper', function () {
         assert.exists(vc.getProof());
         const root = vc.toJsonTree();
         assert.deepEqual(root, {
-            '@context': [
-                'https://www.w3.org/2018/credentials/v1'
-            ],
-            'id': root.id,
-            'type': [
-                'VerifiableCredential'
-            ],
-            'credentialSubject': [
+            '@context': ['https://www.w3.org/2018/credentials/v1'],
+            id: root.id,
+            type: ['VerifiableCredential'],
+            credentialSubject: [
                 {
-                    '@context': [
-                        'https://localhost/schema'
-                    ],
-                    'type': 'Test',
-                    'field1': 'field1',
-                    'field2': 'field2'
-                }
+                    '@context': ['https://localhost/schema'],
+                    type: 'Test',
+                    field1: 'field1',
+                    field2: 'field2',
+                },
             ],
-            'issuer': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-            'issuanceDate': root.issuanceDate,
-            'proof': root.proof
+            issuer: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+            issuanceDate: root.issuanceDate,
+            proof: root.proof,
         });
     });
 
@@ -393,38 +369,28 @@ describe('VCHelper', function () {
         const root = vp.toJsonTree();
 
         assert.deepEqual(root, {
-            'id': 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
-            'type': [
-                'VerifiablePresentation'
-            ],
-            '@context': [
-                'https://www.w3.org/2018/credentials/v1'
-            ],
-            'verifiableCredential': [
+            id: 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
+            type: ['VerifiablePresentation'],
+            '@context': ['https://www.w3.org/2018/credentials/v1'],
+            verifiableCredential: [
                 {
-                    '@context': [
-                        'https://www.w3.org/2018/credentials/v1'
-                    ],
-                    'id': rootVC.id,
-                    'type': [
-                        'VerifiableCredential'
-                    ],
-                    'credentialSubject': [
+                    '@context': ['https://www.w3.org/2018/credentials/v1'],
+                    id: rootVC.id,
+                    type: ['VerifiableCredential'],
+                    credentialSubject: [
                         {
-                            '@context': [
-                                'https://localhost/schema'
-                            ],
-                            'type': 'Test',
-                            'field1': 'field1',
-                            'field2': 'field2'
-                        }
+                            '@context': ['https://localhost/schema'],
+                            type: 'Test',
+                            field1: 'field1',
+                            field2: 'field2',
+                        },
                     ],
-                    'issuer': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-                    'issuanceDate': rootVC.issuanceDate,
-                    'proof': rootVC.proof
-                }
+                    issuer: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+                    issuanceDate: rootVC.issuanceDate,
+                    proof: rootVC.proof,
+                },
             ],
-            'proof': root.proof
+            proof: root.proof,
         });
     });
 
@@ -449,45 +415,45 @@ describe('VCHelper', function () {
 
         vc = await vcHelper.createVC(did, privateKey, {
             '@context': ['https://localhost/schema'],
-            'type': 'Test',
-            'field1': 'field1'
+            type: 'Test',
+            field1: 'field1',
         });
 
         verify = await vcHelper.verifySchema(vc);
         assert.deepEqual(verify, {
-            "ok": false,
-            "error": {
-                "details": [
+            ok: false,
+            error: {
+                details: [
                     {
-                        "instancePath": "/credentialSubject",
-                        "keyword": "type",
-                        "message": "must be object",
-                        "params": {
-                            "type": "object",
+                        instancePath: '/credentialSubject',
+                        keyword: 'type',
+                        message: 'must be object',
+                        params: {
+                            type: 'object',
                         },
-                        "schemaPath": "#Test/type"
+                        schemaPath: '#Test/type',
                     },
                     {
-                        "instancePath": "/credentialSubject/0",
-                        "keyword": "required",
-                        "message": "must have required property 'field2'",
-                        "params": {
-                            "missingProperty": "field2"
+                        instancePath: '/credentialSubject/0',
+                        keyword: 'required',
+                        message: "must have required property 'field2'",
+                        params: {
+                            missingProperty: 'field2',
                         },
-                        "schemaPath": "#Test/required"
+                        schemaPath: '#Test/required',
                     },
                     {
-                        "instancePath": "/credentialSubject",
-                        "keyword": "oneOf",
-                        "message": "must match exactly one schema in oneOf",
-                        "params": {
-                            "passingSchemas": null
+                        instancePath: '/credentialSubject',
+                        keyword: 'oneOf',
+                        message: 'must match exactly one schema in oneOf',
+                        params: {
+                            passingSchemas: null,
                         },
-                        "schemaPath": "#/properties/credentialSubject/oneOf"
+                        schemaPath: '#/properties/credentialSubject/oneOf',
                     },
                 ],
-                "type": "JSON_SCHEMA_VALIDATION_ERROR"
-            }
+                type: 'JSON_SCHEMA_VALIDATION_ERROR',
+            },
         });
     });
 });

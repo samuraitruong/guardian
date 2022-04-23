@@ -1,5 +1,5 @@
-import {Response} from 'express';
-import {AuthenticatedRequest, IAuthUser} from './auth.interface';
+import { Response } from 'express';
+import { AuthenticatedRequest, IAuthUser } from './auth.interface';
 import { Users } from '@helpers/users';
 
 /**
@@ -14,7 +14,7 @@ export async function authorizationHelper(req: AuthenticatedRequest, res: Respon
     if (authHeader) {
         const token = authHeader.split(' ')[1];
         try {
-            req.user = await users.getUserByToken(token) as IAuthUser;
+            req.user = (await users.getUserByToken(token)) as IAuthUser;
             next();
             return;
         } catch (e) {
@@ -27,8 +27,8 @@ export async function authorizationHelper(req: AuthenticatedRequest, res: Respon
 export function permissionHelper(...roles: string[]) {
     return async function (req: AuthenticatedRequest, res: Response, next: Function): Promise<void> {
         if (req.user) {
-            if(req.user.role) {
-                if(roles.indexOf(req.user.role) !== -1) {
+            if (req.user.role) {
+                if (roles.indexOf(req.user.role) !== -1) {
                     next();
                     return;
                 }
@@ -37,5 +37,5 @@ export function permissionHelper(...roles: string[]) {
         } else {
             res.sendStatus(401);
         }
-    }
+    };
 }

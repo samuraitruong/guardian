@@ -7,9 +7,7 @@ import { ISchema } from 'interfaces';
  * VC schema loader
  */
 export class VCSchemaLoader extends SchemaLoader {
-    constructor(
-        private readonly context: string
-    ) {
+    constructor(private readonly context: string) {
         super();
     }
 
@@ -63,11 +61,10 @@ export class VCSchemaLoader extends SchemaLoader {
                 return null;
             }
             const schema = await getMongoRepository(Schema).find({
-                where: { contextURL: { $in: context } }
+                where: { contextURL: { $in: context } },
             });
-            return schema
-        }
-        catch (error) {
+            return schema;
+        } catch (error) {
             return null;
         }
     }
@@ -76,101 +73,101 @@ export class VCSchemaLoader extends SchemaLoader {
         const def = {};
         def[document['$id']] = document;
         return {
-            'type': 'object',
-            'properties': {
+            type: 'object',
+            properties: {
                 '@context': {
-                    'oneOf': [
+                    oneOf: [
                         {
-                            'type': 'string',
+                            type: 'string',
                         },
                         {
-                            'type': 'array',
-                            'items': {
-                                'type': 'string',
-                            }
-                        },
-                    ],
-                },
-                'id': {
-                    'type': 'string',
-                },
-                'type': {
-                    'oneOf': [
-                        {
-                            'type': 'string',
-                        },
-                        {
-                            'type': 'array',
-                            'items': {
-                                'type': 'string',
-                            }
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
                         },
                     ],
                 },
-                'issuer': {
-                    'oneOf': [
+                id: {
+                    type: 'string',
+                },
+                type: {
+                    oneOf: [
                         {
-                            'type': 'string',
+                            type: 'string',
                         },
                         {
-                            'type': 'object',
-                            'properties': {
-                                'id': {
-                                    'type': 'string',
+                            type: 'array',
+                            items: {
+                                type: 'string',
+                            },
+                        },
+                    ],
+                },
+                issuer: {
+                    oneOf: [
+                        {
+                            type: 'string',
+                        },
+                        {
+                            type: 'object',
+                            properties: {
+                                id: {
+                                    type: 'string',
                                 },
                             },
                         },
                     ],
                 },
-                'issuanceDate': { 'type': 'string' },
-                'credentialSubject': {
-                    'oneOf': [
+                issuanceDate: { type: 'string' },
+                credentialSubject: {
+                    oneOf: [
                         {
-                            "$ref": document['$id']
+                            $ref: document['$id'],
                         },
                         {
-                            'type': 'array',
-                            'items': {
-                                "$ref": document['$id']
+                            type: 'array',
+                            items: {
+                                $ref: document['$id'],
                             },
-                        }
+                        },
                     ],
                 },
-                'proof': {
-                    'type': 'object',
-                    'properties': {
-                        'type': {
-                            'oneOf': [
+                proof: {
+                    type: 'object',
+                    properties: {
+                        type: {
+                            oneOf: [
                                 {
-                                    'type': 'string',
+                                    type: 'string',
                                 },
                                 {
-                                    'type': 'array',
-                                    'items': {
-                                        'type': 'string',
-                                    }
+                                    type: 'array',
+                                    items: {
+                                        type: 'string',
+                                    },
                                 },
                             ],
                         },
-                        'created': {
-                            'type': 'string',
+                        created: {
+                            type: 'string',
                         },
-                        'proofPurpose': {
-                            'type': 'string',
+                        proofPurpose: {
+                            type: 'string',
                         },
-                        'verificationMethod': {
-                            'type': 'string',
+                        verificationMethod: {
+                            type: 'string',
                         },
-                        'jws': {
-                            'type': 'string',
+                        jws: {
+                            type: 'string',
                         },
                     },
-                    'additionalProperties': false,
-                }
+                    additionalProperties: false,
+                },
             },
-            'required': ['@context'],
-            'additionalProperties': false,
-            '$defs': def
+            required: ['@context'],
+            additionalProperties: false,
+            $defs: def,
         };
     }
 }

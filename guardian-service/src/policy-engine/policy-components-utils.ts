@@ -2,17 +2,17 @@ import {
     PolicyBlockConstructorParams,
     PolicyBlockFullArgumentList,
     PolicyBlockMap,
-    PolicyTagMap
+    PolicyTagMap,
 } from '@policy-engine/interfaces';
-import {PolicyRole, UserRole} from 'interfaces';
-import {IAuthUser} from '@auth/auth.interface';
-import {GenerateUUIDv4} from './helpers/uuidv4';
-import {AnyBlockType, IPolicyBlock, IPolicyInterfaceBlock} from './policy-engine.interface';
-import {getMongoRepository} from 'typeorm';
-import {Policy} from '@entity/policy';
-import {STATE_KEY} from '@policy-engine/helpers/constants';
-import {GetBlockByType} from '@policy-engine/blocks/get-block-by-type';
-import {GetOtherOptions} from '@policy-engine/helpers/get-other-options';
+import { PolicyRole, UserRole } from 'interfaces';
+import { IAuthUser } from '@auth/auth.interface';
+import { GenerateUUIDv4 } from './helpers/uuidv4';
+import { AnyBlockType, IPolicyBlock, IPolicyInterfaceBlock } from './policy-engine.interface';
+import { getMongoRepository } from 'typeorm';
+import { Policy } from '@entity/policy';
+import { STATE_KEY } from '@policy-engine/helpers/constants';
+import { GetBlockByType } from '@policy-engine/blocks/get-block-by-type';
+import { GetOtherOptions } from '@policy-engine/helpers/get-other-options';
 
 export class PolicyComponentsUtils {
     private static ExternalDataBlocks: Map<string, IPolicyBlock> = new Map();
@@ -20,7 +20,7 @@ export class PolicyComponentsUtils {
     private static PolicyTagMapObject: Map<string, PolicyTagMap> = new Map();
     private static BlockSubscriptions: Map<string, Map<string, Function[]>> = new Map();
 
-    public static BlockUpdateFn: (uuid: string, state: any, user: IAuthUser, tag?:string) => void;
+    public static BlockUpdateFn: (uuid: string, state: any, user: IAuthUser, tag?: string) => void;
     public static BlockErrorFn: (blockType: string, message: any, user: IAuthUser) => void;
 
     /**
@@ -87,9 +87,9 @@ export class PolicyComponentsUtils {
 
         const componentRef = component as any;
         for (let dep of componentRef.dependencies) {
-            PolicyComponentsUtils.RegisterDependencyCallback(dep, policyId,(user) => {
+            PolicyComponentsUtils.RegisterDependencyCallback(dep, policyId, (user) => {
                 component.updateBlock({}, user, '');
-            })
+            });
         }
     }
 
@@ -100,7 +100,10 @@ export class PolicyComponentsUtils {
      * @param user
      */
     public static CallDependencyCallbacks(tag: string, policyId: string, user: any): void {
-        if (PolicyComponentsUtils.BlockSubscriptions.has(policyId) && PolicyComponentsUtils.BlockSubscriptions.get(policyId).has(tag)) {
+        if (
+            PolicyComponentsUtils.BlockSubscriptions.has(policyId) &&
+            PolicyComponentsUtils.BlockSubscriptions.get(policyId).has(tag)
+        ) {
             for (let fn of PolicyComponentsUtils.BlockSubscriptions.get(policyId).get(tag)) {
                 fn(user);
             }
@@ -113,7 +116,9 @@ export class PolicyComponentsUtils {
      */
     public static async ReceiveExternalData(data: any): Promise<void> {
         for (let block of PolicyComponentsUtils.ExternalDataBlocks.values()) {
-            const policy = await getMongoRepository(Policy).findOne({policyTag: data.policyTag});
+            const policy = await getMongoRepository(Policy).findOne({
+                policyTag: data.policyTag,
+            });
             if (policy.id.toString() === (block as any).policyId) {
                 await (block as any).receiveData(data);
             }
@@ -143,7 +148,7 @@ export class PolicyComponentsUtils {
      * Get block instance by uuid
      * @param uuid
      */
-    public static GetBlockByUUID<T extends (IPolicyInterfaceBlock | IPolicyBlock)>(uuid: string): T {
+    public static GetBlockByUUID<T extends IPolicyInterfaceBlock | IPolicyBlock>(uuid: string): T {
         return PolicyComponentsUtils.PolicyBlockMapObject.get(uuid) as T;
     }
 
@@ -171,9 +176,12 @@ export class PolicyComponentsUtils {
      * @param options
      * @param skipRegistration
      */
-    public static ConfigureBlock(policyId: string, blockType: string,
-                                   options: Partial<PolicyBlockConstructorParams>,
-                                   skipRegistration?: boolean): any {
+    public static ConfigureBlock(
+        policyId: string,
+        blockType: string,
+        options: Partial<PolicyBlockConstructorParams>,
+        skipRegistration?: boolean
+    ): any {
         if (options.options) {
             options = Object.assign(options, options.options);
         }
@@ -205,7 +213,9 @@ export class PolicyComponentsUtils {
      * Return block options object
      * @param obj
      */
-    public static GetBlockUniqueOptionsObject(obj: any): { [key: string]: any } {
+    public static GetBlockUniqueOptionsObject(obj: any): {
+        [key: string]: any;
+    } {
         return obj.options;
     }
 }

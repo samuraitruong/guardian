@@ -1,7 +1,5 @@
 # Policy Workflow Step 13
 
-
-
 Since this is a cyclic step, we need to add the requirements as sub-steps to be completed in each cycle, and an exit condition.
 
 We add the first sub-step by clicking on the “Request” button in the top navigation bar.

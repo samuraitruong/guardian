@@ -26,5 +26,5 @@ export interface IUser {
         didServerUrl: string;
         didTopicMemo: string;
         vcTopicMemo: string;
-    }
+    };
 }

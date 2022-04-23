@@ -12,9 +12,9 @@ To avoid breaking existing users, Guardian follows a deprecation policy for aspe
 
 The Guardian API is versioned using semantic versioning in the major.minor.micro format. Each number incremented sequentially to denote the following changes:&#x20;
 
-* major: the API release contains breaking changes.&#x20;
-* minor: the API release contains notable new capabilities and non-breaking changes.&#x20;
-* micro: the API release contains non-breaking changes only.&#x20;
+-   major: the API release contains breaking changes.&#x20;
+-   minor: the API release contains notable new capabilities and non-breaking changes.&#x20;
+-   micro: the API release contains non-breaking changes only.&#x20;
 
 ### Compatibility policy
 
@@ -24,20 +24,20 @@ Wherever possible, API resources, operations, parameters, and models are kept ba
 
 The non-breaking changes to the API which do not warrant the change in the major version number include two types:
 
-* Additions
-  * New optional fields and headers&#x20;
-  * New allowed value&#x20;
-  * New HTTP method to an API interface&#x20;
-  * New resource URI extending existing endpoint&#x20;
-  * New error condition covered by an existing error message&#x20;
-* Changes in the description&#x20;
+-   Additions
+    -   New optional fields and headers&#x20;
+    -   New allowed value&#x20;
+    -   New HTTP method to an API interface&#x20;
+    -   New resource URI extending existing endpoint&#x20;
+    -   New error condition covered by an existing error message&#x20;
+-   Changes in the description&#x20;
 
 #### Breaking changes&#x20;
 
-* Removing an API endpoint, HTTP method or enum value&#x20;
-* Renaming an API endpoint, HTTP method or enum value&#x20;
-* Changing the type of the field&#x20;
-* Changing behavior of an API requests&#x20;
+-   Removing an API endpoint, HTTP method or enum value&#x20;
+-   Renaming an API endpoint, HTTP method or enum value&#x20;
+-   Changing the type of the field&#x20;
+-   Changing behavior of an API requests&#x20;
 
 ### Deprecation policy
 

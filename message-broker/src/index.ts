@@ -1,15 +1,12 @@
-import FastMQ from 'fastmq'
-import express, {Request, Response} from 'express'
+import FastMQ from 'fastmq';
+import express, { Request, Response } from 'express';
 
 const mqServer = FastMQ.Server.create('master', 7500, '0.0.0.0');
 
 const PORT = process.env.PORT || 3003;
 
 // start server
-export default Promise.all([
-    mqServer.start()
-]).then(async () => {
-
+export default Promise.all([mqServer.start()]).then(async () => {
     const app = express();
     app.use(express.json());
 

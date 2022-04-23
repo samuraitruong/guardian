@@ -1,7 +1,7 @@
 import { CredentialSubject, HcsVcDocumentJsonProperties } from '@hashgraph/did-sdk-js';
 
 /**
- * A verifiable credential contains claims about one or more subjects. 
+ * A verifiable credential contains claims about one or more subjects.
  * VcSubject defines a property for the expression of claims about one or more subjects.
  */
 export class VcSubject extends CredentialSubject {
@@ -23,7 +23,7 @@ export class VcSubject extends CredentialSubject {
     constructor(schema: string, subject: any) {
         super();
         this.context = [];
-        
+
         this.id = subject[VcSubject.CREDENTIAL_ID];
         this.type = subject[VcSubject.CREDENTIAL_TYPE] || schema;
 
@@ -34,7 +34,8 @@ export class VcSubject extends CredentialSubject {
         const keys = Object.keys(subject);
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
-            if (key != VcSubject.CREDENTIAL_ID &&
+            if (
+                key != VcSubject.CREDENTIAL_ID &&
                 key != VcSubject.CREDENTIAL_TYPE &&
                 key != HcsVcDocumentJsonProperties.CONTEXT
             ) {
@@ -59,17 +60,16 @@ export class VcSubject extends CredentialSubject {
                 this._addContext(context);
             }
         }
-
     }
 
     private _addContext(context: string): void {
         if (this.context.indexOf(context) == -1) {
-            this.context.push(context)
+            this.context.push(context);
         }
     }
 
     public toJsonTree(): any {
-        const json = {}
+        const json = {};
         if (this.context && this.context.length) {
             json[HcsVcDocumentJsonProperties.CONTEXT] = this.context.slice();
         }
@@ -101,7 +101,6 @@ export class VcSubject extends CredentialSubject {
         if (context && context.length) {
             for (let i = 0; i < context.length; i++) {
                 result.addContext(context[i]);
-
             }
         }
         return result;

@@ -1,7 +1,5 @@
 # Policy Workflow Step 9
 
-
-
 Next, we add another container block by clicking on the “Container” button in the top navigation bar because we want now to add the UI pages as TABS as we indicated in the previous block.
 
 This block is to set up sensors by the Installer and, therefore the page of the UI should be BLANK to be able to add data.

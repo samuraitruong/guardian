@@ -5,7 +5,7 @@
 | Block Property | Definition                                                                                             | Example Input                                                        |
 | -------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
 | Type           | A block type which outputs information from the DB as grid.                                            | **InterfaceDocumentsSource** Block (Can't be changed).               |
-| Tag            | Unique name for the logic block.                                                                       | sensors\_grid.                                                       |
+| Tag            | Unique name for the logic block.                                                                       | sensors_grid.                                                        |
 | Permissions    | Which entity has rights to interact at this part of the workflow.                                      | Installer.                                                           |
 | Default Active | Shows whether this block is active at this time and whether it needs to be shown.                      | Checked or unchecked.                                                |
 | Dependencies   | Automatic update. The block is automatically re-rendered if any of the linked components gets updated. | Select the appropriate block from the dropdown.                      |

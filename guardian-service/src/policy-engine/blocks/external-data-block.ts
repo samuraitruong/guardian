@@ -5,7 +5,7 @@ import { Inject } from '@helpers/decorators/inject';
 import { VcHelper } from '@helpers/vcHelper';
 import { PolicyValidationResultsContainer } from '@policy-engine/policy-validation-results-container';
 import { Guardians } from '@helpers/guardians';
-import {PolicyComponentsUtils} from '../policy-components-utils';
+import { PolicyComponentsUtils } from '../policy-components-utils';
 /**
  * External data block
  */
@@ -20,7 +20,7 @@ export class ExternalDataBlock {
     @Inject()
     private guardians: Guardians;
 
-    async receiveData(data:any) {
+    async receiveData(data: any) {
         let verify: boolean;
         try {
             const res = await this.vcHelper.verifySchema(data.document);
@@ -42,11 +42,13 @@ export class ExternalDataBlock {
             signature: signature,
             policyId: ref.policyId,
             type: ref.options.entityType,
-            schema: ref.options.schema
+            schema: ref.options.schema,
         };
         ref.runNext(null, { data: doc }).then(
-            function () { },
-            function (error: any) { console.error(error); }
+            function () {},
+            function (error: any) {
+                console.error(error);
+            }
         );
     }
 

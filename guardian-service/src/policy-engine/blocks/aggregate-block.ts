@@ -11,13 +11,13 @@ import { PolicyComponentsUtils } from '../policy-components-utils';
 import { IAuthUser } from '@auth/auth.interface';
 
 function evaluate(formula: string, scope: any) {
-    return (function (formula: string, scope: any) {
+    return function (formula: string, scope: any) {
         try {
             return this.evaluate(formula, scope);
         } catch (error) {
             return 'Incorrect formula';
         }
-    }).call(mathjs, formula, scope);
+    }.call(mathjs, formula, scope);
 }
 
 /**
@@ -25,7 +25,7 @@ function evaluate(formula: string, scope: any) {
  */
 @BasicBlock({
     blockType: 'aggregateDocumentBlock',
-    commonBlock: true
+    commonBlock: true,
 })
 export class AggregateBlock {
     @Inject()
@@ -51,11 +51,7 @@ export class AggregateBlock {
 
     async runAction(data: any, user: IAuthUser) {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
-        const {
-            tokenId,
-            rule,
-            threshold
-        } = ref.options;
+        const { tokenId, rule, threshold } = ref.options;
 
         const token = (await this.guardians.getTokens({ tokenId }))[0];
         if (!token) {
@@ -64,17 +60,17 @@ export class AggregateBlock {
         this.rule = rule;
         const doc = data.data;
         const vc = HcsVcDocument.fromJsonTree(doc.document, null, VcSubject);
-        const repository = getMongoRepository(AggregateVC)
+        const repository = getMongoRepository(AggregateVC);
         const newVC = repository.create({
             owner: doc.owner,
-            document: vc.toJsonTree()
+            document: vc.toJsonTree(),
         });
         await repository.save(newVC);
 
         const rawEntities = await repository.find({
-            owner: doc.owner
+            owner: doc.owner,
         });
-        const forAggregate = rawEntities.map(e => HcsVcDocument.fromJsonTree(e.document, null, VcSubject));
+        const forAggregate = rawEntities.map((e) => HcsVcDocument.fromJsonTree(e.document, null, VcSubject));
         const amount = this.aggregate(rule, forAggregate);
 
         if (amount >= threshold) {

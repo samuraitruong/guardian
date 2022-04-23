@@ -1,5 +1,5 @@
 export enum DocumentSignature {
     NEW,
     VERIFIED,
-    INVALID
+    INVALID,
 }

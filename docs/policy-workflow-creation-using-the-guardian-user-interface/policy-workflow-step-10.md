@@ -4,7 +4,7 @@ Next, we want to add a documents page to capture the data for a sensor using the
 
 Similar to other Policy Action Steps, we give it a name, select permissions, make it active by default, and give the document a Data Type. Since we are dealing with verifiable credentials, we set this to VC.
 
-Note that the “sensors\_grid” document is directly connected to the “sensors\_page” block as you can see on the left-hand side.
+Note that the “sensors_grid” document is directly connected to the “sensors_page” block as you can see on the left-hand side.
 
 Next, we select the “Schema” for the document, give it a type and ensure that only owners can edit the form by selecting the “Only Own Documents” flag.
 
@@ -20,15 +20,15 @@ Below are screenshots of the UI field inputs
 
 ![](https://i.imgur.com/ZHLujkk.png)
 
-***
+---
 
 ![](https://i.imgur.com/PSbFR16.png)
 
-***
+---
 
 ![](https://i.imgur.com/xRhVGAm.png)
 
-***
+---
 
 ![](https://i.imgur.com/JH45eMa.png)
 

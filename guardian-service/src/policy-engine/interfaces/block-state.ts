@@ -1,15 +1,15 @@
-import {IPolicyBlock, IPolicyInterfaceBlock} from '@policy-engine/policy-engine.interface';
+import { IPolicyBlock, IPolicyInterfaceBlock } from '@policy-engine/policy-engine.interface';
 
 export interface PolicyBlockStateData<T> {
     isActive: boolean;
-    data: T,
+    data: T;
 
-    [key: string]: any
+    [key: string]: any;
 }
 
 export interface PolicyBlockStateCommon<T> {
-    dependencyData: { [key: string]: any }
-    ownData: T
+    dependencyData: { [key: string]: any };
+    ownData: T;
 }
 
 export type PolicyBlockState<T> = PolicyBlockStateCommon<PolicyBlockStateData<T>>;

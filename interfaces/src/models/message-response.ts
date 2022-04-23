@@ -24,7 +24,11 @@ export class MessageError<T> implements IMessageResponse<T> {
 }
 
 export function Response<T>() {
-    return (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<(...params: any[]) => Promise<any>>) => {
+    return (
+        target: any,
+        propertyKey: string,
+        descriptor: TypedPropertyDescriptor<(...params: any[]) => Promise<any>>
+    ) => {
         let oldFunc = descriptor.value;
         descriptor.value = async function () {
             const response: IMessageResponse<T> = await oldFunc.apply(this, arguments);
@@ -32,6 +36,6 @@ export function Response<T>() {
                 throw response.error;
             }
             return response.body;
-        }
-    }
+        };
+    };
 }

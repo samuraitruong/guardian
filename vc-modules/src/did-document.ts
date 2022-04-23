@@ -26,14 +26,9 @@ export class HcsDidDocument extends DidDocumentBase {
 
     public getDidDocument(): any {
         const rootObject = {};
-        rootObject[HcsDidDocument.CONTEXT] = [
-            'https://www.w3.org/ns/did/v1',
-            'https://ns.did.ai/transmute/v1'
-        ];
+        rootObject[HcsDidDocument.CONTEXT] = ['https://www.w3.org/ns/did/v1', 'https://ns.did.ai/transmute/v1'];
         rootObject[HcsDidDocument.ID] = this.getId();
-        rootObject[HcsDidDocument.VERIFICATION_METHOD] = [
-            this.getDidRootKey().toJsonTree()
-        ];
+        rootObject[HcsDidDocument.VERIFICATION_METHOD] = [this.getDidRootKey().toJsonTree()];
         rootObject[HcsDidDocument.AUTHENTICATION] = this.getDidRootKey().getId();
         rootObject[HcsDidDocument.ASSERTION_METHOD] = [HcsDidRootKey.DID_ROOT_KEY_NAME];
         return rootObject;

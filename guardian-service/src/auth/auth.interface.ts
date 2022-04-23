@@ -1,4 +1,4 @@
-import { UserRole } from "interfaces";
+import { UserRole } from 'interfaces';
 
 export interface IAuthUser {
     username: string;
@@ -9,5 +9,5 @@ export interface IAuthUser {
 }
 
 interface AdditionalFields {
-    user: IAuthUser
+    user: IAuthUser;
 }

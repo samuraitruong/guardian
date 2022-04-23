@@ -1,41 +1,25 @@
 {
-  "compileOnSave": true,
-  "compilerOptions": {
-    "baseUrl": "./src",
-    "declaration": true,
-    "emitDecoratorMetadata": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "inlineSourceMap": true,
-    "lib": [
-      "es5",
-      "es6"
-    ],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "outDir": "dist/",
-    "paths": {
-      "@api/*": [
-        "api/*"
-      ],
-      "@entity/*": [
-        "entity/*"
-      ],
-      "@helpers/*": [
-        "helpers/*"
-      ],
-      "@auth/*": [
-        "auth/*"
-      ]
+    "compileOnSave": true,
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "declaration": true,
+        "emitDecoratorMetadata": true,
+        "esModuleInterop": true,
+        "experimentalDecorators": true,
+        "inlineSourceMap": true,
+        "skipLibCheck": true,
+        "lib": ["es5", "es6"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "dist/",
+        "paths": {
+            "@api/*": ["api/*"],
+            "@entity/*": ["entity/*"],
+            "@helpers/*": ["helpers/*"],
+            "@auth/*": ["auth/*"]
+        },
+        "target": "es6"
     },
-    "target": "es6"
-  },
-  "exclude": [
-    "node_modules",
-    "public",
-    "dist"
-  ],
-  "include": [
-    "src/**/*"
-  ]
+    "exclude": ["node_modules", "public", "dist"],
+    "include": ["src/**/*"]
 }

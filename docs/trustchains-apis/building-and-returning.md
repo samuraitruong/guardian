@@ -12,6 +12,7 @@ Hash or ID of a VP document
 {% endswagger-parameter %}
 
 {% swagger-response status="200: OK" description="" %}
+
 ```javascript
 {
     content:
@@ -20,25 +21,31 @@ Hash or ID of a VP document
                 $ref: '#/components/schemas/TrustChains'
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="401: Unauthorized" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="403: Forbidden" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="Internal Server Error" %}
+
 ```javascript
 {
     content:
@@ -47,5 +54,6 @@ Hash or ID of a VP document
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

@@ -1,7 +1,7 @@
 import { permissionHelper } from '@auth/authorizationHelper';
 import { Request, Response, Router } from 'express';
 import { IPageParameters, UserRole } from 'interfaces';
-import { Logger } from 'logger-helper';
+import { Logger } from 'common';
 
 /**
  * Logger route
@@ -22,7 +22,7 @@ loggerAPI.post('/', permissionHelper(UserRole.ROOT_AUTHORITY), async (req: Reque
             eDate.setHours(0, 0, 0, 0);
             filters.datetime = {
                 $gte: sDate,
-                $lt: eDate
+                $lt: eDate,
             };
         }
         if (req.body.attributes && req.body.attributes.length !== 0) {
@@ -31,8 +31,8 @@ loggerAPI.post('/', permissionHelper(UserRole.ROOT_AUTHORITY), async (req: Reque
         if (req.body.message) {
             filters.message = {
                 $regex: `.*${req.body.message}.*`,
-                $options: 'i'
-            }
+                $options: 'i',
+            };
         }
         if (req.body.pageSize) {
             pageParameters.skip = (req.body.pageIndex || 0) * req.body.pageSize;

@@ -1,8 +1,4 @@
-import {
-    Client,
-    Hbar,
-    PrivateKey,
-} from '@hashgraph/sdk';
+import { Client, Hbar, PrivateKey } from '@hashgraph/sdk';
 import {
     CredentialSubject,
     HcsVcMessage,
@@ -11,7 +7,7 @@ import {
     HcsIdentityNetwork,
     HcsDidMessage,
     DidMethodOperation,
-    HcsDid
+    HcsDid,
 } from '@hashgraph/did-sdk-js';
 import { HcsVcDocument } from '../vc/vc-document';
 import { HcsDidDocument } from '../did-document';
@@ -33,10 +29,10 @@ export class HederaDIDHelper {
 
     /**
      * Create VC Transaction
-     * 
+     *
      * @param {HcsVcDocument<T>} vc - VC Document
      * @param {PrivateKey | string} privateKey - Account Private Key
-     * 
+     *
      * @returns {HcsVcMessage} - result
      */
     @timeout(HederaDIDHelper.MAX_TIMEOUT)
@@ -44,13 +40,13 @@ export class HederaDIDHelper {
         vc: HcsVcDocument<T>,
         privateKey: PrivateKey | string
     ): Promise<HcsVcMessage> {
-        const key = (typeof privateKey == 'string') ? PrivateKey.fromString(privateKey) : privateKey;
+        const key = typeof privateKey == 'string' ? PrivateKey.fromString(privateKey) : privateKey;
         const transaction = new Promise<HcsVcMessage>(async (resolve, reject) => {
             try {
                 const transaction = this.network
                     .createVcTransaction(HcsVcOperation.ISSUE, vc.toCredentialHash(), key.publicKey)
-                    .signMessage(doc => key.sign(doc))
-                    .buildAndSignTransaction(tx => tx.setMaxTransactionFee(new Hbar(MAX_FEE)))
+                    .signMessage((doc) => key.sign(doc))
+                    .buildAndSignTransaction((tx) => tx.setMaxTransactionFee(new Hbar(MAX_FEE)))
                     .onMessageConfirmed((env: MessageEnvelope<HcsVcMessage>) => {
                         resolve(env.open());
                     })
@@ -67,9 +63,9 @@ export class HederaDIDHelper {
 
     /**
      * Create DID
-     * 
+     *
      * @param {PrivateKey | string} [privateKey] - Account Private Key
-     * 
+     *
      * @returns {any} - DID, Private Key, DID Document
      */
     @timeout(HederaDIDHelper.MAX_TIMEOUT)
@@ -87,15 +83,15 @@ export class HederaDIDHelper {
             hcsDid: hcsDid,
             did: did,
             key: pk.toString(),
-            document: document.getDidDocument()
+            document: document.getDidDocument(),
         };
     }
 
     /**
      * Create DID Transaction
-     * 
+     *
      * @param {HcsDid} hcsDid - DID Document
-     * 
+     *
      * @returns {HcsDidMessage} - result
      */
     @timeout(HederaDIDHelper.MAX_TIMEOUT)

@@ -1,5 +1,5 @@
-import {ApproveStatus} from '../type/approve-status.type';
-import {SchemaEntity} from '../type/schema-entity.type';
+import { ApproveStatus } from '../type/approve-status.type';
+import { SchemaEntity } from '../type/schema-entity.type';
 
 export interface IApprovalDocument {
     id: string;

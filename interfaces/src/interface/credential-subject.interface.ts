@@ -1,4 +1,4 @@
-import {did} from './did.interface';
+import { did } from './did.interface';
 
 export interface ICredentialSubject {
     '@context': string[];

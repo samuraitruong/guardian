@@ -8,6 +8,7 @@ Returns all users except those with roles Root Authority and Auditor. Only users
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     content:
@@ -18,25 +19,31 @@ Returns all users except those with roles Root Authority and Auditor. Only users
                   $ref: '#/components/schemas/Account'
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="401: Unauthorized" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="403: Forbidden" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="" %}
+
 ```javascript
 {
     content:
@@ -45,5 +52,6 @@ Returns all users except those with roles Root Authority and Auditor. Only users
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

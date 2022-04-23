@@ -1,12 +1,10 @@
-const {
-    HcsDidDocument
-} = require('../../dist/did-document');
-const {FileId} = require('@hashgraph/sdk');
-const {HcsDidRootKey, HcsDid, AddressBook} = require('@hashgraph/did-sdk-js');
-const {expect, assert} = require('chai');
+const { HcsDidDocument } = require('../../dist/did-document');
+const { FileId } = require('@hashgraph/sdk');
+const { HcsDidRootKey, HcsDid, AddressBook } = require('@hashgraph/did-sdk-js');
+const { expect, assert } = require('chai');
 const network = 'testnet';
 
-describe('HcsDidDocument', function() {
+describe('HcsDidDocument', function () {
     let addressBookFileId, didTopicId;
 
     before(async function () {
@@ -14,7 +12,7 @@ describe('HcsDidDocument', function() {
         addressBookFileId = ab.getFileId();
     });
 
-    it('Test fromDocumentBase', async function() {
+    it('Test fromDocumentBase', async function () {
         const privateKey = HcsDid.generateDidRootKey();
         const did = new HcsDid(network, privateKey.publicKey, addressBookFileId, didTopicId);
         const doc = did.generateDidDocument();
@@ -29,7 +27,7 @@ describe('HcsDidDocument', function() {
         assert.deepEqual(root, root2);
     });
 
-    it('Test fromJson', async function() {
+    it('Test fromJson', async function () {
         const privateKey = HcsDid.generateDidRootKey();
         const did = new HcsDid(network, privateKey.publicKey, addressBookFileId, didTopicId);
         const doc = did.generateDidDocument();
@@ -43,24 +41,15 @@ describe('HcsDidDocument', function() {
         assert.deepEqual(root, root2);
     });
 
-    it('Test getDidDocument', async function() {
+    it('Test getDidDocument', async function () {
         const privateKey = HcsDid.generateDidRootKey();
         const did = new HcsDid(network, privateKey.publicKey, addressBookFileId, didTopicId);
         const doc = did.generateDidDocument();
         const hcsDidDoc = HcsDidDocument.fromDocumentBase(doc);
         const document = hcsDidDoc.getDidDocument();
 
-        expect(document).to.have.keys([
-            '@context',
-            'id',
-            'verificationMethod',
-            'authentication',
-            'assertionMethod'
-        ]);
-        assert.deepEqual(document['@context'], [
-            'https://www.w3.org/ns/did/v1',
-            'https://ns.did.ai/transmute/v1'
-        ]);
+        expect(document).to.have.keys(['@context', 'id', 'verificationMethod', 'authentication', 'assertionMethod']);
+        assert.deepEqual(document['@context'], ['https://www.w3.org/ns/did/v1', 'https://ns.did.ai/transmute/v1']);
         assert.equal(document['id'], did.toDid());
         assert.deepEqual(document['verificationMethod'], [doc.getDidRootKey().toJsonTree()]);
         assert.equal(document['authentication'], doc.getDidRootKey().getId());

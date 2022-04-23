@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import {PolicyEngine} from '@helpers/policyEngine';
-import { Logger } from 'logger-helper';
+import { PolicyEngine } from '@helpers/policyEngine';
+import { Logger } from 'common';
 // import {PolicyComponentsUtils} from '@policy-engine/policy-components-stuff';
 
 /**
@@ -16,6 +16,9 @@ externalAPI.post('/', async (req: Request, res: Response) => {
     } catch (e) {
         console.error(e);
         new Logger().error(e.toString(), ['API_GATEWAY']);
-        res.status(500).send({ code: 500, message: 'Unknown error: ' + e.message });
+        res.status(500).send({
+            code: 500,
+            message: 'Unknown error: ' + e.message,
+        });
     }
 });

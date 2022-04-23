@@ -12,6 +12,7 @@ Object that contain username, password and role (optional) fields
 {% endswagger-parameter %}
 
 {% swagger-response status="201: Created" description="Successful Operation" %}
+
 ```javascript
 {
     content:
@@ -20,9 +21,11 @@ Object that contain username, password and role (optional) fields
                 $ref: '#/components/schemas/Account'
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="Internal Server Error" %}
+
 ```javascript
 {
     content:
@@ -31,5 +34,6 @@ Object that contain username, password and role (optional) fields
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

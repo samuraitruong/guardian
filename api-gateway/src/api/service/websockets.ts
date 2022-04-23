@@ -1,16 +1,13 @@
 import WebSocket from 'ws';
-import {IncomingMessage, Server} from 'http';
+import { IncomingMessage, Server } from 'http';
 import { Users } from '@helpers/users';
-import { Logger } from 'logger-helper';
+import { Logger, MessageBrokerChannel } from 'common';
 
 export class WebSocketsService {
     private wss: WebSocket.Server;
 
-    constructor(
-        private server: Server,
-        private channel: any
-    ) {
-        this.wss = new WebSocket.Server({server});
+    constructor(private server: Server, private channel: MessageBrokerChannel) {
+        this.wss = new WebSocket.Server({ server });
         this.registerPingPongAnswers();
         this.registerAuthorisation();
         this.registerMessageHandler();
@@ -42,36 +39,40 @@ export class WebSocketsService {
     }
 
     private registerMessageHandler(): void {
-        this.channel.response('update-block', async (msg, res) => {
+        this.channel.response<any, any>('update-block', async (msg) => {
             this.wss.clients.forEach((client: any) => {
                 try {
-                    client.send(JSON.stringify({
-                        type: 'update-event',
-                        data: msg.payload.uuid
-                    }));
+                    client.send(
+                        JSON.stringify({
+                            type: 'update-event',
+                            data: msg.uuid,
+                        })
+                    );
                 } catch (e) {
                     console.error('WS Error', e);
                 }
             });
         });
 
-        this.channel.response('block-error', async (msg, res) => {
+        this.channel.response<any, any>('block-error', async (msg) => {
             this.wss.clients.forEach((client: any) => {
                 try {
-                    if (client.user.did === msg.payload.user.did) {
-                        client.send(JSON.stringify({
-                            type: 'error-event',
-                            data: {
-                                blockType: msg.payload.blockType,
-                                message: msg.payload.message
-                            }
-                        }));
+                    if (client.user.did === msg.user.did) {
+                        client.send(
+                            JSON.stringify({
+                                type: 'error-event',
+                                data: {
+                                    blockType: msg.blockType,
+                                    message: msg.message,
+                                },
+                            })
+                        );
                     }
                 } catch (e) {
                     new Logger().error(e.toString(), ['API_GATEWAY']);
                     console.error('WS Error', e);
                 }
             });
-        })
+        });
     }
 }

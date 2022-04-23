@@ -9,9 +9,7 @@ export class ContextLoader extends DocumentLoader {
     @Inject()
     private guardians: Guardians;
 
-    constructor(
-        private readonly context: string
-    ) {
+    constructor(private readonly context: string) {
         super();
     }
 
@@ -41,4 +39,3 @@ export class ContextLoader extends DocumentLoader {
         return document;
     }
 }
-

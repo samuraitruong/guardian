@@ -1,4 +1,4 @@
 export enum RootState {
     CREATED,
-    CONFIRMED
+    CONFIRMED,
 }

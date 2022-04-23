@@ -16,5 +16,5 @@ export class Log implements ILog {
     datetime: Date;
 
     @Column()
-    attributes?: string[]
+    attributes?: string[];
 }

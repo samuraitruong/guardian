@@ -1,4 +1,4 @@
-import {DidDocumentStatus} from '../type/did-status.type';
+import { DidDocumentStatus } from '../type/did-status.type';
 
 export interface IDidDocument {
     id: string;

@@ -15,7 +15,7 @@ export class DIDDocumentLoader extends DocumentLoader {
     public async get(iri: string): Promise<IDocumentFormat> {
         return {
             documentUrl: iri,
-            document: await this.getDocument(iri)
+            document: await this.getDocument(iri),
         };
     }
 

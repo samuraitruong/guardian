@@ -7,7 +7,7 @@ export class DidDocument implements IDidDocument {
     id: string;
 
     @Column({
-        unique: true
+        unique: true,
     })
     did: string;
 

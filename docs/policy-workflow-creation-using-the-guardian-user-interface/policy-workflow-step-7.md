@@ -1,8 +1,6 @@
 # Policy Workflow Step 7
 
-
-
-Next, we want to add another step to our policy action. To do this we again go back to the Policy Action itself by clicking on the “init\_installer\_steps” Policy Action icon on the left.
+Next, we want to add another step to our policy action. To do this we again go back to the Policy Action itself by clicking on the “init_installer_steps” Policy Action icon on the left.
 
 Again we need a Send step since we now have to submit the CSD01, the official IREC Participant Application form, as an official verifiable credential.
 

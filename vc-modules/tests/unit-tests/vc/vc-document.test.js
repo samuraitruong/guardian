@@ -1,7 +1,4 @@
-const {
-    HcsVcDocument,
-    VcSubject
-} = require('../../../dist/index');
+const { HcsVcDocument, VcSubject } = require('../../../dist/index');
 
 const { FileId } = require('@hashgraph/sdk');
 const { TimestampUtils } = require('@hashgraph/did-sdk-js');
@@ -18,7 +15,7 @@ describe('HcsVcDocument', function () {
             period: 0,
             policyId: '6166be37d739af60e05258bf',
             accountId: '0.0.2770197',
-        }
+        };
         id = 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1';
         date = TimestampUtils.fromJson('2021-10-13T11:21:47.894Z');
         did = 'did:hedera:testnet:HTHJ72yoyTjipbHX765xCXM2kVcvREPg8JxeXgnDLzRA;hedera:testnet:fid=0.0.2770224';
@@ -29,12 +26,13 @@ describe('HcsVcDocument', function () {
             vcSubject.addContext(element);
         }
         proof = {
-            'type': 'Ed25519Signature2018',
-            'created': '2021-10-13T11:21:47Z',
-            'verificationMethod': 'did:hedera:testnet:HTHJ72yoyTjipbHX765xCXM2kVcvREPg8JxeXgnDLzRA;hedera:testnet:fid=0.0.2770224#did-root-key',
-            'proofPurpose': 'assertionMethod',
-            'jws': 'eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..cIuQVujCbCfdv7N2pdK4TcP94ZcFiG2eJ1MKDTGvfsyPupxBc3ajHBI14rmRCDKFc4BD6bLmFeKvotewyw45Ag'
-        }
+            type: 'Ed25519Signature2018',
+            created: '2021-10-13T11:21:47Z',
+            verificationMethod:
+                'did:hedera:testnet:HTHJ72yoyTjipbHX765xCXM2kVcvREPg8JxeXgnDLzRA;hedera:testnet:fid=0.0.2770224#did-root-key',
+            proofPurpose: 'assertionMethod',
+            jws: 'eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..cIuQVujCbCfdv7N2pdK4TcP94ZcFiG2eJ1MKDTGvfsyPupxBc3ajHBI14rmRCDKFc4BD6bLmFeKvotewyw45Ag',
+        };
     });
 
     it('Test VcDocumentConstruction', async function () {
@@ -53,7 +51,6 @@ describe('HcsVcDocument', function () {
         assert.deepEqual(vc.getIssuanceDate(), date);
         assert.deepEqual(vc.getProof(), proof);
     });
-
 
     it('Test VcJsonConversion', async function () {
         const vc = new HcsVcDocument();
@@ -85,36 +82,30 @@ describe('HcsVcDocument', function () {
         assert.deepEqual(vc.getProof(), newVC2.getProof());
 
         assert.deepEqual(root, {
-            '@context': [
-                'https://www.w3.org/2018/credentials/v1'
-            ],
-            'id': 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
-            'type': [
-                'VerifiableCredential',
-                'MRV'
-            ],
-            'credentialSubject': [
+            '@context': ['https://www.w3.org/2018/credentials/v1'],
+            id: 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
+            type: ['VerifiableCredential', 'MRV'],
+            credentialSubject: [
                 {
-                    '@context': [
-                        'https://localhost/schema'
-                    ],
-                    'type': 'MRV',
-                    'date': 1,
-                    'amount': 0,
-                    'period': 0,
-                    'policyId': '6166be37d739af60e05258bf',
-                    'accountId': '0.0.2770197'
-                }
+                    '@context': ['https://localhost/schema'],
+                    type: 'MRV',
+                    date: 1,
+                    amount: 0,
+                    period: 0,
+                    policyId: '6166be37d739af60e05258bf',
+                    accountId: '0.0.2770197',
+                },
             ],
-            'issuer': 'did:hedera:testnet:HTHJ72yoyTjipbHX765xCXM2kVcvREPg8JxeXgnDLzRA;hedera:testnet:fid=0.0.2770224',
-            'issuanceDate': '2021-10-13T11:21:47.894Z',
-            'proof': {
-                'type': 'Ed25519Signature2018',
-                'created': '2021-10-13T11:21:47Z',
-                'verificationMethod': 'did:hedera:testnet:HTHJ72yoyTjipbHX765xCXM2kVcvREPg8JxeXgnDLzRA;hedera:testnet:fid=0.0.2770224#did-root-key',
-                'proofPurpose': 'assertionMethod',
-                'jws': 'eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..cIuQVujCbCfdv7N2pdK4TcP94ZcFiG2eJ1MKDTGvfsyPupxBc3ajHBI14rmRCDKFc4BD6bLmFeKvotewyw45Ag'
-            }
+            issuer: 'did:hedera:testnet:HTHJ72yoyTjipbHX765xCXM2kVcvREPg8JxeXgnDLzRA;hedera:testnet:fid=0.0.2770224',
+            issuanceDate: '2021-10-13T11:21:47.894Z',
+            proof: {
+                type: 'Ed25519Signature2018',
+                created: '2021-10-13T11:21:47Z',
+                verificationMethod:
+                    'did:hedera:testnet:HTHJ72yoyTjipbHX765xCXM2kVcvREPg8JxeXgnDLzRA;hedera:testnet:fid=0.0.2770224#did-root-key',
+                proofPurpose: 'assertionMethod',
+                jws: 'eyJhbGciOiJFZERTQSIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..cIuQVujCbCfdv7N2pdK4TcP94ZcFiG2eJ1MKDTGvfsyPupxBc3ajHBI14rmRCDKFc4BD6bLmFeKvotewyw45Ag',
+            },
         });
     });
 

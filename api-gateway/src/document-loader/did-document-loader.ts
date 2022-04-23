@@ -1,6 +1,6 @@
-import {DocumentLoader, IDocumentFormat} from 'vc-modules';
-import {Guardians} from '@helpers/guardians';
-import {Inject} from '@helpers/decorators/inject';
+import { DocumentLoader, IDocumentFormat } from 'vc-modules';
+import { Guardians } from '@helpers/guardians';
+import { Inject } from '@helpers/decorators/inject';
 
 /**
  * DID documents loader
@@ -25,7 +25,7 @@ export class DIDDocumentLoader extends DocumentLoader {
     }
 
     public async getDocument(iri: String): Promise<any> {
-        const document = await this.guardians.loadDidDocument({did: iri});
+        const document = await this.guardians.loadDidDocument({ did: iri });
         if (!document) {
             throw new Error('DID not found');
         }

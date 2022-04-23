@@ -11,7 +11,6 @@ export function CalculateBlock(options: Partial<PolicyBlockDecoratorOptions>) {
         const basicClass = BasicBlock(options)(constructor);
 
         return class extends basicClass {
-
             public readonly blockClassName = 'CalculateBlock';
 
             protected getAddons(): IPolicyCalculateAddon[] {
@@ -23,6 +22,6 @@ export function CalculateBlock(options: Partial<PolicyBlockDecoratorOptions>) {
                 }
                 return addons;
             }
-        }
-    }
+        };
+    };
 }

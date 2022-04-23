@@ -15,7 +15,6 @@ export function ContainerBlock(options: Partial<PolicyBlockDecoratorOptions>) {
         const basicClass = BasicBlock(options)(constructor);
 
         return class extends basicClass {
-
             public readonly blockClassName = 'ContainerBlock';
 
             async changeStep(user, data, target) {
@@ -24,26 +23,27 @@ export function ContainerBlock(options: Partial<PolicyBlockDecoratorOptions>) {
                     result = super.changeStep(user, data, target);
                 }
                 if (target) {
-                    await target.runAction(data, user)
+                    await target.runAction(data, user);
                 }
                 return result;
             }
 
             async getData(user: IAuthUser | null): Promise<any> {
-                let data = {}
+                let data = {};
                 if (super.getData) {
                     data = await super.getData(user);
                 }
 
                 const ref = PolicyComponentsUtils.GetBlockRef<IPolicyContainerBlock>(this);
                 const currentPolicy = await getMongoRepository(Policy).findOne(ref.policyId);
-                const currentRole = (typeof currentPolicy.registeredUsers === 'object') ? currentPolicy.registeredUsers[user.did] : null;
+                const currentRole =
+                    typeof currentPolicy.registeredUsers === 'object' ? currentPolicy.registeredUsers[user.did] : null;
                 // const dbUser = await getMongoRepository(User).findOne({ username: user.username });
 
                 const result = Object.assign(data, {
                     id: this.uuid,
                     blockType: this.blockType,
-                    blocks: this.children.map(child => {
+                    blocks: this.children.map((child) => {
                         let returnValue = {
                             uiMetaData: child.options.uiMetaData,
                             content: child.blockType,
@@ -60,12 +60,12 @@ export function ContainerBlock(options: Partial<PolicyBlockDecoratorOptions>) {
                         }
 
                         return undefined;
-                    })
-                })
+                    }),
+                });
 
                 const changed = (this as any).updateDataState(user, result);
                 return result;
             }
-        }
-    }
+        };
+    };
 }

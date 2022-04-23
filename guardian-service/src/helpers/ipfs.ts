@@ -1,35 +1,38 @@
-import { MessageAPI } from "interfaces";
+import { MessageBrokerChannel } from 'common';
+import { MessageAPI } from 'interfaces';
 
 /**
  * IPFS service
  */
 export class IPFS {
-    private static channel: any;
+    private static channel: MessageBrokerChannel;
     private static readonly target: string = 'ipfs-client';
 
     /**
      * Register channel
      * @param channel
      */
-    public static setChannel(channel: any): any {
+    public static setChannel(channel: MessageBrokerChannel): void {
         this.channel = channel;
     }
 
     /**
      * Get channel
      */
-    public static getChannel(): any {
+    public static getChannel(): MessageBrokerChannel {
         return this.channel;
     }
 
     /**
      * Return hash of added file
      * @param {ArrayBuffer} file file to upload on IPFS
-     * 
+     *
      * @returns {string} - hash
      */
-    public static async addFile(file: ArrayBuffer): Promise<{ cid: string, url: string }> {
-        const res = (await this.channel.request(this.target, MessageAPI.IPFS_ADD_FILE, file, 'raw')).payload;
+    public static async addFile(file: ArrayBuffer): Promise<{ cid: string; url: string }> {
+        const res = await this.channel.request<any, any>(`${this.target}.${MessageAPI.IPFS_ADD_FILE}`, {
+            payload: { content: Buffer.from(file).toString('base64') },
+        });
         if (!res) {
             throw new Error('Invalid response');
         }
@@ -46,7 +49,9 @@ export class IPFS {
      * @returns File
      */
     public static async getFile(cid: string, responseType: 'json' | 'raw' | 'str'): Promise<any> {
-        const res = (await this.channel.request(this.target, MessageAPI.IPFS_GET_FILE, { cid, responseType }, 'json')).payload;
+        const res = await this.channel.request<any, any>(`${this.target}.${MessageAPI.IPFS_GET_FILE}`, {
+            payload: { cid, responseType },
+        });
         if (!res) {
             throw new Error('Invalid response');
         }

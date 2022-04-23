@@ -22,7 +22,7 @@ import {
     TopicCreateTransaction,
     TopicMessageSubmitTransaction,
     TransactionResponse,
-    TransferTransaction
+    TransferTransaction,
 } from '@hashgraph/sdk';
 import { MAX_FEE } from './max-fee';
 import { timeout } from './utils';
@@ -36,12 +36,12 @@ export class HederaSDKHelper {
     public static MAX_TIMEOUT: number = 120000;
 
     constructor(client: Client) {
-        this.client = client
+        this.client = client;
     }
 
     /**
      * Set the account that will, by default, pay for transactions and queries built with this client.
-     * 
+     *
      * @param {string | AccountId} operatorId - Operator Id
      * @param {string | PrivateKey} operatorKey - Operator Private Key
      */
@@ -60,7 +60,7 @@ export class HederaSDKHelper {
 
     /**
      * Create new token (TokenCreateTransaction)
-     * 
+     *
      * @param {string} name - Token name
      * @param {string} symbol - Token symbol
      * @param {boolean} nft - Fungible or NonFungible Token
@@ -68,12 +68,12 @@ export class HederaSDKHelper {
      * @param {number} initialSupply - Initial Supply
      * @param {string} tokenMemo - Memo field
      * @param {any} treasury - treasury account
-     * @param {PrivateKey} [adminKey] - set admin key 
-     * @param {PrivateKey} [kycKey] - set kyc key 
-     * @param {PrivateKey} [freezeKey] - set freeze key 
-     * @param {PrivateKey} [wipeKey] - set wipe key 
-     * @param {PrivateKey} [supplyKey] - set supply key 
-     * 
+     * @param {PrivateKey} [adminKey] - set admin key
+     * @param {PrivateKey} [kycKey] - set kyc key
+     * @param {PrivateKey} [freezeKey] - set freeze key
+     * @param {PrivateKey} [wipeKey] - set wipe key
+     * @param {PrivateKey} [supplyKey] - set supply key
+     *
      * @returns {string} - Token id
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -133,56 +133,53 @@ export class HederaSDKHelper {
 
     /**
      * Get balance account (AccountBalanceQuery)
-     * 
+     *
      * @param {string | AccountId} accountId - Account Id
-     * 
+     *
      * @returns {string} - balance
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
     public async balance(accountId: string | AccountId): Promise<string> {
         const client = this.client;
-        const query = new AccountBalanceQuery()
-            .setAccountId(accountId);
+        const query = new AccountBalanceQuery().setAccountId(accountId);
         const accountBalance = await query.execute(client);
         return accountBalance.hbars.toString();
     }
 
     /**
      * Get associate tokens and balance (AccountInfoQuery)
-     * 
+     *
      * @param {string | AccountId} accountId - Account Id
-     * 
+     *
      * @returns {any} - associate tokens and balance
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
     public async accountInfo(accountId?: string | AccountId): Promise<any> {
         const client = this.client;
-        const info = await new AccountInfoQuery()
-            .setAccountId(accountId)
-            .execute(client);
+        const info = await new AccountInfoQuery().setAccountId(accountId).execute(client);
         const hBarBalance = info.balance.toString();
         const tokens = {};
         for (let key of info.tokenRelationships.keys()) {
             const tokenId = key.toString();
             const token = info.tokenRelationships.get(key);
-            tokens[tokenId] = ({
+            tokens[tokenId] = {
                 tokenId: tokenId,
                 balance: token.balance.toString(),
                 frozen: token.isFrozen,
                 kyc: token.isKycGranted,
-                hBarBalance: hBarBalance
-            });
+                hBarBalance: hBarBalance,
+            };
         }
         return tokens;
     }
 
     /**
      * Associate tokens with account (TokenAssociateTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string} id - Account Id
      * @param {string} key - Account Private Id
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -203,11 +200,11 @@ export class HederaSDKHelper {
 
     /**
      * Dissociate tokens with account (TokenDissociateTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string} id - Account Id
      * @param {string} key - Account Private Id
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -228,21 +225,18 @@ export class HederaSDKHelper {
 
     /**
      * Freezes transfers of the specified token for the account (TokenFreezeTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string} accountId - Account Id
      * @param {string} freezeKey - Token freeze key
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
     public async freeze(tokenId: string | TokenId, accountId: string, freezeKey: string) {
         const client = this.client;
         const _freezeKey = PrivateKey.fromString(freezeKey);
-        const transaction = new TokenFreezeTransaction()
-            .setAccountId(accountId)
-            .setTokenId(tokenId)
-            .freezeWith(client);
+        const transaction = new TokenFreezeTransaction().setAccountId(accountId).setTokenId(tokenId).freezeWith(client);
         const signTx = await transaction.sign(_freezeKey);
         const txResponse = await signTx.execute(client);
         const receipt = await txResponse.getReceipt(client);
@@ -252,11 +246,11 @@ export class HederaSDKHelper {
 
     /**
      * Unfreezes transfers of the specified token for the account (TokenUnfreezeTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string} accountId - Account Id
      * @param {string} freezeKey - Token freeze key
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -276,11 +270,11 @@ export class HederaSDKHelper {
 
     /**
      * Grants KYC to the account for the given token (TokenGrantKycTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string} accountId - Account Id
      * @param {string} kycKey - Token KYC key
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -300,11 +294,11 @@ export class HederaSDKHelper {
 
     /**
      * Revokes the KYC to the account for the given token (TokenRevokeKycTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string} accountId - Account Id
      * @param {string} kycKey - Token KYC key
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -322,15 +316,14 @@ export class HederaSDKHelper {
         return transactionStatus == Status.Success;
     }
 
-
     /**
      * Minting fungible token allows you to increase the total supply of the token (TokenMintTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string | PrivateKey} supplyKey - Token Supply key
      * @param {number} amount - amount
      * @param {string} [transactionMemo] - Memo field
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -355,14 +348,14 @@ export class HederaSDKHelper {
     }
 
     /**
-     * Minting a non-fungible token creates an NFT with 
+     * Minting a non-fungible token creates an NFT with
      * its unique metadata for the class of NFTs defined by the token ID (TokenMintTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string | PrivateKey} supplyKey - Token Supply key
      * @param {Uint8Array[]} data - token data
      * @param {string} [transactionMemo] - Memo field
-     * 
+     *
      * @returns {number[]} - serials
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -384,7 +377,7 @@ export class HederaSDKHelper {
         const receipt = await txResponse.getReceipt(client);
         const transactionStatus = receipt.status;
         if (transactionStatus == Status.Success) {
-            return receipt.serials.map(e => e.toNumber())
+            return receipt.serials.map((e) => e.toNumber());
         } else {
             return null;
         }
@@ -392,13 +385,13 @@ export class HederaSDKHelper {
 
     /**
      * Wipes the provided amount of fungible tokens from the specified account (TokenWipeTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string | AccountId} targetId - Target Account Id
      * @param {string | PrivateKey} wipeKey - Token Wipe key
      * @param {number} amount - amount
      * @param {string} [transactionMemo] - Memo field
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -426,14 +419,14 @@ export class HederaSDKHelper {
 
     /**
      * Transfer tokens from some accounts to other accounts (TransferTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string | AccountId} targetId - Target Account Id
      * @param {string | AccountId} scoreId - Treasury Account Id
      * @param {string | PrivateKey} scoreKey - Token Score key
      * @param {number} amount - amount
      * @param {string} [transactionMemo] - Memo field
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -461,14 +454,14 @@ export class HederaSDKHelper {
 
     /**
      * Transfer non-fungible token from some accounts to other accounts (TransferTransaction)
-     * 
+     *
      * @param {string | TokenId} tokenId - Token Id
      * @param {string | AccountId} targetId - Target Account Id
      * @param {string | AccountId} scoreId - Treasury Account Id
      * @param {string | PrivateKey} scoreKey - Token Score key
      * @param {number[]} serials - serials
      * @param {string} [transactionMemo] - Memo field
-     * 
+     *
      * @returns {boolean} - Status
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -482,14 +475,11 @@ export class HederaSDKHelper {
     ): Promise<boolean> {
         const client = this.client;
         const _scoreKey = PrivateKey.fromString(scoreKey.toString());
-        let transaction = new TransferTransaction()
-            .setTransactionMemo(transactionMemo);
+        let transaction = new TransferTransaction().setTransactionMemo(transactionMemo);
 
         for (let index = 0; index < serials.length; index++) {
             const serial = serials[index];
-            transaction = transaction
-                .addNftTransfer(tokenId, serial, scoreId, targetId)
-
+            transaction = transaction.addNftTransfer(tokenId, serial, scoreId, targetId);
         }
         transaction = transaction.freezeWith(client);
         const signTx = await transaction.sign(_scoreKey);
@@ -501,13 +491,13 @@ export class HederaSDKHelper {
 
     /**
      * Create new Account (AccountCreateTransaction)
-     * 
+     *
      * @param {number} initialBalance - Initial Balance
-     * 
+     *
      * @returns {any} - Account Id and Account Private Key
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
-    public async newAccount(initialBalance: number): Promise<{ id: AccountId; key: PrivateKey; }> {
+    public async newAccount(initialBalance: number): Promise<{ id: AccountId; key: PrivateKey }> {
         const client = this.client;
         const newPrivateKey = PrivateKey.generate();
         const transaction = new AccountCreateTransaction()
@@ -518,23 +508,22 @@ export class HederaSDKHelper {
         const newAccountId = receipt.accountId;
         return {
             id: newAccountId,
-            key: newPrivateKey
+            key: newPrivateKey,
         };
     }
 
     /**
      * Create new Topic (TopicCreateTransaction)
-     * 
+     *
      * @param {PrivateKey | string} [key] - Topic Admin Key
-     * 
+     *
      * @returns {string} - Topic Id
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
     public async newTopic(key: PrivateKey | string | null, topicMemo?: string): Promise<string> {
         const client = this.client;
 
-        const topicCreateTransaction = new TopicCreateTransaction()
-            .setMaxTransactionFee(new Hbar(MAX_FEE))
+        const topicCreateTransaction = new TopicCreateTransaction().setMaxTransactionFee(new Hbar(MAX_FEE));
 
         if (topicMemo) {
             topicCreateTransaction.setTopicMemo(topicMemo);
@@ -543,14 +532,11 @@ export class HederaSDKHelper {
         let dtxId: TransactionResponse;
         if (key) {
             const accountKey = PrivateKey.fromString(key.toString());
-            topicCreateTransaction
-                .setAdminKey(accountKey)
-                .freezeWith(client);
+            topicCreateTransaction.setAdminKey(accountKey).freezeWith(client);
             const signTx = await topicCreateTransaction.sign(accountKey);
             dtxId = await signTx.execute(client);
         } else {
-            topicCreateTransaction
-                .freezeWith(client);
+            topicCreateTransaction.freezeWith(client);
             dtxId = await topicCreateTransaction.execute(client);
         }
 
@@ -561,10 +547,10 @@ export class HederaSDKHelper {
 
     /**
      * Submit message to the topic (TopicMessageSubmitTransaction)
-     * 
+     *
      * @param topicId Topic identifier
      * @param message Message to publish
-     * 
+     *
      * @returns Message timestamp
      */
     @timeout(HederaSDKHelper.MAX_TIMEOUT)
@@ -577,6 +563,10 @@ export class HederaSDKHelper {
 
         const rec = await messageTransaction.getRecord(client);
 
-        return (rec.consensusTimestamp.seconds.toString() + '.' + ('000000000' + rec.consensusTimestamp.nanos.toString()).slice(-9));
+        return (
+            rec.consensusTimestamp.seconds.toString() +
+            '.' +
+            ('000000000' + rec.consensusTimestamp.nanos.toString()).slice(-9)
+        );
     }
 }

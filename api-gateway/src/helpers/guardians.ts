@@ -5,15 +5,15 @@ import {
     IApprovalDocument,
     IChainItem,
     IDidDocument,
-    IMessageResponse,
     IRootConfig,
     ISchema,
     IToken,
     IVCDocument,
     IVPDocument,
     MessageAPI,
-    SchemaEntity
+    SchemaEntity,
 } from 'interfaces';
+import { ServiceRequestsBase } from './serviceRequestsBase';
 
 type IFilter = any;
 
@@ -21,46 +21,10 @@ type IFilter = any;
  * Guardians service
  */
 @Singleton
-export class Guardians {
-    private channel: any;
-    private readonly target: string = 'guardian.*';
-
-    /**
-     * Register channel
-     * @param channel
-     */
-    public setChannel(channel: any): any {
-        this.channel = channel;
+export class Guardians extends ServiceRequestsBase {
+    constructor() {
+        super('guardian');
     }
-
-    /**
-     * Get channel
-     */
-    public getChannel(): any {
-        return this.channel;
-    }
-
-    /**
-     * Request to guardian service method
-     * @param entity
-     * @param params
-     * @param type
-     */
-    public async request<T>(entity: string, params?: any, type?: string): Promise<T> {
-        try {
-            const response: IMessageResponse<T> = (await this.channel.request(this.target, entity, params, type)).payload;
-            if (!response) {
-                throw 'Server is not available';
-            }
-            if (response.error) {
-                throw response.error;
-            }
-            return response.body;
-        } catch (e) {
-            throw new Error(`Guardian (${entity}) send: ` + e);
-        }
-    }
-
     /**
      * Return Root Address book
      *
@@ -86,7 +50,6 @@ export class Guardians {
         return await this.request(MessageAPI.GET_SETTINGS);
     }
 
-
     /**
      * Return Address book
      *
@@ -95,7 +58,9 @@ export class Guardians {
      * @returns {IAddressBookConfig} - Address book
      */
     public async getAddressBook(owner: string): Promise<IAddressBookConfig> {
-        return await this.request(MessageAPI.GET_ADDRESS_BOOK, {owner: owner});
+        return await this.request(MessageAPI.GET_ADDRESS_BOOK, {
+            owner: owner,
+        });
     }
 
     /**
@@ -296,9 +261,8 @@ export class Guardians {
      * @param cb
      */
     public registerMRVReceiver(cb: (data: any) => Promise<void>): void {
-        this.channel.response('mrv-data', async (msg, res) => {
-            await cb(msg.payload);
-            res.send();
+        this.channel.response<any, any>('mrv-data', async (msg) => {
+            await cb(msg);
         });
     }
 
@@ -321,7 +285,7 @@ export class Guardians {
      * @returns {ISchema[]} - all schemes
      */
     public async getSchemesByOwner(did: string): Promise<ISchema[]> {
-        return await this.request(MessageAPI.GET_SCHEMES, {owner: did});
+        return await this.request(MessageAPI.GET_SCHEMES, { owner: did });
     }
 
     /**
@@ -334,7 +298,7 @@ export class Guardians {
      * @returns {ISchema[]} - all schemes
      */
     public async getSchemesByUUID(uuid: string): Promise<ISchema[]> {
-        return await this.request(MessageAPI.GET_SCHEMES, {uuid: uuid});
+        return await this.request(MessageAPI.GET_SCHEMES, { uuid: uuid });
     }
 
     /**
@@ -345,7 +309,7 @@ export class Guardians {
      * @returns {ISchema} - schema
      */
     public async getSchemaByMessage(messageId: string): Promise<ISchema> {
-        return await this.request(MessageAPI.GET_SCHEMA, {messageId});
+        return await this.request(MessageAPI.GET_SCHEMA, { messageId });
     }
 
     /**
@@ -356,7 +320,7 @@ export class Guardians {
      * @returns {ISchema} - schema
      */
     public async getSchemaByIRI(iri: string): Promise<ISchema> {
-        return await this.request(MessageAPI.GET_SCHEMA, {iri});
+        return await this.request(MessageAPI.GET_SCHEMA, { iri });
     }
 
     /**
@@ -367,7 +331,10 @@ export class Guardians {
      * @returns {ISchema} - schema
      */
     public async getSchemaByIRIs(iris: string[], includes: boolean): Promise<ISchema[]> {
-        return await this.request(MessageAPI.GET_SCHEMES, {iris, includes: includes});
+        return await this.request(MessageAPI.GET_SCHEMES, {
+            iris,
+            includes: includes,
+        });
     }
 
     /**
@@ -378,7 +345,7 @@ export class Guardians {
      * @returns {ISchema} - schema
      */
     public async getSchemaByEntity(entity: SchemaEntity): Promise<ISchema> {
-        return await this.request(MessageAPI.GET_SCHEMA, {entity});
+        return await this.request(MessageAPI.GET_SCHEMA, { entity });
     }
 
     /**
@@ -389,7 +356,7 @@ export class Guardians {
      * @returns {ISchema} - schema
      */
     public async getSchemaById(id: string): Promise<ISchema> {
-        return await this.request(MessageAPI.GET_SCHEMA, {id: id});
+        return await this.request(MessageAPI.GET_SCHEMA, { id: id });
     }
 
     /**
@@ -433,7 +400,10 @@ export class Guardians {
      * @returns {any} - Schema Document
      */
     public async importSchemesByMessages(messageIds: string[], owner: string): Promise<any[]> {
-        return await this.request(MessageAPI.IMPORT_SCHEMES_BY_MESSAGES, {messageIds, owner});
+        return await this.request(MessageAPI.IMPORT_SCHEMES_BY_MESSAGES, {
+            messageIds,
+            owner,
+        });
     }
 
     /**
@@ -444,7 +414,10 @@ export class Guardians {
      * @returns {any} - Schema Document
      */
     public async importSchemesByFile(files: ISchema[], owner: string): Promise<any[]> {
-        return await this.request(MessageAPI.IMPORT_SCHEMES_BY_FILE, {files, owner});
+        return await this.request(MessageAPI.IMPORT_SCHEMES_BY_FILE, {
+            files,
+            owner,
+        });
     }
 
     /**
@@ -455,7 +428,7 @@ export class Guardians {
      * @returns {any} Schema preview
      */
     public async previewSchemesByMessages(messageIds: string[]): Promise<ISchema[]> {
-        return await this.request(MessageAPI.PREVIEW_SCHEMA, {messageIds});
+        return await this.request(MessageAPI.PREVIEW_SCHEMA, { messageIds });
     }
 
     /**
@@ -499,7 +472,11 @@ export class Guardians {
      * @returns {ISchemaSubmitMessage} - message
      */
     public async publishSchema(id: string, version: string, owner: string): Promise<ISchema> {
-        return await this.request(MessageAPI.PUBLISH_SCHEMA, {id, version, owner});
+        return await this.request(MessageAPI.PUBLISH_SCHEMA, {
+            id,
+            version,
+            owner,
+        });
     }
 
     /**
@@ -510,11 +487,13 @@ export class Guardians {
      * @returns {any[]} - Exported schemas
      */
     public async exportSchemes(ids: string[]): Promise<ISchema[]> {
-        return await this.request(MessageAPI.EXPORT_SCHEMES, ids);
+        return await this.request(MessageAPI.EXPORT_SCHEMES, { ids });
     }
 
-
     public async incrementSchemaVersion(iri: string, owner: string): Promise<ISchema> {
-        return await this.request(MessageAPI.INCREMENT_SCHEMA_VERSION, {iri, owner});
+        return await this.request(MessageAPI.INCREMENT_SCHEMA_VERSION, {
+            iri,
+            owner,
+        });
     }
 }

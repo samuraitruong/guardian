@@ -1,8 +1,6 @@
 # Policy Workflow Step 4
 
-
-
-Next, we want to add another step to our policy action. To do this we again go back to the Policy Action itself by clicking on the “init\_installer\_steps” Policy Action icon on the left.
+Next, we want to add another step to our policy action. To do this we again go back to the Policy Action itself by clicking on the “init_installer_steps” Policy Action icon on the left.
 
 This time we need to deal with the new approval document that was sent, so we add an “information” step as a block by clicking on the “Information” icon in the top navigation bar.
 

@@ -5,7 +5,7 @@
 | Block Property | Definition                                                                                                                     | Example Input                                   |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
 | Type           | Receives data from the external source and passes them over the the next block.                                                | **externalData**Block (Can't be changed).       |
-| Tag            | Unique name for the logic block.                                                                                               | mrv\_source.                                    |
+| Tag            | Unique name for the logic block.                                                                                               | mrv_source.                                     |
 | Permissions    | Which entity has rights to interact at this part of the workflow.                                                              | Installer.                                      |
 | Default Active | Shows whether this block is active at this time and whether it needs to be shown.                                              | Checked or unchecked.                           |
 | Dependencies   | Establish workflow dependancies that need to be completed prior.                                                               | Select the appropriate block from the dropdown. |

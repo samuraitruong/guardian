@@ -6,24 +6,24 @@ description: This policy comes into effect beginning with Guardian 1.3.0
 
 Guardian schema documents specify the content of Verifiable Credentials (VCs) and Verifiable Presentations (VP), which are produced by the Policy Workflow Engine in accordance with the configuration of the specific policy being executed. Effectively, schemas define the input/output ‘data’ part of policy execution, and therefore are constituent part of policy definition. The driving forces for the evolution of policies fully apply to schemas, namely:&#x20;
 
-* The evolution of the sustainability industry use-case targeted by the policy in question. &#x20;
-* Introduction of new use-cases and corresponding policies. &#x20;
-* The evolution of Guardian Policy Engine technology, where new capabilities are added existing modified or removed.&#x20;
+-   The evolution of the sustainability industry use-case targeted by the policy in question. &#x20;
+-   Introduction of new use-cases and corresponding policies. &#x20;
+-   The evolution of Guardian Policy Engine technology, where new capabilities are added existing modified or removed.&#x20;
 
 Additionally, building blocks of Guardian schema definition language, e.g. types and other content, must conform to W3C and JSON-LD specifications and as such evolve on a separate schedule. These may require changes in the vocabulary and semantics independently of the driving forces highlighted above.&#x20;
 
 These processes result in the following changes:&#x20;
 
-* New version of schemas created periodically, with arbitrary modifications to the structure.&#x20;
-* New elements are added to the schema vocabulary, and/or existing elements augmented or removed.&#x20;
+-   New version of schemas created periodically, with arbitrary modifications to the structure.&#x20;
+-   New elements are added to the schema vocabulary, and/or existing elements augmented or removed.&#x20;
 
 ### Schema Versioning
 
 Guardian Schemas are versioned using semantic versioning in the major.minor.micro format. Each number incremented sequentially to denote the following changes:&#x20;
 
-* major: the Schema version contains breaking changes.&#x20;
-* minor: the Schema version contains notable new capabilities and non-breaking changes.&#x20;
-* micro: the Schema release contains non-breaking changes only.&#x20;
+-   major: the Schema version contains breaking changes.&#x20;
+-   minor: the Schema version contains notable new capabilities and non-breaking changes.&#x20;
+-   micro: the Schema release contains non-breaking changes only.&#x20;
 
 Guardian system does not generate versions automatically, it is the responsibility of the Schema authors (Root Authority) to keep track of its policies/versions and correctly reflect changes in the version number.&#x20;
 
@@ -37,15 +37,15 @@ Guardian Schema authors should take care to ensure that schema content is preser
 
 The non-breaking changes to the Schema which do not warrant the change in the major version number are changes in:&#x20;
 
-* Changes in value to the descriptive elements, such as title, description and comment.&#x20;
-* Required/optional state of the element.&#x20;
-* New enum value in the “oneOf” element.&#x20;
-* New elements added to the schema not affecting existing elements in any way.&#x20;
+-   Changes in value to the descriptive elements, such as title, description and comment.&#x20;
+-   Required/optional state of the element.&#x20;
+-   New enum value in the “oneOf” element.&#x20;
+-   New elements added to the schema not affecting existing elements in any way.&#x20;
 
 ### Breaking changes&#x20;
 
-* Removing or renaming an element, changing any of its non-descriptive properties e.g. type or readOnly status. &#x20;
-* Changing in the values of ID elements.&#x20;
+-   Removing or renaming an element, changing any of its non-descriptive properties e.g. type or readOnly status. &#x20;
+-   Changing in the values of ID elements.&#x20;
 
 ### Schema version deprecation&#x20;
 

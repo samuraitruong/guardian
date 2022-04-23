@@ -1,8 +1,6 @@
 # Policy Workflow Step 11
 
-
-
-After the sensor gird information is captured, we need to do something with it. Therefore, we add an action step from the “sensors\_page” policy action step by clicking on the Action button in the top navigation bar.
+After the sensor gird information is captured, we need to do something with it. Therefore, we add an action step from the “sensors_page” policy action step by clicking on the Action button in the top navigation bar.
 
 As before, we set the tag, the permissions, and stop advancing the process until the download is complete via the “stop propagation” flag, and since this will be a download action, the action type is selected to be “download”.
 
@@ -12,7 +10,7 @@ We then need to select the file schema for the download, MRV. And, then we need 
 
 We now need to connect the download action to the sensor grid block we defined before.
 
-To do that, we click on the “sensors\_grid” button, and then click on “Bind Block” for Field 3 and select the “download\_config\_btn” action to bind the action to the actual definition of the button.
+To do that, we click on the “sensors_grid” button, and then click on “Bind Block” for Field 3 and select the “download_config_btn” action to bind the action to the actual definition of the button.
 
 ![](https://i.imgur.com/bbhG4gP.png)
 
@@ -127,5 +125,5 @@ To do that, we click on the “sensors\_grid” button, and then click on “Bin
                 "content": "download"
               }
             },
-            // Button to create new sensor, displayed after the grid.               
+            // Button to create new sensor, displayed after the grid.
 ```

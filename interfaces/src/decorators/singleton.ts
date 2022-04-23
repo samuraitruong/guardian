@@ -1,7 +1,7 @@
 const SINGLETON_KEY = Symbol();
 
 type Singleton<T extends new (...args: any[]) => any> = T & {
-    [SINGLETON_KEY]: T extends new (...args: any[]) => infer I ? I : never
+    [SINGLETON_KEY]: T extends new (...args: any[]) => infer I ? I : never;
 };
 
 /**
@@ -18,5 +18,5 @@ export const Singleton = <T extends new (...args: any[]) => any>(constructor: T)
                 target[SINGLETON_KEY] = Reflect.construct(target, argsList, newTarget);
             }
             return target[SINGLETON_KEY];
-        }
+        },
     });

@@ -1,6 +1,6 @@
 import { Response, Router } from 'express';
 import { IPFS } from '@helpers/ipfs';
-import { Logger } from 'logger-helper';
+import { Logger } from 'common';
 
 /**
  * IPFS route
@@ -14,13 +14,13 @@ ipfsAPI.post('/file', async (req: any, res: Response) => {
             return;
         }
         if (!req.body) {
-            throw new Error("Body content in request is empty");
+            throw new Error('Body content in request is empty');
         }
 
         const ipfs = new IPFS();
         const { cid } = await ipfs.addFile(req.body);
         if (!cid) {
-            throw new Error("File is not uploaded");
+            throw new Error('File is not uploaded');
         }
 
         res.status(200).json(cid);

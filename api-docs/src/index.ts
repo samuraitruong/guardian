@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import path from 'path';
 import yaml, { JSON_SCHEMA } from 'js-yaml';
-import {readFileSync} from 'fs';
+import { readFileSync } from 'fs';
 import swaggerUi from 'swagger-ui-express';
 dotenv.config();
 
@@ -16,7 +16,7 @@ function ReadSwaggerConfig() {
 
     return yaml.load(swaggerYaml, {
         schema: JSON_SCHEMA,
-        json: false
+        json: false,
     });
 }
 
@@ -25,4 +25,4 @@ app.get('/', swaggerUi.setup(ReadSwaggerConfig(), false));
 
 app.listen(PORT, () => {
     console.log('API DOCS service started on', PORT);
-})
+});

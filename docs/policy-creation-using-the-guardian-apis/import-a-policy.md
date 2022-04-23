@@ -12,6 +12,7 @@ Object that contains the identifier of the Hedera message which contains the IPF
 {% endswagger-parameter %}
 
 {% swagger-response status="201: Created" description="Successful Operation" %}
+
 ```javascript
 {
     content:
@@ -22,25 +23,31 @@ Object that contains the identifier of the Hedera message which contains the IPF
                   $ref: '#/components/schemas/PolicyConfig'
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="401: Unauthorized" description="Unauthorized" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="403: Forbidden" description="Forbidden" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="Internal server error" %}
+
 ```javascript
 {
     content:
@@ -49,5 +56,6 @@ Object that contains the identifier of the Hedera message which contains the IPF
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

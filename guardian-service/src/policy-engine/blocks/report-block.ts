@@ -7,15 +7,15 @@ import { PolicyComponentsUtils } from '../policy-components-utils';
 import { IPolicyReportBlock } from '@policy-engine/policy-engine.interface';
 import { IPolicyReport, IReport, IReportItem, ITokenReport, IVCReport, IVPReport, SchemaEntity } from 'interfaces';
 import { BlockActionError } from '@policy-engine/errors';
-import { Users } from "@helpers/users";
+import { Users } from '@helpers/users';
 
 @Report({
     blockType: 'reportBlock',
-    commonBlock: false
+    commonBlock: false,
 })
 export class ReportBlock {
     private state: { [key: string]: any } = {
-        lastValue: null
+        lastValue: null,
     };
 
     @Inject()
@@ -25,7 +25,7 @@ export class ReportBlock {
     public users: Users;
 
     async getUserName(did: string, map: any): Promise<string> {
-        if(!did) {
+        if (!did) {
             return null;
         }
         if (map[did]) {
@@ -72,7 +72,7 @@ export class ReportBlock {
         await this.itemUserMap(report.documents, map);
     }
 
-    async getData(user: IAuthUser, uuid:string): Promise<any> {
+    async getData(user: IAuthUser, uuid: string): Promise<any> {
         const ref = PolicyComponentsUtils.GetBlockRef<IPolicyReportBlock>(this);
         try {
             const blockState = this.state[user.did] || {};
@@ -81,7 +81,7 @@ export class ReportBlock {
                     hash: null,
                     uiMetaData: ref.options.uiMetaData,
                     schemes: null,
-                    data: null
+                    data: null,
                 };
             }
             const hash = blockState.lastValue;
@@ -90,7 +90,7 @@ export class ReportBlock {
 
             const variables: any = {
                 policyId: ref.policyId,
-                owner: user.did
+                owner: user.did,
             };
 
             const report: IReport = {
@@ -99,13 +99,15 @@ export class ReportBlock {
                 mintDocument: null,
                 policyDocument: null,
                 policyCreatorDocument: null,
-                documents: documents
-            }
+                documents: documents,
+            };
 
-            const vp = (await this.guardian.getVpDocuments({
-                hash: { $eq: hash },
-                policyId: { $eq: ref.policyId }
-            }))[0];
+            const vp = (
+                await this.guardian.getVpDocuments({
+                    hash: { $eq: hash },
+                    policyId: { $eq: ref.policyId },
+                })
+            )[0];
 
             if (vp) {
                 const vpDocument: IVPReport = {
@@ -115,8 +117,8 @@ export class ReportBlock {
                     hash: vp.hash,
                     issuer: vp.owner,
                     username: vp.owner,
-                    document: vp
-                }
+                    document: vp,
+                };
                 report.vpDocument = vpDocument;
 
                 const mint = vp.document.verifiableCredential[1];
@@ -134,9 +136,9 @@ export class ReportBlock {
                         policyId: null,
                         tag: null,
                         option: null,
-                        document: mint
-                    }
-                }
+                        document: mint,
+                    },
+                };
                 report.mintDocument = mintDocument;
                 variables.actionId = mint.id;
                 variables.actionSubjectId = mint.credentialSubject[0].id;
@@ -145,10 +147,12 @@ export class ReportBlock {
                 variables.documentId = doc.id;
                 variables.documentSubjectId = doc.credentialSubject[0].id;
             } else {
-                const vc = (await this.guardian.getVcDocuments({
-                    hash: { $eq: hash },
-                    policyId: { $eq: ref.policyId }
-                }))[0];
+                const vc = (
+                    await this.guardian.getVcDocuments({
+                        hash: { $eq: hash },
+                        policyId: { $eq: ref.policyId },
+                    })
+                )[0];
 
                 if (vc) {
                     const vcDocument: IVCReport = {
@@ -158,18 +162,20 @@ export class ReportBlock {
                         hash: vc.hash,
                         issuer: vc.owner,
                         username: vc.owner,
-                        document: vc
-                    }
+                        document: vc,
+                    };
                     report.vcDocument = vcDocument;
                     variables.documentId = vc.document.id;
                     variables.documentSubjectId = vc.document.credentialSubject[0].id;
                 }
             }
 
-            const policy = (await this.guardian.getVcDocuments({
-                type: { $eq: SchemaEntity.POLICY },
-                policyId: ref.policyId
-            }))[0];
+            const policy = (
+                await this.guardian.getVcDocuments({
+                    type: { $eq: SchemaEntity.POLICY },
+                    policyId: ref.policyId,
+                })
+            )[0];
 
             if (policy) {
                 const policyDocument: IPolicyReport = {
@@ -180,14 +186,16 @@ export class ReportBlock {
                     tag: 'Policy Created',
                     issuer: policy.owner,
                     username: policy.owner,
-                    document: policy
-                }
+                    document: policy,
+                };
                 report.policyDocument = policyDocument;
 
-                const policyCreator = (await this.guardian.getVcDocuments({
-                    type: { $eq: SchemaEntity.ROOT_AUTHORITY },
-                    owner: policy.owner
-                }))[0];
+                const policyCreator = (
+                    await this.guardian.getVcDocuments({
+                        type: { $eq: SchemaEntity.ROOT_AUTHORITY },
+                        owner: policy.owner,
+                    })
+                )[0];
 
                 if (policyCreator) {
                     const policyCreatorDocument: IReportItem = {
@@ -198,8 +206,8 @@ export class ReportBlock {
                         tag: 'Account Creation',
                         issuer: policy.owner,
                         username: policy.owner,
-                        document: policyCreator
-                    }
+                        document: policyCreator,
+                    };
                     report.policyCreatorDocument = policyCreatorDocument;
                 }
             }
@@ -218,7 +226,7 @@ export class ReportBlock {
                 hash: hash,
                 uiMetaData: ref.options.uiMetaData,
                 schemes: schemes,
-                data: report
+                data: report,
             };
         } catch (error) {
             throw new BlockActionError(error, ref.blockType, ref.uuid);

@@ -11,35 +11,36 @@ import { IPolicySourceBlock } from '@policy-engine/policy-engine.interface';
  */
 @DataSourceBlock({
     blockType: 'interfaceDocumentsSourceBlock',
-    commonBlock: false
+    commonBlock: false,
 })
 export class InterfaceDocumentsSource {
-
     @BlockStateUpdate()
-    async update(state: any, user: IAuthUser) {
-    }
+    async update(state: any, user: IAuthUser) {}
 
     async getData(user: IAuthUser, uuid: string, queryParams: any): Promise<any> {
         const ref = PolicyComponentsUtils.GetBlockRef<IPolicySourceBlock>(this);
 
-        const blocks = ref.getFiltersAddons().map(addon => {
+        const blocks = ref.getFiltersAddons().map((addon) => {
             return {
                 id: addon.uuid,
                 uiMetaData: addon.options.uiMetaData,
-                blockType: addon.blockType
-            }
+                blockType: addon.blockType,
+            };
         });
 
-        return Object.assign({
-            data: await ref.getSources(user),
-            blocks
-        }, ref.options.uiMetaData);
+        return Object.assign(
+            {
+                data: await ref.getSources(user),
+                blocks,
+            },
+            ref.options.uiMetaData
+        );
     }
 
     public async validate(resultsContainer: PolicyValidationResultsContainer): Promise<void> {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
         if (Array.isArray(ref.options.uiMetaData.fields)) {
-            for (let tag of ref.options.uiMetaData.fields.map(i => i.bindBlock).filter(item => !!item)) {
+            for (let tag of ref.options.uiMetaData.fields.map((i) => i.bindBlock).filter((item) => !!item)) {
                 if (!resultsContainer.isTagExist(tag)) {
                     resultsContainer.addBlockError(ref.uuid, `Tag "${tag}" does not exist`);
                 }

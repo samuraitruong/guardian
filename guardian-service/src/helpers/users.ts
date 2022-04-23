@@ -1,5 +1,5 @@
-import {Singleton} from '@helpers/decorators/singleton';
-import {Request} from 'express';
+import { Singleton } from '@helpers/decorators/singleton';
+import { Request } from 'express';
 import { AuthEvents, UserRole } from 'interfaces';
 import { ServiceRequestsBase } from '@helpers/serviceRequestsBase';
 import { IAuthUser } from '@auth/auth.interface';
@@ -9,8 +9,9 @@ import { IAuthUser } from '@auth/auth.interface';
  */
 @Singleton
 export class Users extends ServiceRequestsBase {
-    public target: string = 'auth-service'
-
+    constructor() {
+        super('auth-service');
+    }
     private async _getUser(target: IAuthUser | Request): Promise<IAuthUser> {
         let user: IAuthUser;
         if (!target) {
@@ -22,7 +23,9 @@ export class Users extends ServiceRequestsBase {
             if (!target['user'] || !target['user'].username) {
                 return null;
             }
-            user = await this.request(AuthEvents.GET_USER, {username: target['user'].username});
+            user = await this.request(AuthEvents.GET_USER, {
+                username: target['user'].username,
+            });
         }
         return user;
     }
@@ -69,7 +72,7 @@ export class Users extends ServiceRequestsBase {
      * @param username
      */
     public async getUser(username: string): Promise<IAuthUser> {
-        return await this.request(AuthEvents.GET_USER, {username});
+        return await this.request(AuthEvents.GET_USER, { username });
     }
 
     /**
@@ -77,7 +80,7 @@ export class Users extends ServiceRequestsBase {
      * @param did
      */
     public async getUserById(did: string): Promise<IAuthUser> {
-        return await this.request(AuthEvents.GET_USER_BY_ID, {did});
+        return await this.request(AuthEvents.GET_USER_BY_ID, { did });
     }
 
     /**
@@ -85,7 +88,7 @@ export class Users extends ServiceRequestsBase {
      * @param dids
      */
     public async getUsersByIds(dids: string[]): Promise<IAuthUser[]> {
-        return await this.request(AuthEvents.GET_USERS_BY_ID, {dids});
+        return await this.request(AuthEvents.GET_USERS_BY_ID, { dids });
     }
 
     /**
@@ -93,7 +96,7 @@ export class Users extends ServiceRequestsBase {
      * @param role
      */
     public async getUsersByRole(role: UserRole): Promise<IAuthUser[]> {
-        return await this.request(AuthEvents.GET_USERS_BY_ROLE, {role});;
+        return await this.request(AuthEvents.GET_USERS_BY_ROLE, { role });
     }
 
     /**
@@ -102,7 +105,10 @@ export class Users extends ServiceRequestsBase {
      * @param item
      */
     public async updateCurrentUser(req: Request, item: any) {
-        return await this.request(AuthEvents.UPDATE_USER, {username: req['user'].username, item});
+        return await this.request(AuthEvents.UPDATE_USER, {
+            username: req['user'].username,
+            item,
+        });
     }
 
     /**
@@ -114,15 +120,22 @@ export class Users extends ServiceRequestsBase {
     }
 
     public async getUserByToken(token: string) {
-        return await this.request(AuthEvents.GET_USER_BY_TOKEN, {token});
+        return await this.request(AuthEvents.GET_USER_BY_TOKEN, { token });
     }
 
     public async registerNewUser(username: string, password: string, role: string) {
-        return await this.request(AuthEvents.REGISTER_NEW_USER, { username, password, role });
+        return await this.request(AuthEvents.REGISTER_NEW_USER, {
+            username,
+            password,
+            role,
+        });
     }
 
     public async generateNewToken(username: string, password: string) {
-        return await this.request(AuthEvents.GENERATE_NEW_TOKEN, { username, password });
+        return await this.request(AuthEvents.GENERATE_NEW_TOKEN, {
+            username,
+            password,
+        });
     }
 
     public async getAllUserAccounts() {

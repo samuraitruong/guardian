@@ -1,6 +1,6 @@
 import { BlockErrorActions } from 'interfaces';
 import { PolicyComponentsUtils } from '@policy-engine/policy-components-utils';
-import { Logger } from 'logger-helper';
+import { Logger } from 'common';
 
 export function CatchErrors() {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor) {
@@ -11,7 +11,13 @@ export function CatchErrors() {
                     try {
                         await target.apply(thisArg, argArray);
                     } catch (e) {
-                        new Logger().error(e.message, ['guardian-service', thisArg.uuid, thisArg.blockType, 'block-runtime', thisArg.policyId]);
+                        new Logger().error(e.message, [
+                            'guardian-service',
+                            thisArg.uuid,
+                            thisArg.blockType,
+                            'block-runtime',
+                            thisArg.policyId,
+                        ]);
                         console.error(e.message);
                         PolicyComponentsUtils.BlockErrorFn(thisArg.blockType, e.message, user);
                         switch (thisArg.options.onErrorAction) {
@@ -22,31 +28,33 @@ export function CatchErrors() {
 
                             case BlockErrorActions.GOTO_STEP: {
                                 const stepParent = thisArg.parent;
-                                const targetBlock = stepParent.children[parseInt(thisArg.options.errorFallbackStep, 10)];
-                                if ((stepParent.blockType === 'interfaceStepBlock') && targetBlock) {
-                                    await stepParent.changeStep(user, {}, targetBlock)
+                                const targetBlock =
+                                    stepParent.children[parseInt(thisArg.options.errorFallbackStep, 10)];
+                                if (stepParent.blockType === 'interfaceStepBlock' && targetBlock) {
+                                    await stepParent.changeStep(user, {}, targetBlock);
                                 }
                                 break;
                             }
 
                             case BlockErrorActions.GOTO_TAG: {
                                 const stepParent = thisArg.parent;
-                                const targetBlock = stepParent.children.find(c => c.tag === thisArg.options.errorFallbackTag);
-                                if ((stepParent.blockType === 'interfaceStepBlock') && targetBlock) {
-                                    await stepParent.changeStep(user, {}, targetBlock)
+                                const targetBlock = stepParent.children.find(
+                                    (c) => c.tag === thisArg.options.errorFallbackTag
+                                );
+                                if (stepParent.blockType === 'interfaceStepBlock' && targetBlock) {
+                                    await stepParent.changeStep(user, {}, targetBlock);
                                 }
                                 break;
                             }
 
                             default:
                                 return;
-
                         }
                     }
-                }
+                };
 
                 await f();
-            }
-        })
-    }
+            },
+        });
+    };
 }

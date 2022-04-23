@@ -1,5 +1,5 @@
-import {BlockActionError} from "@policy-engine/errors";
-import {PolicyComponentsUtils} from "../../policy-components-utils";
+import { BlockActionError } from '@policy-engine/errors';
+import { PolicyComponentsUtils } from '../../policy-components-utils';
 
 export function TransformState(rules: any, state: any, updateSource: string, updateTarget: string): any {
     if (!rules) {
@@ -16,12 +16,19 @@ export function TransformState(rules: any, state: any, updateSource: string, upd
         return state;
     }
 
-    const expression = new Function('state', `with (state) { return ${configuration.expression} ${configuration.source} }`);
+    const expression = new Function(
+        'state',
+        `with (state) { return ${configuration.expression} ${configuration.source} }`
+    );
     const updates = {};
     try {
         updates[configuration.target] = expression(state);
     } catch (e) {
-        throw new BlockActionError(e.message, PolicyComponentsUtils.GetBlockByUUID(updateTarget).blockType, updateTarget);
+        throw new BlockActionError(
+            e.message,
+            PolicyComponentsUtils.GetBlockByUUID(updateTarget).blockType,
+            updateTarget
+        );
     }
     return Object.assign({}, state, updates);
 }

@@ -4,7 +4,7 @@ import { AuthenticatedRequest } from '@auth/auth.interface';
 import { permissionHelper, authorizationHelper } from '@auth/authorizationHelper';
 import { UserRole } from 'interfaces';
 import { Users } from '@helpers/users';
-import { Logger } from 'logger-helper';
+import { Logger } from 'common';
 
 /**
  * User account route
@@ -51,13 +51,17 @@ accountAPI.post('/login', async (req: Request, res: Response) => {
     }
 });
 
-
-accountAPI.get('/', authorizationHelper, permissionHelper(UserRole.ROOT_AUTHORITY), async (req: AuthenticatedRequest, res: Response) => {
-    try {
-        const users = new Users();
-        res.status(200).json(await users.getAllUserAccounts());
-    } catch (e) {
-        new Logger().error(e.toString(), ['API_GATEWAY']);
-        res.status(500).send({ code: 500, message: 'Server error' });
+accountAPI.get(
+    '/',
+    authorizationHelper,
+    permissionHelper(UserRole.ROOT_AUTHORITY),
+    async (req: AuthenticatedRequest, res: Response) => {
+        try {
+            const users = new Users();
+            res.status(200).json(await users.getAllUserAccounts());
+        } catch (e) {
+            new Logger().error(e.toString(), ['API_GATEWAY']);
+            res.status(500).send({ code: 500, message: 'Server error' });
+        }
     }
-});
+);

@@ -1,6 +1,6 @@
-import { Request } from "express";
-import WebSocket from "ws";
-import { UserRole } from "interfaces";
+import { Request } from 'express';
+import WebSocket from 'ws';
+import { UserRole } from 'interfaces';
 
 export interface IAuthUser {
     username: string;
@@ -11,7 +11,7 @@ export interface IAuthUser {
 }
 
 interface AdditionalFields {
-    user: IAuthUser
+    user: IAuthUser;
 }
 
 export type AuthenticatedRequest = Request & AdditionalFields;

@@ -9,13 +9,13 @@ import { IAuthUser } from '@auth/auth.interface';
  */
 @ContainerBlock({
     blockType: 'interfaceStepBlock',
-    commonBlock: false
+    commonBlock: false,
 })
 export class InterfaceStepBlock {
     @StateField()
     state: { [key: string]: any } = { index: 0 };
 
-    async changeStep(user: IAuthUser, data:any, target:any) {
+    async changeStep(user: IAuthUser, data: any, target: any) {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
         let blockState;
         if (!this.state.hasOwnProperty(user.did)) {
@@ -67,6 +67,5 @@ export class InterfaceStepBlock {
             index = state.index;
         }
         return index === childIndex;
-
     }
 }

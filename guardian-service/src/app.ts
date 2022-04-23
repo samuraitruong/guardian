@@ -1,5 +1,4 @@
-import FastMQ from 'fastmq'
-import {createConnection, getMongoRepository} from 'typeorm';
+import { createConnection, getMongoRepository } from 'typeorm';
 import { approveAPI } from '@api/approve.service';
 import { configAPI, readConfig } from '@api/config.service';
 import { documentsAPI } from '@api/documents.service';
@@ -17,15 +16,16 @@ import { VcDocument } from '@entity/vc-document';
 import { VpDocument } from '@entity/vp-document';
 import { IPFS } from '@helpers/ipfs';
 import { demoAPI } from '@api/demo';
-import {VcHelper} from '@helpers/vcHelper';
-import {BlockTreeGenerator} from '@policy-engine/block-tree-generator';
-import {Policy} from '@entity/policy';
-import {Guardians} from '@helpers/guardians';
-import {PolicyComponentsUtils} from '@policy-engine/policy-components-utils';
+import { VcHelper } from '@helpers/vcHelper';
+import { BlockTreeGenerator } from '@policy-engine/block-tree-generator';
+import { Policy } from '@entity/policy';
+import { Guardians } from '@helpers/guardians';
+import { PolicyComponentsUtils } from '@policy-engine/policy-components-utils';
 import { Wallet } from '@helpers/wallet';
 import { Users } from '@helpers/users';
 import { Settings } from '@entity/settings';
-import { Logger } from 'logger-helper';
+import { Logger, MessageBrokerChannel } from 'common';
+import { connect } from 'nats';
 
 Promise.all([
     createConnection({
@@ -35,19 +35,18 @@ Promise.all([
         synchronize: true,
         logging: true,
         useUnifiedTopology: true,
-        entities: [
-            'dist/entity/*.js'
-        ],
+        entities: ['dist/entity/*.js'],
         cli: {
-            entitiesDir: 'dist/entity'
-        }
+            entitiesDir: 'dist/entity',
+        },
     }),
-    FastMQ.Client.connect(process.env.SERVICE_CHANNEL, 7500, process.env.MQ_ADDRESS)
-]).then(async values => {
-    const [db, channel] = values;
+    connect({ servers: [process.env.MQ_ADDRESS], name: 'GUARDIAN_SERVICE' }),
+]).then(async (values) => {
+    const [db, nc] = values;
+    const channel = new MessageBrokerChannel(nc, 'guardian');
+    new Logger().setChannel(new MessageBrokerChannel(nc, 'logger-service'));
 
     IPFS.setChannel(channel);
-    new Logger().setChannel(channel);
     new Guardians().setChannel(channel);
     new Wallet().setChannel(channel);
     new Users().setChannel(channel);
@@ -56,9 +55,9 @@ Promise.all([
 
     const policyGenerator = new BlockTreeGenerator();
     policyGenerator.setChannel(channel);
-    for (let policy of await getMongoRepository(Policy).find(
-        {where: {status: {$eq: 'PUBLISH'}}}
-    )) {
+    for (let policy of await getMongoRepository(Policy).find({
+        where: { status: { $eq: 'PUBLISH' } },
+    })) {
         try {
             await policyGenerator.generate(policy.id.toString());
         } catch (e) {
@@ -82,8 +81,7 @@ Promise.all([
     let fileConfig = null;
     try {
         fileConfig = await readConfig(settingsRepository);
-    }
-    catch (e){
+    } catch (e) {
         new Logger().error(e.toString(), ['GUARDIAN_SERVICE']);
         console.log(e);
     }
@@ -94,12 +92,7 @@ Promise.all([
     await tokenAPI(channel, tokenRepository);
     await loaderAPI(channel, didDocumentRepository, schemaRepository);
     await rootAuthorityAPI(channel, configRepository);
-    await documentsAPI(
-        channel,
-        didDocumentRepository,
-        vcDocumentRepository,
-        vpDocumentRepository,
-    );
+    await documentsAPI(channel, didDocumentRepository, vcDocumentRepository, vpDocumentRepository);
     await demoAPI(channel);
 
     await approveAPI(channel, approvalDocumentRepository);

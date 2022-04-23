@@ -1,33 +1,35 @@
 import { IMessageResponse } from 'interfaces';
+import { MessageBrokerChannel } from 'common';
 
 export abstract class ServiceRequestsBase {
-    abstract readonly target: string;
-    protected channel: any;
-
+    public channel: MessageBrokerChannel;
+    constructor(public target: string) {}
     /**
      * Register channel
      * @param channel
      */
-    public setChannel(channel: any): any {
+    public setChannel(channel: MessageBrokerChannel): void {
         this.channel = channel;
     }
 
     /**
      * Get channel
      */
-    public getChannel(): any {
+    public getChannel(): MessageBrokerChannel {
         return this.channel;
     }
 
     /**
      * Request to guardian service method
      * @param entity
-     * @param params
+     * @param payload
      * @param type
      */
-    public async request<T>(entity: string, params?: any, type?: string): Promise<T> {
+    public async request<T>(entity: string, payload: any = {}): Promise<T> {
         try {
-            const response: IMessageResponse<T> = (await this.channel.request(this.target, entity, params, type)).payload;
+            const response = await this.channel.request<any, IMessageResponse<T>>(`${this.target}.${entity}`, {
+                payload,
+            });
             if (!response) {
                 throw 'Server is not available';
             }
@@ -36,19 +38,28 @@ export abstract class ServiceRequestsBase {
             }
             return response.body;
         } catch (e) {
-            throw new Error(`${this.target} (${entity}) send: ` + e);
+            throw new Error(`Guardian (${entity}) send: ` + e);
         }
     }
-
-    public async rawRequest(entity: string, params?: any, type?: string): Promise<any> {
+    /**
+     * Request to MQ with binary data
+     * @param entity
+     * @param file
+     * @returns
+     */
+    public async rawRequest(entity: string, file: ArrayBuffer): Promise<any> {
         try {
-            const response = (await this.channel.request(this.target, entity, params, type)).payload;
+            const response = await this.channel.request(`${this.target}.${entity}`, {
+                payload: {
+                    content: Buffer.from(file).toString('base64'),
+                },
+            });
             if (!response) {
                 throw 'Server is not available';
             }
             return response;
         } catch (e) {
-            throw new Error(`Guardian (${entity}) send: ` + e);
+            throw new Error(`${this.target}.(${entity}) send: ` + e);
         }
     }
 }

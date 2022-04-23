@@ -1,11 +1,9 @@
-const {
-    HederaHelper, HederaUtils
-} = require('../../dist/index');
+const { HederaHelper, HederaUtils } = require('../../dist/index');
 const { Client, AccountBalanceQuery } = require('@hashgraph/sdk');
 const { expect, assert } = require('chai');
 
 async function delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 describe('Hedera SDK Helper', function () {
@@ -15,7 +13,8 @@ describe('Hedera SDK Helper', function () {
 
     const initialBalance = 5;
     const OPERATOR_ID = '0.0.1548173';
-    const OPERATOR_KEY = '302e020100300506032b657004220420e749aa65835ce90cab1cfb7f0fa11038e867e74946abca993f543cf9509c8edc';
+    const OPERATOR_KEY =
+        '302e020100300506032b657004220420e749aa65835ce90cab1cfb7f0fa11038e867e74946abca993f543cf9509c8edc';
 
     this.timeout(60 * transactionTimeout);
 
@@ -81,7 +80,7 @@ describe('Hedera SDK Helper', function () {
             balance: '0',
             frozen: false,
             kyc: true,
-            hBarBalance: initialBalance + ' ℏ'
+            hBarBalance: initialBalance + ' ℏ',
         });
         await delay(1000);
     });
@@ -92,7 +91,7 @@ describe('Hedera SDK Helper', function () {
         if (!tokenId) assert.fail('Token not created');
         const { id, key } = await sdk.newAccount(initialBalance);
         account2Id = id;
-        account2Key = key
+        account2Key = key;
         await delay(1000);
         if (!account2Id) assert.fail('Account not created');
         const status = await sdk.associate(tokenId, account2Id.toString(), account2Key.toString());
@@ -129,7 +128,7 @@ describe('Hedera SDK Helper', function () {
             balance: '0',
             frozen: true,
             kyc: true,
-            hBarBalance: initialBalance + ' ℏ'
+            hBarBalance: initialBalance + ' ℏ',
         });
         await delay(1000);
     });
@@ -162,7 +161,7 @@ describe('Hedera SDK Helper', function () {
             balance: '0',
             frozen: false,
             kyc: false,
-            hBarBalance: initialBalance + ' ℏ'
+            hBarBalance: initialBalance + ' ℏ',
         });
         await delay(1000);
     });
@@ -185,7 +184,6 @@ describe('Hedera SDK Helper', function () {
         assert.notExists(accountInfo[tokenId]);
         await delay(1000);
     });
-
 
     it('Test SDK newNFToken', async function () {
         this.timeout(transactionTimeout);
@@ -271,14 +269,7 @@ describe('Hedera SDK Helper', function () {
         if (!tokenId) assert.fail('Token not created');
 
         let status;
-        status = await sdk.transfer(
-            tokenId,
-            account2Id,
-            accountId,
-            accountKey,
-            1,
-            'Memo'
-        );
+        status = await sdk.transfer(tokenId, account2Id, accountId, accountKey, 1, 'Memo');
         assert.equal(status, true);
         await delay(1000);
     });
@@ -290,16 +281,9 @@ describe('Hedera SDK Helper', function () {
         if (!account2Id) assert.fail('Account not created');
         if (!token2Id) assert.fail('Token not created');
         if (!nft) assert.fail('Token not minted');
-        
+
         let status;
-        status = await sdk.transferNFT(
-            token2Id,
-            account2Id,
-            accountId,
-            accountKey,
-            nft,
-            'Memo'
-        );
+        status = await sdk.transferNFT(token2Id, account2Id, accountId, accountKey, nft, 'Memo');
         assert.equal(status, true);
         await delay(1000);
     });
@@ -312,27 +296,19 @@ describe('Hedera SDK Helper', function () {
         if (!tokenId) assert.fail('Token not created');
 
         let status;
-        status = await sdk.wipe(
-            tokenId,
-            account2Id,
-            accountKey,
-            1,
-            'Memo'
-        );
+        status = await sdk.wipe(tokenId, account2Id, accountKey, 1, 'Memo');
         assert.equal(status, true);
         await delay(1000);
     });
 
-
     it('Test SDK newTopic', async function () {
         this.timeout(2 * transactionTimeout);
-        
+
         if (!accountId) assert.fail('Account not created');
         const id = await sdk.newTopic(accountKey, 'Memo');
         assert.exists(id);
         await delay(1000);
     });
-
 
     // newTopic(key: PrivateKey | string | null, topicMemo?: string): Promise<string>
 });

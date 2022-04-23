@@ -31,10 +31,9 @@ export class RequestVcDocumentBlock {
 
     private schema: Schema | null;
 
-    constructor() {
-    }
+    constructor() {}
 
-    async changeActive(user:IAuthUser, active) {
+    async changeActive(user: IAuthUser, active) {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
         let blockState: any;
         if (!this.state.hasOwnProperty(user.did)) {
@@ -47,7 +46,7 @@ export class RequestVcDocumentBlock {
         ref.updateBlock(blockState, user);
     }
 
-    getActive(user:IAuthUser) {
+    getActive(user: IAuthUser) {
         let blockState;
         if (!this.state.hasOwnProperty(user.did)) {
             blockState = {};
@@ -74,7 +73,7 @@ export class RequestVcDocumentBlock {
         }
 
         const sources = await ref.getSources(user);
-        
+
         return {
             id: ref.uuid,
             blockType: ref.blockType,
@@ -84,7 +83,7 @@ export class RequestVcDocumentBlock {
             uiMetaData: options.uiMetaData || {},
             hideFields: options.hideFields || [],
             active: this.getActive(user),
-            data: sources && sources.length && sources[0] || null,
+            data: (sources && sources.length && sources[0]) || null,
         };
     }
 
@@ -133,7 +132,7 @@ export class RequestVcDocumentBlock {
                 owner: user.did,
                 document: vc.toJsonTree(),
                 schema: schema,
-                type: schema
+                type: schema,
             };
 
             await this.changeActive(user, true);
@@ -147,7 +146,12 @@ export class RequestVcDocumentBlock {
         return {};
     }
 
-    async generateId(idType: string, user: any, userHederaAccount: string, userHederaKey: string): Promise<string | undefined> {
+    async generateId(
+        idType: string,
+        user: any,
+        userHederaAccount: string,
+        userHederaKey: string
+    ): Promise<string | undefined> {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
         try {
             if (idType == 'UUID') {
@@ -156,9 +160,11 @@ export class RequestVcDocumentBlock {
             if (idType == 'DID') {
                 const ref = PolicyComponentsUtils.GetBlockRef(this);
                 const addressBook = await this.guardians.getAddressBook(ref.policyOwner);
-                const hederaHelper = HederaHelper
-                    .setOperator(userHederaAccount, userHederaKey)
-                    .setAddressBook(addressBook.addressBook, addressBook.didTopic, addressBook.vcTopic);
+                const hederaHelper = HederaHelper.setOperator(userHederaAccount, userHederaKey).setAddressBook(
+                    addressBook.addressBook,
+                    addressBook.didTopic,
+                    addressBook.vcTopic
+                );
 
                 // did generation
                 const newDid = await hederaHelper.DID.createDid();
@@ -167,11 +173,14 @@ export class RequestVcDocumentBlock {
                 const key = newDid.key;
                 const hcsDid = newDid.hcsDid;
 
-                const message = await hederaHelper.DID.createDidTransaction(hcsDid)
+                const message = await hederaHelper.DID.createDidTransaction(hcsDid);
                 const did = message.getDid();
                 const operation = message.getOperation();
 
-                await this.guardians.setDidDocument({ did: DID, document: DIDDocument });
+                await this.guardians.setDidDocument({
+                    did: DID,
+                    document: DIDDocument,
+                });
                 await this.guardians.setDidDocument({ did, operation });
                 await this.wallet.setKey(user.walletToken, KeyType.KEY, DID, key);
 

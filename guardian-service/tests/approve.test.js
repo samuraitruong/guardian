@@ -1,11 +1,6 @@
 const { expect, assert } = require('chai');
 const { approveAPI } = require('../dist/api/approve.service');
-const { 
-    createChannel, 
-    createTable, 
-    checkMessage, 
-    checkError 
-} = require('./helper');
+const { createChannel, createTable, checkMessage, checkError } = require('./helper');
 
 describe('Approve service', function () {
     let service, channel, approvalDocumentRepository;
@@ -33,21 +28,21 @@ describe('Approve service', function () {
             id: 'id',
             owner: 'owner',
             approver: 'approver',
-            policyId: 'policyId'
+            policyId: 'policyId',
         });
         checkMessage(value, ['id']);
 
         value = await channel.run(GET_APPROVE_DOCUMENTS, {
             owner: 'owner',
             approver: 'approver',
-            policyId: 'policyId'
+            policyId: 'policyId',
         });
         checkMessage(value, {
             where: {
-                owner: { '$eq': 'owner' },
-                approver: { '$eq': 'approver' },
-                policyId: { '$eq': 'policyId' }
-            }
+                owner: { $eq: 'owner' },
+                approver: { $eq: 'approver' },
+                policyId: { $eq: 'policyId' },
+            },
         });
     });
 
@@ -57,21 +52,24 @@ describe('Approve service', function () {
         value = await channel.run(SET_APPROVE_DOCUMENTS, {
             id: 'id',
             field1: 'field1',
-            field2: 'field2'
+            field2: 'field2',
         });
-        checkMessage(value, ['id', {
-            field1: 'field1',
-            field2: 'field2'
-        }]);
+        checkMessage(value, [
+            'id',
+            {
+                field1: 'field1',
+                field2: 'field2',
+            },
+        ]);
 
         value = await channel.run(SET_APPROVE_DOCUMENTS, {
             field1: 'field1',
-            field2: 'field2'
+            field2: 'field2',
         });
         checkMessage(value, {
-            '_id': '1',
+            _id: '1',
             field1: 'field1',
-            field2: 'field2'
+            field2: 'field2',
         });
     });
 
@@ -79,11 +77,14 @@ describe('Approve service', function () {
         let value = await channel.run(UPDATE_APPROVE_DOCUMENTS, {
             id: 'id',
             field1: 'field1',
-            field2: 'field2'
+            field2: 'field2',
         });
-        checkMessage(value, ['id', {
-            field1: 'field1',
-            field2: 'field2'
-        }]);
+        checkMessage(value, [
+            'id',
+            {
+                field1: 'field1',
+                field2: 'field2',
+            },
+        ]);
     });
 });

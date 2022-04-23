@@ -5,7 +5,7 @@ import { VCDocumentLoader } from './document-loader/vc-document-loader';
 
 const PORT = process.env.PORT || 3005;
 (async () => {
-    const app = express()
+    const app = express();
 
     app.use(express.static('public'));
     app.use(express.json());
@@ -32,21 +32,23 @@ const PORT = process.env.PORT || 3005;
             type,
             context,
             schema,
-            policyTag
+            policyTag,
         } = config;
 
         vcDocumentLoader.setDocument(schema);
         vcDocumentLoader.setContext(context);
 
-        const hederaHelper = HederaHelper
-            .setOperator(hederaAccountId, hederaAccountKey)
-            .setAddressBook(null, null, topic);
+        const hederaHelper = HederaHelper.setOperator(hederaAccountId, hederaAccountKey).setAddressBook(
+            null,
+            null,
+            topic
+        );
 
         let document, vc;
         try {
-            const date = (new Date()).toISOString();
+            const date = new Date().toISOString();
             const vcSubject: any = {
-                ...context
+                ...context,
             };
             if (setting) {
                 const keys = Object.keys(setting);
@@ -67,7 +69,7 @@ const PORT = process.env.PORT || 3005;
             vc = await vcHelper.createVC(did, key, vcSubject);
             document = vc.toJsonTree();
 
-            console.log("created vc");
+            console.log('created vc');
             console.log(document);
         } catch (e) {
             console.error(e);
@@ -78,8 +80,8 @@ const PORT = process.env.PORT || 3005;
         const body = {
             document: document,
             owner: installer,
-            policyTag: policyTag
-        }
+            policyTag: policyTag,
+        };
         try {
             console.error('start post');
             const resp = await axios.post(url, body);
@@ -105,5 +107,5 @@ const PORT = process.env.PORT || 3005;
 
     app.listen(PORT, () => {
         console.log('Sender started at port', PORT);
-    })
+    });
 })();

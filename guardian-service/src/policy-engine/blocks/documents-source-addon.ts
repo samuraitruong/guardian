@@ -5,11 +5,11 @@ import { Guardians } from '@helpers/guardians';
 import { PolicyValidationResultsContainer } from '@policy-engine/policy-validation-results-container';
 import { IAuthUser } from '@auth/auth.interface';
 import { Users } from '@helpers/users';
-import {PolicyComponentsUtils} from '../policy-components-utils';
-import {IPolicyAddonBlock} from '@policy-engine/policy-engine.interface';
+import { PolicyComponentsUtils } from '../policy-components-utils';
+import { IPolicyAddonBlock } from '@policy-engine/policy-engine.interface';
 
 @SourceAddon({
-    blockType: 'documentsSourceAddon'
+    blockType: 'documentsSourceAddon',
 })
 export class DocumentsSourceAddon {
     @Inject()
@@ -43,7 +43,7 @@ export class DocumentsSourceAddon {
 
             switch (filter.type) {
                 case 'equal':
-                    Object.assign(expr, { $eq: filter.value })
+                    Object.assign(expr, { $eq: filter.value });
                     break;
 
                 case 'not_equal':
@@ -88,7 +88,7 @@ export class DocumentsSourceAddon {
                 break;
 
             case 'root-authorities':
-                data = await this.users.getAllRootAuthorityAccounts() as IAuthUser[];
+                data = (await this.users.getAllRootAuthorityAccounts()) as IAuthUser[];
                 break;
 
             case 'approve':
@@ -101,7 +101,7 @@ export class DocumentsSourceAddon {
                 break;
 
             default:
-                throw new BlockActionError(`dataType "${ref.options.dataType}" is unknown`, ref.blockType, ref.uuid)
+                throw new BlockActionError(`dataType "${ref.options.dataType}" is unknown`, ref.blockType, ref.uuid);
         }
 
         for (let i = 0; i < data.length; i++) {

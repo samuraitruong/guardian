@@ -1,11 +1,6 @@
 const { expect, assert } = require('chai');
 const { configAPI } = require('../dist/api/config.service');
-const { 
-    createChannel, 
-    createTable, 
-    checkMessage, 
-    checkError 
-} = require('./helper');
+const { createChannel, createTable, checkMessage, checkError } = require('./helper');
 
 describe('Config service', function () {
     let service, channel, fileContent;
@@ -15,9 +10,9 @@ describe('Config service', function () {
     before(async function () {
         channel = createChannel();
         fileContent = {
-            'ADDRESS_BOOK' : 'ADDRESS_BOOK',
-            'VC_TOPIC_ID' : 'VC_TOPIC_ID',
-            'DID_TOPIC_ID' : 'DID_TOPIC_ID'
+            ADDRESS_BOOK: 'ADDRESS_BOOK',
+            VC_TOPIC_ID: 'VC_TOPIC_ID',
+            DID_TOPIC_ID: 'DID_TOPIC_ID',
         };
         service = configAPI(channel, fileContent);
     });
@@ -32,7 +27,7 @@ describe('Config service', function () {
             owner: null,
             addressBook: 'ADDRESS_BOOK',
             vcTopic: 'VC_TOPIC_ID',
-            didTopic: 'DID_TOPIC_ID'
+            didTopic: 'DID_TOPIC_ID',
         });
     });
 });

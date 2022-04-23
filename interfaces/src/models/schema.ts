@@ -40,47 +40,47 @@ export class Schema implements ISchema {
         if (schema) {
             this.id = schema.id || undefined;
             this.uuid = schema.uuid || ModelHelper.randomUUID();
-            this.hash = schema.hash || "";
-            this.name = schema.name || "";
-            this.description = schema.description || "";
+            this.hash = schema.hash || '';
+            this.name = schema.name || '';
+            this.description = schema.description || '';
             this.entity = schema.entity || SchemaEntity.NONE;
             this.status = schema.status || SchemaStatus.DRAFT;
             this.readonly = schema.readonly || false;
-            this.document = schema.document || "";
-            this.context = schema.context || "";
-            this.version = schema.version || "";
-            this.creator = schema.creator || "";
-            this.owner = schema.owner || "";
-            this.topicId = schema.topicId || "";
-            this.messageId = schema.messageId || "";
-            this.documentURL = schema.documentURL || "";
-            this.contextURL = schema.contextURL || "";
-            this.iri = schema.iri || "";
-            if(schema.isOwner) {
+            this.document = schema.document || '';
+            this.context = schema.context || '';
+            this.version = schema.version || '';
+            this.creator = schema.creator || '';
+            this.owner = schema.owner || '';
+            this.topicId = schema.topicId || '';
+            this.messageId = schema.messageId || '';
+            this.documentURL = schema.documentURL || '';
+            this.contextURL = schema.contextURL || '';
+            this.iri = schema.iri || '';
+            if (schema.isOwner) {
                 this.userDID = this.owner;
             }
-            if(schema.isCreator) {
+            if (schema.isCreator) {
                 this.userDID = this.creator;
             }
         } else {
             this.id = undefined;
             this.uuid = ModelHelper.randomUUID();
-            this.hash = "";
-            this.name = "";
-            this.description = "";
+            this.hash = '';
+            this.name = '';
+            this.description = '';
             this.entity = SchemaEntity.NONE;
             this.status = SchemaStatus.DRAFT;
             this.readonly = false;
-            this.document = "";
-            this.context = "";
-            this.version = "";
-            this.creator = "";
-            this.owner = "";
-            this.topicId = "";
-            this.messageId = "";
-            this.documentURL = "";
-            this.contextURL = "";
-            this.iri = "";
+            this.document = '';
+            this.context = '';
+            this.version = '';
+            this.creator = '';
+            this.owner = '';
+            this.topicId = '';
+            this.messageId = '';
+            this.documentURL = '';
+            this.contextURL = '';
+            this.iri = '';
         }
         if (this.document) {
             this.parseDocument();
@@ -118,13 +118,13 @@ export class Schema implements ISchema {
     public setVersion(version: string): void {
         let currentVersion = this.version;
         if (!ModelHelper.checkVersionFormat(version)) {
-            throw new Error("Invalid version format");
+            throw new Error('Invalid version format');
         }
         if (ModelHelper.versionCompare(version, currentVersion) > 0) {
             this.version = version;
             this.previousVersion = currentVersion;
         } else {
-            throw new Error("Version must be greater than " + currentVersion);
+            throw new Error('Version must be greater than ' + currentVersion);
         }
     }
 
@@ -173,6 +173,6 @@ export class Schema implements ISchema {
 
     public updateRefs(schemes: Schema[]): void {
         this.documentObject.$defs = SchemaHelper.findRefs(this, schemes);
-        this.document = JSON.stringify( this.documentObject);
+        this.document = JSON.stringify(this.documentObject);
     }
 }

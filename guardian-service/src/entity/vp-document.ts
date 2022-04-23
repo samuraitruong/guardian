@@ -10,7 +10,7 @@ export class VpDocument implements IVPDocument {
     owner: string;
 
     @Column({
-        unique: true
+        unique: true,
     })
     hash: string;
 

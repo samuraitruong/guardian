@@ -1,8 +1,8 @@
-import axios from "axios";
-import { HederaHelper, ISubmitModelMessage } from "..";
-import { IPolicySubmitMessage } from "../interfaces/policy-submit-message.interface";
-import { ISchemaSubmitMessage } from "../interfaces/schema-submit-message.interface";
-import { timeout } from "./utils";
+import axios from 'axios';
+import { HederaHelper, ISubmitModelMessage } from '..';
+import { IPolicySubmitMessage } from '../interfaces/policy-submit-message.interface';
+import { ISchemaSubmitMessage } from '../interfaces/schema-submit-message.interface';
+import { timeout } from './utils';
 
 /**
  * Hedera mirror node helper
@@ -13,21 +13,21 @@ export class HederaMirrorNodeHelper {
     /**
      * Return message by timestamp (messageId)
      * @param {string} timeStamp Message identifier
-     * 
+     *
      * @returns {any} - Message
      */
     @timeout(HederaMirrorNodeHelper.MAX_TIMEOUT)
     public static async getTopicMessage(timeStamp: string): Promise<{
-        timeStamp: string,
-        topicId: string,
-        message: string
+        timeStamp: string;
+        topicId: string;
+        message: string;
     }> {
         const res = await axios.get(`${HederaHelper.HEDERA_MESSAGE_API}/${timeStamp}`, { responseType: 'json' });
         return {
             timeStamp: res.data.consensus_timestamp,
             topicId: res.data.topic_id,
-            message: Buffer.from(res.data.message, 'base64').toString()
-        }
+            message: Buffer.from(res.data.message, 'base64').toString(),
+        };
     }
 
     /**
@@ -37,9 +37,9 @@ export class HederaMirrorNodeHelper {
      */
     @timeout(HederaMirrorNodeHelper.MAX_TIMEOUT)
     public static async getSchemaTopicMessage(timeStamp: string): Promise<{
-        timeStamp: string,
-        topicId: string,
-        message: ISchemaSubmitMessage
+        timeStamp: string;
+        topicId: string;
+        message: ISchemaSubmitMessage;
     }> {
         const res = await axios.get(`${HederaHelper.HEDERA_MESSAGE_API}/${timeStamp}`, { responseType: 'json' });
 
@@ -56,8 +56,8 @@ export class HederaMirrorNodeHelper {
         return {
             timeStamp: res.data.consensus_timestamp,
             topicId: res.data.topic_id,
-            message: message
-        }
+            message: message,
+        };
     }
 
     /**
@@ -67,9 +67,9 @@ export class HederaMirrorNodeHelper {
      */
     @timeout(HederaMirrorNodeHelper.MAX_TIMEOUT)
     public static async getPolicyTopicMessage(timeStamp: string): Promise<{
-        timeStamp: string,
-        topicId: string,
-        message: IPolicySubmitMessage
+        timeStamp: string;
+        topicId: string;
+        message: IPolicySubmitMessage;
     }> {
         const res = await axios.get(`${HederaHelper.HEDERA_MESSAGE_API}/${timeStamp}`, { responseType: 'json' });
 
@@ -85,8 +85,8 @@ export class HederaMirrorNodeHelper {
         return {
             timeStamp: res.data.consensus_timestamp,
             topicId: res.data.topic_id,
-            message: message
-        }
+            message: message,
+        };
     }
 
     /**
@@ -94,51 +94,52 @@ export class HederaMirrorNodeHelper {
      * @param topicId Topic identifier
      * @returns Messages
      */
-     @timeout(HederaMirrorNodeHelper.MAX_TIMEOUT)
-     public static async getTopicMessages(topicId: string): Promise<{
-         timeStamp: string,
-         message: ISubmitModelMessage
-     }[]> {
-         const res = await axios.get(`${HederaHelper.HEDERA_TOPIC_API}${topicId}/messages`, { 
+    @timeout(HederaMirrorNodeHelper.MAX_TIMEOUT)
+    public static async getTopicMessages(topicId: string): Promise<
+        {
+            timeStamp: string;
+            message: ISubmitModelMessage;
+        }[]
+    > {
+        const res = await axios.get(`${HederaHelper.HEDERA_TOPIC_API}${topicId}/messages`, {
             params: { limit: Number.MAX_SAFE_INTEGER },
-            responseType: 'json' 
+            responseType: 'json',
         });
- 
-         if (!res || !res.data || !res.data.messages) {
-             throw new Error(`Invalid topicId '${topicId}'`);
-         }
- 
-         const result = [];
-         const messages = res.data.messages;
-         if (messages.length === 0) {
-             return result;
-         }
 
-         for (let i = 0; i < messages.length; i++) {
+        if (!res || !res.data || !res.data.messages) {
+            throw new Error(`Invalid topicId '${topicId}'`);
+        }
+
+        const result = [];
+        const messages = res.data.messages;
+        if (messages.length === 0) {
+            return result;
+        }
+
+        for (let i = 0; i < messages.length; i++) {
             try {
                 const message = this.parseTopicMessage(messages[i].message, messages[i].consensus_timestamp);
                 result.push({
                     timeStamp: messages[i].consensus_timestamp,
-                    message
+                    message,
                 });
-            }
-            catch {
+            } catch {
                 continue;
             }
-         }
+        }
 
-         return result;
-     }
+        return result;
+    }
 
-     /**
-      * Parse topic message
-      * @param message Message to parse
-      * @param timeStamp Message Identifier
-      * @returns Parsed message
-      */
+    /**
+     * Parse topic message
+     * @param message Message to parse
+     * @param timeStamp Message Identifier
+     * @returns Parsed message
+     */
     private static parseTopicMessage(message, timeStamp) {
         const messageToParse = Buffer.from(message, 'base64').toString();
- 
+
         if (!this.isJSON(messageToParse)) {
             throw new Error(`Invalid message '${timeStamp}'`);
         }
@@ -149,13 +150,13 @@ export class HederaMirrorNodeHelper {
 
     /**
      * Check string to be able to parse
-     * 
+     *
      * @param str String
      * @returns Validation flag
      */
     private static isJSON(str: string): boolean {
         try {
-            return (JSON.parse(str) && !!str);
+            return JSON.parse(str) && !!str;
         } catch (e) {
             return false;
         }
@@ -163,7 +164,7 @@ export class HederaMirrorNodeHelper {
 
     /**
      * Validate basic message fields
-     * 
+     *
      * @param message Message
      * @returns Validation flag
      */
@@ -189,7 +190,7 @@ export class HederaMirrorNodeHelper {
 
     /**
      * Validate policy message fields
-     * 
+     *
      * @param message Policy submit message
      * @returns Validation flag
      */
@@ -219,7 +220,7 @@ export class HederaMirrorNodeHelper {
 
     /**
      * Validate schema message fields
-     * 
+     *
      * @param message Schema submit message
      * @returns Validation flag
      */

@@ -5,10 +5,9 @@ import { IPolicyCalculateAddon } from '@policy-engine/policy-engine.interface';
 
 @CalculateAddon({
     blockType: 'calculateMathAddon',
-    commonBlock: true
+    commonBlock: true,
 })
 export class CalculateMathAddon {
-
     public async run(scope: any): Promise<any> {
         const ref = PolicyComponentsUtils.GetBlockRef<IPolicyCalculateAddon>(this);
         if (ref.options.equations) {
@@ -36,7 +35,7 @@ export class CalculateMathAddon {
         if (ref.options.equations) {
             for (let index = 0; index < ref.options.equations.length; index++) {
                 const equation = ref.options.equations[index];
-                if(!ref.parse(equation.formula)) {
+                if (!ref.parse(equation.formula)) {
                     resultsContainer.addBlockError(ref.uuid, `Incorrect formula: ${equation.formula}`);
                     return;
                 }

@@ -1,8 +1,5 @@
 import { PrivateKey } from '@hashgraph/sdk';
-import {
-    TimestampUtils,
-    HcsDidRootKey
-} from '@hashgraph/did-sdk-js';
+import { TimestampUtils, HcsDidRootKey } from '@hashgraph/did-sdk-js';
 import { check, CheckResult } from '@transmute/jsonld-schema';
 
 import { VcSubject } from '../vc/vc-subject';
@@ -14,8 +11,8 @@ import { Utils } from './utils';
 import { HcsVpDocument } from '../vc/vp-document';
 import { SchemaLoader, SchemaLoaderFunction } from '../document-loader/schema-loader';
 
-import Ajv from "ajv";
-import addFormats from "ajv-formats";
+import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
 
 interface ISubject {
     id?: string;
@@ -95,7 +92,7 @@ export class VCHelper {
      * @returns {any} - Root Id, DID, Private Key
      */
     private async getSuite(did: string, key: string | PrivateKey): Promise<any> {
-        const privateKey = (typeof key == 'string') ? PrivateKey.fromString(key) : key;
+        const privateKey = typeof key == 'string' ? PrivateKey.fromString(key) : key;
         const didRoot = HcsDidRootKey.fromId(did);
         const didId = didRoot.getController();
         const didRootId = didRoot.getId();
@@ -111,11 +108,7 @@ export class VCHelper {
      *
      * @returns {any} - VC Document
      */
-    public async createCredential(
-        did: string,
-        schema: string,
-        data: any
-    ): Promise<any> {
+    public async createCredential(did: string, schema: string, data: any): Promise<any> {
         const id = Utils.randomUUID();
         const vcSubject = new VcSubject(schema, data);
         for (let i = 0; i < this.schemaContext.length; i++) {
@@ -210,10 +203,10 @@ export class VCHelper {
         did: string,
         key: string | PrivateKey,
         vcs: HcsVcDocument<VcSubject>[],
-        uuid?: string,
+        uuid?: string
     ): Promise<HcsVpDocument> {
         uuid = uuid || Utils.randomUUID();
-        const privateKey = (typeof key == 'string') ? PrivateKey.fromString(key) : key;
+        const privateKey = typeof key == 'string' ? PrivateKey.fromString(key) : key;
         const didRoot = HcsDidRootKey.fromId(did);
         const didId = didRoot.getController();
         const didRootId = didRoot.getId();
@@ -270,7 +263,7 @@ export class VCHelper {
             throw new Error('Schema Loader not found');
         }
 
-        const schema = await this.schemaLoader(subject["@context"], subject.type, "vc");
+        const schema = await this.schemaLoader(subject['@context'], subject.type, 'vc');
 
         if (!schema) {
             throw new Error('Schema not found');
@@ -299,7 +292,7 @@ export class VCHelper {
             throw new Error('Schema Loader not found');
         }
 
-        const schema = await this.schemaLoader(subject["@context"], subject.type, "subject");
+        const schema = await this.schemaLoader(subject['@context'], subject.type, 'subject');
 
         if (!schema) {
             throw new Error('Schema not found');
@@ -312,14 +305,13 @@ export class VCHelper {
 
         const validate = ajv.compile(schema);
         const valid = validate(subject);
-        
+
         return new CheckResult(valid, 'JSON_SCHEMA_VALIDATION_ERROR', validate.errors as any);
     }
 
-
     /**
      * Delete system fields from schema defs
-     * 
+     *
      * @param schema Schema
      */
     private prepareSchema(schema: any) {
@@ -335,7 +327,9 @@ export class VCHelper {
             if (!required || required.length === 0) {
                 continue;
             }
-            nestedSchema.required = required.filter(field => !nestedSchema.properties[field] || !nestedSchema.properties[field].readOnly);
+            nestedSchema.required = required.filter(
+                (field) => !nestedSchema.properties[field] || !nestedSchema.properties[field].readOnly
+            );
         }
     }
 }

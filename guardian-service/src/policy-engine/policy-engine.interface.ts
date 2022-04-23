@@ -49,13 +49,13 @@ export interface IPolicyBlock {
 
     runNext(user: IAuthUser, data: any);
 
-    runTarget(user: IAuthUser, data: any, target: AnyBlockType)
+    runTarget(user: IAuthUser, data: any, target: AnyBlockType);
 
     isChildActive(child: AnyBlockType, user: IAuthUser): boolean;
 
     isActive(user: IAuthUser): boolean;
 
-    checkDataStateDiffer?: (user) => boolean
+    checkDataStateDiffer?: (user) => boolean;
 }
 
 export interface IPolicyInterfaceBlock extends IPolicyBlock {
@@ -75,7 +75,7 @@ export interface IPolicySourceBlock extends IPolicyBlock {
 
     getFiltersAddons(): IPolicyBlock[];
 
-    getSources(user: IAuthUser): Promise<any[]>
+    getSources(user: IAuthUser): Promise<any[]>;
 }
 
 export interface IPolicyAddonBlock extends IPolicyBlock {
@@ -91,9 +91,8 @@ export interface IPolicyAddonBlock extends IPolicyBlock {
 
     getFilters(user: IAuthUser): { [key: string]: string };
 
-    setFilters(filters: { [key: string]: string }, user: IAuthUser): void
+    setFilters(filters: { [key: string]: string }, user: IAuthUser): void;
 }
-
 
 export interface IPolicyCalculateBlock extends IPolicyBlock {
     getAddons(): IPolicyCalculateAddon[];
@@ -124,7 +123,15 @@ export interface IPolicyRequestBlock extends IPolicyBlock {
 
     setData(user: IAuthUser, _data: any): Promise<any>;
 
-    getSources(user: IAuthUser): Promise<any[]>
+    getSources(user: IAuthUser): Promise<any[]>;
 }
 
-export type AnyBlockType = IPolicyBlock | IPolicyInterfaceBlock | IPolicyContainerBlock | IPolicySourceBlock | IPolicyAddonBlock | IPolicyCalculateBlock | IPolicyCalculateAddon | IPolicyRequestBlock;
+export type AnyBlockType =
+    | IPolicyBlock
+    | IPolicyInterfaceBlock
+    | IPolicyContainerBlock
+    | IPolicySourceBlock
+    | IPolicyAddonBlock
+    | IPolicyCalculateBlock
+    | IPolicyCalculateAddon
+    | IPolicyRequestBlock;

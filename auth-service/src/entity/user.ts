@@ -1,5 +1,5 @@
-import {BeforeInsert, Column, Entity, ObjectIdColumn} from 'typeorm';
-import {IUser, UserRole} from 'interfaces';
+import { BeforeInsert, Column, Entity, ObjectIdColumn } from 'typeorm';
+import { IUser, UserRole } from 'interfaces';
 
 /**
  * User collection
@@ -10,7 +10,7 @@ export class User implements IUser {
     id: string;
 
     @Column({
-        unique: true
+        unique: true,
     })
     username: string;
 
@@ -18,7 +18,7 @@ export class User implements IUser {
     password: string; // hash
 
     @Column({
-        unique: false
+        unique: false,
     })
     did: string;
 

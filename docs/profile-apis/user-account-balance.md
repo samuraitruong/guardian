@@ -12,6 +12,7 @@ The name of the user for whom to fetch the balance
 {% endswagger-parameter %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     content:
@@ -20,25 +21,31 @@ The name of the user for whom to fetch the balance
                 type: string
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="401: Unauthorized" description="" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="403: Forbidden" description="Forbidden" %}
+
 ```javascript
 {
     // Response
 }
 ```
+
 {% endswagger-response %}
 
 {% swagger-response status="500: Internal Server Error" description="" %}
+
 ```javascript
 {
     content:
@@ -47,5 +54,6 @@ The name of the user for whom to fetch the balance
                 $ref: '#/components/schemas/Error'
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}

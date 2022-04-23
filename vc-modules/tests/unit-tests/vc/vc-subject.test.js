@@ -1,6 +1,4 @@
-const {
-    VcSubject
-} = require('../../../dist/index');
+const { VcSubject } = require('../../../dist/index');
 const { expect, assert } = require('chai');
 
 describe('VcSubject', function () {
@@ -14,7 +12,7 @@ describe('VcSubject', function () {
             period: 1,
             policyId: '6166be37d739af60e05258bf',
             accountId: '0.0.2770197',
-        }
+        };
     });
 
     it('Test VcSubjectConstruction', async function () {
@@ -59,16 +57,14 @@ describe('VcSubject', function () {
         assert.equal(vcSubject.getField('accountId'), newSubject2.getField('accountId'));
 
         assert.deepEqual(root, {
-            '@context': [
-                'https://localhost/schema'
-            ],
-            'id': 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
-            'type': 'MRV',
-            'date': '2021-10-13T11:21:47Z',
-            'amount': 2,
-            'period': 1,
-            'policyId': '6166be37d739af60e05258bf',
-            'accountId': '0.0.2770197'
+            '@context': ['https://localhost/schema'],
+            id: 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
+            type: 'MRV',
+            date: '2021-10-13T11:21:47Z',
+            amount: 2,
+            period: 1,
+            policyId: '6166be37d739af60e05258bf',
+            accountId: '0.0.2770197',
         });
     });
 });

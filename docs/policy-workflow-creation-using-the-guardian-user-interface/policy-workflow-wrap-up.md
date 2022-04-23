@@ -1,7 +1,5 @@
 # Policy Workflow Wrap Up
 
-
-
 We can then look at the entire process.
 
 ![](https://i.imgur.com/g67cTjr.png)
@@ -382,7 +380,7 @@ The full coded version of the policy we just demoed is below (Reminder the coded
               "defaultActive": true,
               "permissions": [
                 "INSTALLER"
-              ],  
+              ],
               "uiMetaData": {
                 "type": "blank",
                 "title": "MRV"

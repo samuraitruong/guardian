@@ -7,7 +7,7 @@ export class Token implements IToken {
     id: string;
 
     @Column({
-        unique: true
+        unique: true,
     })
     tokenId: string;
 
@@ -16,7 +16,7 @@ export class Token implements IToken {
 
     @Column()
     tokenSymbol: string;
-    
+
     @Column()
     tokenType: string;
 

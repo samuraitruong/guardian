@@ -11,7 +11,6 @@ export function Report(options: Partial<PolicyBlockDecoratorOptions>) {
         const basicClass = DataSourceBlock(options)(constructor);
 
         return class extends basicClass {
-
             public readonly blockClassName = 'ReportBlock';
 
             protected getItems(): IPolicyReportItemBlock[] {
@@ -23,6 +22,6 @@ export function Report(options: Partial<PolicyBlockDecoratorOptions>) {
                 }
                 return items;
             }
-        }
-    }
+        };
+    };
 }

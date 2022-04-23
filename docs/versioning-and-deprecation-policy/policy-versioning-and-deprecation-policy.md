@@ -6,14 +6,14 @@ description: This protocol comes into effect beginning with Guardian 1.3.0
 
 Guardian Policy documents capture policy workflows – a combination of policy actions, information flows and rules under which the run-time sequence of steps is constructed and executed. The content of Guardian Policies is determined by the specific sustainability use-case they are designed to address. As such there three main driving forces for the changes in the area of policy definition and management:
 
-* The evolution of the sustainability industry use-case targeted by the policy in questions.&#x20;
-* Introduction of new use-cases and corresponding policies.&#x20;
-* The evolution of Guardian Policy Engine technology, where new capabilities are added existing modified or removed.&#x20;
+-   The evolution of the sustainability industry use-case targeted by the policy in questions.&#x20;
+-   Introduction of new use-cases and corresponding policies.&#x20;
+-   The evolution of Guardian Policy Engine technology, where new capabilities are added existing modified or removed.&#x20;
 
 These forces result in the following events:&#x20;
 
-* New versions of policies created periodically with arbitrary modifications to the workflow, user roles and information requirements.&#x20;
-* New elements (blocks) added to the policy definition language, and/or existing augmented or removed.&#x20;
+-   New versions of policies created periodically with arbitrary modifications to the workflow, user roles and information requirements.&#x20;
+-   New elements (blocks) added to the policy definition language, and/or existing augmented or removed.&#x20;
 
 To avoid breaking existing users, Guardian Policies follow a versioning and deprecation protocol for aspects of the Policies that are targeted to be modified or removed.
 
@@ -21,9 +21,9 @@ To avoid breaking existing users, Guardian Policies follow a versioning and depr
 
 The Guardian Policies are versioned using semantic versioning in the major.minor.micro format. Each number incremented sequentially to denote the following changes:&#x20;
 
-* major: the Policy version contains breaking changes.&#x20;
-* minor: the Policy version contains notable new capabilities and non-breaking changes.&#x20;
-* micro: the Policy release contains non-breaking changes only.&#x20;
+-   major: the Policy version contains breaking changes.&#x20;
+-   minor: the Policy version contains notable new capabilities and non-breaking changes.&#x20;
+-   micro: the Policy release contains non-breaking changes only.&#x20;
 
 Guardian system does not generate versions automatically, it is the responsibility of the Policy authors (Root Authority) to keep track of its policies/versions and correctly reflect changes in the version number.&#x20;
 
@@ -37,17 +37,17 @@ Guardian Policy authors should take care to ensure that policy workflow blocks, 
 
 The non-breaking changes to the Policy which do not warrant the change in the major version number are changes in:&#x20;
 
-* Descriptive UI properties of the block, such as Title, Description, Field Name.&#x20;
-* Default state of the element.&#x20;
-* Permissions (which actor/entity has rights to interact at this part of the workflow).&#x20;
-* Error handling sequence, messages and actions.&#x20;
+-   Descriptive UI properties of the block, such as Title, Description, Field Name.&#x20;
+-   Default state of the element.&#x20;
+-   Permissions (which actor/entity has rights to interact at this part of the workflow).&#x20;
+-   Error handling sequence, messages and actions.&#x20;
 
 ### Breaking changes
 
-* Removing or renaming a block, changing any of its non-descriptive properties. &#x20;
-* Changing used schema version to a new one with breaking changes.&#x20;
-* Changing workflow sequence, dependencies or bind block.&#x20;
-* Introducing new, or changing existing external data source.&#x20;
+-   Removing or renaming a block, changing any of its non-descriptive properties. &#x20;
+-   Changing used schema version to a new one with breaking changes.&#x20;
+-   Changing workflow sequence, dependencies or bind block.&#x20;
+-   Introducing new, or changing existing external data source.&#x20;
 
 ### Policy Version Deprecation
 

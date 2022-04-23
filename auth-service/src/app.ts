@@ -1,9 +1,9 @@
-import FastMQ from 'fastmq';
-import {createConnection} from 'typeorm';
+import { createConnection } from 'typeorm';
 import { fixtures } from '@helpers/fixtures';
 import { AccountService } from '@api/accountService';
 import { WalletService } from '@api/walletService';
-import { Logger } from 'logger-helper';
+import { Logger, MessageBrokerChannel } from 'common';
+import { connect } from 'nats';
 
 const PORT = process.env.PORT || 3002;
 
@@ -15,21 +15,21 @@ Promise.all([
         synchronize: true,
         logging: process.env.ENVIRONMENT !== 'production',
         useUnifiedTopology: true,
-        entities: [
-            'dist/entity/*.js'
-        ],
+        entities: ['dist/entity/*.js'],
         cli: {
-            entitiesDir: 'dist/entity'
-        }
+            entitiesDir: 'dist/entity',
+        },
     }),
-    FastMQ.Client.connect(process.env.SERVICE_CHANNEL, 7500, process.env.MQ_ADDRESS)
-]).then(async ([db, channel]) => {
+    connect({ servers: [process.env.MQ_ADDRESS], name: 'AUTH_SERVICE' }),
+]).then(async ([db, nc]) => {
     await fixtures();
+    const channel = new MessageBrokerChannel(nc, 'auth-service');
+    channel.publish('service.ready', 'AUTH_SERVICE');
 
-    new Logger().setChannel(channel);
+    new Logger().setChannel(new MessageBrokerChannel(nc, 'logger-service'));
     new AccountService(channel);
     new WalletService(channel);
 
-    new Logger().info('auth service started', ['AUTH_SERVICE']);
-    console.log('auth service started');
+    new Logger().info('Auth service started', ['AUTH_SERVICE']);
+    console.log('Auth service started');
 });

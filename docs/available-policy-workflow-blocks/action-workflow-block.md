@@ -5,7 +5,7 @@
 | Block Property   | Definition                                                                        | Example Input                                                                   |
 | ---------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | Type             | A block to create custom actions.                                                 | **InterfaceAction**Block (Can't be changed).                                    |
-| Tag              | Unique name for the logic block.                                                  | download\_config\_btn.                                                          |
+| Tag              | Unique name for the logic block.                                                  | download_config_btn.                                                            |
 | Permissions      | Which entity has rights to interact at this part of the workflow.                 | Installer.                                                                      |
 | Default Active   | Shows whether this block is active at this time and whether it needs to be shown. | Checked or unchecked.                                                           |
 | Dependencies     | Establish workflow dependancies that need to be completed prior.                  | Select the appropriate block from the dropdown.                                 |

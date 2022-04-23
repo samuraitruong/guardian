@@ -1,0 +1,119 @@
+version: '3.8'
+services:
+    mongo:
+        image: mongo
+        restart: always
+        expose:
+            - 27017
+    message-broker:
+        image: nats
+        expose:
+            - 4222
+        command: '--http_port 8222'
+    dev-tools:
+        build: .
+        image: guardian-test
+        volumes:
+            - ../:/app
+            - ~/.npm/:/root/.npm
+
+    logger-service:
+        image: guardian-test
+        depends_on:
+            - dev-tools
+            - message-broker
+        volumes:
+            - ../:/app
+        restart: always
+        command: npm start --prefix /app/logger-service
+        environment:
+            - MQ_ADDRESS=message-broker
+            - DB_HOST=mongo
+
+    auth-service:
+        image: guardian-test
+        restart: always
+        depends_on:
+            - dev-tools
+            - mongo
+            - message-broker
+            - logger-service
+
+        environment:
+            - MQ_ADDRESS=message-broker
+            - DB_HOST=mongo
+        volumes:
+            - ../:/app
+        command: npm start --prefix /app/auth-service
+
+    api-gateway:
+        image: guardian-test
+        restart: always
+        expose:
+            - 3002
+        ports:
+            - 3002:3002
+        depends_on:
+            - dev-tools
+            - mongo
+            - message-broker
+            - guardian-service
+            - auth-service
+            - logger-service
+        environment:
+            - MQ_ADDRESS=message-broker
+            - DB_HOST=mongo
+        volumes:
+            - ../:/app
+        command: npm start --prefix /app/api-gateway
+
+    guardian-service:
+        image: guardian-test
+        restart: always
+        depends_on:
+            - mongo
+            - message-broker
+            - auth-service
+            - logger-service
+        environment:
+            - MQ_ADDRESS=message-broker
+            - DB_HOST=mongo
+        volumes:
+            - ../:/app
+            - ./config/guardian-service/.env:/app/guardian-service/.env
+        command: npm start --prefix /app/guardian-service
+
+    ipfs-client:
+        image: guardian-test
+        restart: always
+        ports:
+            - '5001:5001'
+            - '5002:5002'
+            - '4001:4001'
+            - '4002:4002'
+            - '8080:8080'
+            - '8081:8081'
+        depends_on:
+            - dev-tools
+            - message-broker
+            - logger-service
+        volumes:
+            - ../:/app
+            - ./config/ipfs-client/.env:/app/ipfs-client/.env
+        environment:
+            - MQ_ADDRESS=message-broker
+            - DB_HOST=mongo
+        command: npm start --prefix /app/ipfs-client
+
+    mrv-sender:
+        image: guardian-test
+        expose:
+            - 3005
+        depends_on:
+            - dev-tools
+        volumes:
+            - ../:/app
+        command: npm start --prefix /app/mrv-sender
+
+volumes:
+    mongo:

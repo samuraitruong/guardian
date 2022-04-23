@@ -1,7 +1,7 @@
-import {PolicyBlockDependencies, PolicyBlockMap, PolicyTagMap} from './';
-import {IPolicyBlock,} from '@policy-engine/policy-engine.interface';
+import { PolicyBlockDependencies, PolicyBlockMap, PolicyTagMap } from './';
+import { IPolicyBlock } from '@policy-engine/policy-engine.interface';
 
-import {UserRole} from 'interfaces';
+import { UserRole } from 'interfaces';
 
 export interface PolicyBlockDecoratorOptions {
     blockType: string;
@@ -24,8 +24,10 @@ export interface PolicyBlockAdditionalFields {
     _uuid: string;
 }
 
-export interface PolicyBlockFullArgumentList extends PolicyBlockDecoratorOptions, PolicyBlockConstructorParams, PolicyBlockAdditionalFields {
-}
+export interface PolicyBlockFullArgumentList
+    extends PolicyBlockDecoratorOptions,
+        PolicyBlockConstructorParams,
+        PolicyBlockAdditionalFields {}
 
-export interface PolicyBlockOptionsPartial extends Omit<PolicyBlockFullArgumentList, 'blockType' | '_uuid' | 'blockMap' | 'tagMap'> {
-}
+export interface PolicyBlockOptionsPartial
+    extends Omit<PolicyBlockFullArgumentList, 'blockType' | '_uuid' | 'blockMap' | 'tagMap'> {}

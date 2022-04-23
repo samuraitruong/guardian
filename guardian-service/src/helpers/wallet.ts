@@ -1,10 +1,10 @@
-import {Singleton} from '@helpers/decorators/singleton';
+import { Singleton } from '@helpers/decorators/singleton';
 import { ServiceRequestsBase } from '@helpers/serviceRequestsBase';
 import { WalletEvents } from 'interfaces';
 
 export enum KeyType {
     ID = 'ID',
-    KEY = 'KEY'
+    KEY = 'KEY',
 }
 
 /**
@@ -12,8 +12,9 @@ export enum KeyType {
  */
 @Singleton
 export class Wallet extends ServiceRequestsBase {
-    public target: string = 'auth-service'
-
+    constructor() {
+        super('auth-service');
+    }
     /**
      * Return key
      * @param token
@@ -21,7 +22,11 @@ export class Wallet extends ServiceRequestsBase {
      * @param key
      */
     public async getKey(token: string, type: KeyType, key: string): Promise<string> {
-        const wallet = await this.request<any>(WalletEvents.GET_KEY, {token, type, key});
+        const wallet = await this.request<any>(WalletEvents.GET_KEY, {
+            token,
+            type,
+            key,
+        });
         return wallet.key;
     }
 
@@ -33,6 +38,11 @@ export class Wallet extends ServiceRequestsBase {
      * @param value
      */
     public async setKey(token: string, type: string, key: string, value: string) {
-        await this.request<any>(WalletEvents.SET_KEY, {token, type, key, value});
+        await this.request<any>(WalletEvents.SET_KEY, {
+            token,
+            type,
+            key,
+            value,
+        });
     }
 }

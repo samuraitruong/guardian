@@ -10,19 +10,21 @@
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     [
-			{
-				id: "621376c8e6763a0014fb0de4",
-				config:{
-					id: "97379c43-2bce-4e67-9817-a79fbad3e53d",
-					blockType: "InterfaceContainerBlock"
-				}
-			}
-		]
+        {
+            id: '621376c8e6763a0014fb0de4',
+            config: {
+                id: '97379c43-2bce-4e67-9817-a79fbad3e53d',
+                blockType: 'InterfaceContainerBlock',
+            },
+        },
+    ];
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -36,6 +38,7 @@
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     	uiMetaData: {...},
@@ -47,6 +50,7 @@
 			]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -58,13 +62,15 @@
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
-     roles: 
-                            ["INSTALLER"] 
-                            uiMetaData: {...}, 
+     roles:
+                            ["INSTALLER"]
+                            uiMetaData: {...},
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -94,6 +100,7 @@ INSTALLER
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -105,6 +112,7 @@ INSTALLER
             ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -116,6 +124,7 @@ INSTALLER
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -125,6 +134,7 @@ INSTALLER
            ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -136,12 +146,14 @@ INSTALLER
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
     schema: {...}
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -247,6 +259,7 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -258,6 +271,7 @@ Years of registration
 	    ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -269,6 +283,7 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -278,6 +293,7 @@ Years of registration
            ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -289,11 +305,13 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -309,6 +327,7 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     {
@@ -320,6 +339,7 @@ Years of registration
     }
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -335,6 +355,7 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -346,6 +367,7 @@ Years of registration
 	    ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -357,6 +379,7 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -366,6 +389,7 @@ Years of registration
            ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -377,6 +401,7 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -386,6 +411,7 @@ Years of registration
            ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -397,6 +423,7 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -410,10 +437,11 @@ Years of registration
             ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
-### 2.3 In the 'Status Operation' field , there is a link to "approve\_documents\_btn" block, which requests the Block ID.
+### 2.3 In the 'Status Operation' field , there is a link to "approve_documents_btn" block, which requests the Block ID.
 
 {% swagger method="get" path="" baseUrl="/api/v1/policies/621376c8e6763a0014fb0de4/tag/approve_documents_btn" summary="Requesting BlockID" %}
 {% swagger-description %}
@@ -421,11 +449,13 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     "id":"6f0f37c0-b62b-4be5-b1d0-e8114398350d"
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -435,6 +465,7 @@ Years of registration
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     "id":"6f0f37c0-b62b-4be5-b1d0-e8114398350d",
@@ -452,23 +483,24 @@ Years of registration
     "field":"option.status"
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
 ### 2.4 Approve the document
 
 ```
-Select the VC from the grid:	
+Select the VC from the grid:
 		const VC = data[0];
-		
-Change status:	
+
+Change status:
 		VC.option.status = "APPROVED";
-		
+
 Send to the VC:
 POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e8114398350d
 		Request:
 				VC
-				
+
 ```
 
 ![](../.gitbook/assets/image.png)
@@ -487,6 +519,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -498,6 +531,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
             ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -509,6 +543,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -520,6 +555,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 	   ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -531,6 +567,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -546,6 +583,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 	    ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -557,6 +595,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -572,6 +611,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 	   ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -583,6 +623,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -590,6 +631,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
     fields: [...]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -601,6 +643,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
@@ -612,6 +655,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
            ]
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -623,16 +667,18 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     uiMetaData: {...},
     schema: {...}
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
-### 3.2 In the fields of the grid there is a link to the "download\_config\_btn" bloc.
+### 3.2 In the fields of the grid there is a link to the "download_config_btn" bloc.
 
 {% swagger method="get" path="" baseUrl="/api/v1/policies/621376c8e6763a0014fb0de4/tag/download_config_btn" summary="Requesting BlockID" %}
 {% swagger-description %}
@@ -640,11 +686,13 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     "id":"24942cf7-fcc5-4dff-8471-d5affeb4c206"
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 
@@ -656,6 +704,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
 {% endswagger-description %}
 
 {% swagger-response status="200: OK" description="Successful Operation" %}
+
 ```javascript
 {
     id: "24942cf7-fcc5-4dff-8471-d5affeb4c206",
@@ -664,6 +713,7 @@ POST  /api/v1/policies/621376c8e6763a0014fb0de4/blocks/6f0f37c0-b62b-4be5-b1d0-e
     "uiMetaData":{...}
 }
 ```
+
 {% endswagger-response %}
 {% endswagger %}
 

@@ -1,6 +1,6 @@
-import {RootState} from '../type/root-state.type';
-import {IDidDocument} from './did-document.interface';
-import {IVCDocument} from './vc-document.interface';
+import { RootState } from '../type/root-state.type';
+import { IDidDocument } from './did-document.interface';
+import { IVCDocument } from './vc-document.interface';
 
 export interface IRootConfig {
     id: string;

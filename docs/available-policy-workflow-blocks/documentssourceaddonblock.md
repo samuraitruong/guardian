@@ -9,7 +9,7 @@ Note: This block is used for dropdown. You can add multiple blocks to 1 grid to 
 | Block Property        | Definition                                                                                             | Example Input                                                        |
 | --------------------- | ------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------- |
 | Type                  | A block for searching VC, for grid                                                                     | **DocumentsSourceAddOn** Block (Can't be changed).                   |
-| Tag                   | Unique name for the logic block.                                                                       | approve_d\_documents\__grid\_source                                  |
+| Tag                   | Unique name for the logic block.                                                                       | approve_d_documents\_\_grid_source                                   |
 | Permissions           | Which entity has rights to interact at this part of the workflow.                                      | Installer.                                                           |
 | Default Active        | Shows whether this block is active at this time and whether it needs to be shown.                      | Checked or unchecked.                                                |
 | Dependencies          | Automatic update. The block is automatically re-rendered if any of the linked components gets updated. | Select the appropriate block from the dropdown.                      |

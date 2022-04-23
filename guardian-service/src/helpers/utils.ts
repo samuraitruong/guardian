@@ -1,12 +1,7 @@
 import { GenerateUUIDv4 } from '@policy-engine/helpers/uuidv4';
 import { IVC, IVCDocument } from 'interfaces';
 
-export const SchemaFields = [
-    'schema',
-    'inputSchema',
-    'outputSchema',
-    'presetSchema'
-];
+export const SchemaFields = ['schema', 'inputSchema', 'outputSchema', 'presetSchema'];
 
 export function findAllEntities(obj: { [key: string]: any }, names: string[]): string[] {
     const result = [];
@@ -60,7 +55,6 @@ export function replaceAllEntities(
     }
 }
 
-
 export function regenerateIds(block: any) {
     block.id = GenerateUUIDv4();
     if (Array.isArray(block.children)) {
@@ -71,11 +65,7 @@ export function regenerateIds(block: any) {
 }
 
 export function getVCField(vcDocument: IVC, name: string): any {
-    if (
-        vcDocument &&
-        vcDocument.credentialSubject &&
-        vcDocument.credentialSubject[0]
-    ) {
+    if (vcDocument && vcDocument.credentialSubject && vcDocument.credentialSubject[0]) {
         return vcDocument.credentialSubject[0][name];
     }
     return null;

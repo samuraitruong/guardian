@@ -13,7 +13,7 @@ import { CatchErrors } from '@policy-engine/helpers/decorators/catch-errors';
 
 @CalculateBlock({
     blockType: 'calculateContainerBlock',
-    commonBlock: true
+    commonBlock: true,
 })
 export class CalculateContainerBlock {
     @Inject()
@@ -46,7 +46,7 @@ export class CalculateContainerBlock {
         if (ref.options.outputFields) {
             for (let i = 0; i < ref.options.outputFields.length; i++) {
                 const field = ref.options.outputFields[i];
-                if(scope[field.value]) {
+                if (scope[field.value]) {
                     newJson[field.name] = scope[field.value];
                 }
             }
@@ -56,8 +56,8 @@ export class CalculateContainerBlock {
         const outputSchema = await this.guardians.getSchemaByIRI(ref.options.outputSchema);
         const vcSubject = {
             ...SchemaHelper.getContext(outputSchema),
-            ...newJson
-        }
+            ...newJson,
+        };
 
         if (json.ref) {
             vcSubject.ref = json.ref;
@@ -68,11 +68,7 @@ export class CalculateContainerBlock {
 
         const root = await this.guardians.getRootConfig(ref.policyOwner);
         const vcHelper = new VcHelper();
-        const newVC = await vcHelper.createVC(
-            root.did,
-            root.hederaAccountKey,
-            vcSubject
-        );
+        const newVC = await vcHelper.createVC(root.did, root.hederaAccountKey, vcSubject);
         const item = {
             hash: newVC.toCredentialHash(),
             owner: document.owner,
@@ -80,14 +76,14 @@ export class CalculateContainerBlock {
             schema: outputSchema.iri,
             type: outputSchema.iri,
             policyId: ref.policyId,
-            tag: ref.tag
+            tag: ref.tag,
         };
         return item;
     }
 
     @CatchErrors()
     public async runAction(state: any, user: IAuthUser) {
-        console.log("calculate-block, runAction")
+        console.log('calculate-block, runAction');
         const ref = PolicyComponentsUtils.GetBlockRef<IPolicyCalculateBlock>(this);
         let document = null;
         if (Array.isArray(state.data)) {
@@ -168,7 +164,7 @@ export class CalculateContainerBlock {
             const field = schema.fields[i];
             if (field.required && !map[field.name]) {
                 resultsContainer.addBlockError(ref.uuid, `${field.description} is required`);
-                return
+                return;
             }
         }
     }

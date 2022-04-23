@@ -1,23 +1,24 @@
 import { ILog, IPageParameters, LogType, MessageAPI, Singleton } from 'interfaces';
 import { IMessageResponse } from 'interfaces';
+import { MessageBrokerChannel } from '../message-broker';
 
 @Singleton
 export class Logger {
-    private channel: any;
-    private readonly target: string = "logger-service";
+    private channel: MessageBrokerChannel;
+    private readonly target: string = 'logger-service';
 
     /**
      * Register channel
      * @param channel
      */
-    public setChannel(channel: any): any {
+    public setChannel(channel: MessageBrokerChannel): any {
         this.channel = channel;
     }
 
     /**
      * Get channel
      */
-    public getChannel(): any {
+    public getChannel(): MessageBrokerChannel {
         return this.channel;
     }
 
@@ -27,9 +28,9 @@ export class Logger {
      * @param params
      * @param type
      */
-    public async request<T>(entity: string, params?: any, type?: string): Promise<T> {
+    public async request<T>(entity: string, payload?: any): Promise<T> {
         try {
-            const response: IMessageResponse<T> = (await this.channel.request(this.target, entity, params, type)).payload;
+            const response: IMessageResponse<T> = await this.channel.request(entity, { payload });
             if (!response) {
                 throw Error('Server is not available');
             }
@@ -38,19 +39,18 @@ export class Logger {
             }
             return response.body;
         } catch (e) {
+            console.log('MQ request error %s', entity, e.message);
             console.error(e);
         }
     }
-
-
 
     private async write(type: LogType, message: string, attr?: string[]) {
         const logMessage: ILog = {
             message: message,
             type: type,
-            attributes: attr
-        } 
-        await this.request(MessageAPI.WRITE_LOG, logMessage);
+            attributes: attr,
+        };
+        await this.request(this.target + '.' + MessageAPI.WRITE_LOG, logMessage);
     }
 
     public async info(message: string, attr?: string[]): Promise<void> {
@@ -66,8 +66,10 @@ export class Logger {
     }
 
     public async getLogs(filters?: any, pageParameters?: IPageParameters, sortDirection?: string): Promise<any> {
-        return await this.request(MessageAPI.GET_LOGS, {
-            filters, pageParameters, sortDirection
+        return await this.request(this.target + '.' + MessageAPI.GET_LOGS, {
+            filters,
+            pageParameters,
+            sortDirection,
         });
     }
 

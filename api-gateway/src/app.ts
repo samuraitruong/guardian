@@ -6,37 +6,40 @@ import {
     schemaAPI,
     tokenAPI,
     externalAPI,
-    ipfsAPI
+    ipfsAPI,
 } from '@api/service';
-import {Guardians} from '@helpers/guardians';
+import { connect } from 'nats';
+import { Guardians } from '@helpers/guardians';
 import express from 'express';
-import FastMQ from 'fastmq';
-import {createServer} from 'http';
-import {authorizationHelper} from '@auth/authorizationHelper';
+import { createServer } from 'http';
+import { authorizationHelper } from '@auth/authorizationHelper';
 import { IPFS } from '@helpers/ipfs';
-import {policyAPI} from '@api/service/policy';
-import {PolicyEngine} from '@helpers/policyEngine';
-import {WebSocketsService} from '@api/service/websockets';
+import { policyAPI } from '@api/service/policy';
+import { PolicyEngine } from '@helpers/policyEngine';
+import { WebSocketsService } from '@api/service/websockets';
 import { Users } from '@helpers/users';
 import { Wallet } from '@helpers/wallet';
 import { settingsAPI } from '@api/service/settings';
 import { loggerAPI } from '@api/service/logger';
-import { Logger } from 'logger-helper';
+import { Logger, MessageBrokerChannel } from 'common';
 
 const PORT = process.env.PORT || 3002;
 
-Promise.all([
-    FastMQ.Client.connect(process.env.SERVICE_CHANNEL, 7500, process.env.MQ_ADDRESS)
-]).then(async ([channel]) => {
+Promise.all([connect({ servers: [process.env.MQ_ADDRESS], name: 'API_GATEWAY' })]).then(async ([nc]) => {
+    const channel = new MessageBrokerChannel(nc, 'guardian');
+    channel.publish('service.ready', 'API_GATEWAY');
+
     const app = express();
     app.use(express.json());
-    app.use(express.raw({
-        inflate: true,
-        limit: '4096kb',
-        type: 'binary/octet-stream'
-    }));
+    app.use(
+        express.raw({
+            inflate: true,
+            limit: '4096kb',
+            type: 'binary/octet-stream',
+        })
+    );
 
-    new Logger().setChannel(channel);
+    new Logger().setChannel(new MessageBrokerChannel(nc, 'logger-service'));
     new Guardians().setChannel(channel);
     new IPFS().setChannel(channel);
     new PolicyEngine().setChannel(channel);

@@ -4,12 +4,7 @@ const { did_document } = require('./dump/did_document');
 const { vc_document } = require('./dump/vc_document');
 const { vp_document } = require('./dump/vp_document');
 const { testObject1, testObject2, testObject3 } = require('./mockup/trust-chain.service');
-const { 
-    createChannel, 
-    createTable, 
-    checkMessage, 
-    checkError 
-} = require('./helper');
+const { createChannel, createTable, checkMessage, checkError } = require('./helper');
 
 describe('Trust Chain service', function () {
     let service, channel;
@@ -24,48 +19,46 @@ describe('Trust Chain service', function () {
         const vpDocumentRepository = createTable();
 
         didDocumentRepository.find = async function (param) {
-            const result = did_document.filter(e => e.did == param.where.did['$eq']);
+            const result = did_document.filter((e) => e.did == param.where.did['$eq']);
             return result;
-        }
+        };
 
         vcDocumentRepository.findOne = async function (param) {
             let result = vc_document;
             if (param.where.hash) {
-                result = result.filter(e => e.hash == param.where.hash['$eq']);
+                result = result.filter((e) => e.hash == param.where.hash['$eq']);
             }
             if (param.where.type) {
-                result = result.filter(e => e.type == param.where.type['$eq']);
+                result = result.filter((e) => e.type == param.where.type['$eq']);
             }
             if (param.where.policyId) {
-                result = result.filter(e => e.policyId == param.where.policyId['$eq']);
+                result = result.filter((e) => e.policyId == param.where.policyId['$eq']);
             }
             if (param.where.owner) {
-                result = result.filter(e => e.owner == param.where.owner['$eq']);
+                result = result.filter((e) => e.owner == param.where.owner['$eq']);
             }
             return result[0];
-        }
+        };
 
         vcDocumentRepository.find = async function (param) {
-            const result = vc_document.filter(e => e.document.credentialSubject[0]['id'] == param.where['document.credentialSubject.id']['$eq']);
+            const result = vc_document.filter(
+                (e) => e.document.credentialSubject[0]['id'] == param.where['document.credentialSubject.id']['$eq']
+            );
             return result;
-        }
+        };
 
         vpDocumentRepository.findOne = async function (param) {
             let result = vp_document;
             if (param.where.hash) {
-                result = result.filter(e => e.hash == param.where.hash['$eq']);
+                result = result.filter((e) => e.hash == param.where.hash['$eq']);
             }
             if (param.where['document.id']) {
-                result = result.filter(e => e.document.id == param.where['document.id']['$eq']);
+                result = result.filter((e) => e.document.id == param.where['document.id']['$eq']);
             }
             return result[0];
-        }
+        };
 
-        service = trustChainAPI(channel,
-            didDocumentRepository,
-            vcDocumentRepository,
-            vpDocumentRepository,
-        );
+        service = trustChainAPI(channel, didDocumentRepository, vcDocumentRepository, vpDocumentRepository);
     });
 
     it('Config service init', async function () {
@@ -83,13 +76,13 @@ describe('Trust Chain service', function () {
         value = await channel.run(GET_CHAIN, '6i28MnZRhBjw7gjCn3VFeFtEZ3h6CJcrHPpmybvjsHXB');
         checkMessage(value, testObject3);
 
-        testObject1[0].label= 'HASH';
-        testObject1[0].id= '6FNz1t4eHNDncM1zn6J8djJLPnjuhQq3hp6EmcF1ictB';
+        testObject1[0].label = 'HASH';
+        testObject1[0].id = '6FNz1t4eHNDncM1zn6J8djJLPnjuhQq3hp6EmcF1ictB';
         value = await channel.run(GET_CHAIN, '6FNz1t4eHNDncM1zn6J8djJLPnjuhQq3hp6EmcF1ictB');
         checkMessage(value, testObject1);
 
-        testObject2[0].label= 'HASH';
-        testObject2[0].id= '5LDizXoaXcqYmdbGUfsRrzf5PpgWmiUuarmTNgTxAYyU';
+        testObject2[0].label = 'HASH';
+        testObject2[0].id = '5LDizXoaXcqYmdbGUfsRrzf5PpgWmiUuarmTNgTxAYyU';
         value = await channel.run(GET_CHAIN, '5LDizXoaXcqYmdbGUfsRrzf5PpgWmiUuarmTNgTxAYyU');
         checkMessage(value, testObject2);
     });

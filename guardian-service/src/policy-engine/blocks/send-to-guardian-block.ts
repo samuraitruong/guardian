@@ -14,7 +14,7 @@ import { CatchErrors } from '@policy-engine/helpers/decorators/catch-errors';
 
 @BasicBlock({
     blockType: 'sendToGuardianBlock',
-    commonBlock: true
+    commonBlock: true,
 })
 export class SendToGuardianBlock {
     @Inject()
@@ -62,7 +62,7 @@ export class SendToGuardianBlock {
                     type: ref.options.entityType,
                     policyId: ref.policyId,
                     tag: ref.tag,
-                    document: vc.toJsonTree()
+                    document: vc.toJsonTree(),
                 };
                 result = await this.guardians.setVcDocument(doc);
                 break;
@@ -80,7 +80,7 @@ export class SendToGuardianBlock {
                 break;
             }
             default:
-                throw new BlockActionError(`dataType "${ref.options.dataType}" is unknown`, ref.blockType, ref.uuid)
+                throw new BlockActionError(`dataType "${ref.options.dataType}" is unknown`, ref.blockType, ref.uuid);
         }
 
         return result;
@@ -101,9 +101,11 @@ export class SendToGuardianBlock {
         const userDID = userFull.did;
         const userKey = await this.wallet.getKey(userFull.walletToken, KeyType.KEY, userDID);
         const addressBook = await this.guardians.getAddressBook(ref.policyOwner);
-        const hederaHelper = HederaHelper
-            .setOperator(userID, userKey)
-            .setAddressBook(addressBook.addressBook, addressBook.didTopic, addressBook.vcTopic);
+        const hederaHelper = HederaHelper.setOperator(userID, userKey).setAddressBook(
+            addressBook.addressBook,
+            addressBook.didTopic,
+            addressBook.vcTopic
+        );
         const vc = HcsVcDocument.fromJsonTree<VcSubject>(document.document, null, VcSubject);
         const result = await hederaHelper.DID.createVcTransaction(vc, userKey);
         document.hederaStatus = result.getOperation();
@@ -113,8 +115,11 @@ export class SendToGuardianBlock {
     public async validate(resultsContainer: PolicyValidationResultsContainer): Promise<void> {
         const ref = PolicyComponentsUtils.GetBlockRef(this);
 
-        if (!['vc-documents', 'did-documents', 'approve', 'hedera'].find(item => item === ref.options.dataType)) {
-            resultsContainer.addBlockError(ref.uuid, 'Option "dataType" must be one of vc-documents, did-documents, approve, hedera');
+        if (!['vc-documents', 'did-documents', 'approve', 'hedera'].find((item) => item === ref.options.dataType)) {
+            resultsContainer.addBlockError(
+                ref.uuid,
+                'Option "dataType" must be one of vc-documents, did-documents, approve, hedera'
+            );
         }
     }
 }

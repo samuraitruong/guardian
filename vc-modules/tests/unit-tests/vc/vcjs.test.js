@@ -1,9 +1,5 @@
-const {
-    HcsVcDocument, VcSubject, HcsVpDocument
-} = require('../../../dist/index');
-const {
-    VCJS
-} = require('../../../dist/vc/vcjs');
+const { HcsVcDocument, VcSubject, HcsVpDocument } = require('../../../dist/index');
+const { VCJS } = require('../../../dist/vc/vcjs');
 
 const { PrivateKey } = require('@hashgraph/sdk');
 const { expect, assert } = require('chai');
@@ -16,24 +12,26 @@ describe('HcsVpDocument', function () {
     let didId, didRootId, privateKeyString, privateKey, loader, data;
 
     before(async function () {
-        didRootId = 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key';
+        didRootId =
+            'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key';
         didId = 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001';
-        privateKeyString = '302e020100300506032b6570042204203e33c2cdb749c95c121ce151a39ecb4a1cf6b1241c3e8e20edc3df06f7275509';
+        privateKeyString =
+            '302e020100300506032b6570042204203e33c2cdb749c95c121ce151a39ecb4a1cf6b1241c3e8e20edc3df06f7275509';
         privateKey = PrivateKey.fromString(privateKeyString);
         loader = function (iri) {
-            if ((didContexts).has(iri)) {
+            if (didContexts.has(iri)) {
                 return {
                     documentUrl: iri,
                     document: didContexts.get(iri),
                 };
             }
-            if ((credentialsContexts).has(iri)) {
+            if (credentialsContexts.has(iri)) {
                 return {
                     documentUrl: iri,
                     document: credentialsContexts.get(iri),
                 };
             }
-            if ((securityContexts).has(iri)) {
+            if (securityContexts.has(iri)) {
                 return {
                     documentUrl: iri,
                     document: securityContexts.get(iri),
@@ -45,63 +43,66 @@ describe('HcsVpDocument', function () {
                     document: {
                         '@context': {
                             '@version': 1.1,
-                            'id': '@id',
-                            'type': '@type',
-                            'name': 'https://schema.org/name',
-                            'Test': {
+                            id: '@id',
+                            type: '@type',
+                            name: 'https://schema.org/name',
+                            Test: {
                                 '@id': 'https://localhost/schema#Test',
                                 '@context': {
-                                    'field1': {
-                                        '@id': 'https://www.schema.org/text'
+                                    field1: {
+                                        '@id': 'https://www.schema.org/text',
                                     },
-                                    'field2': {
-                                        '@id': 'https://www.schema.org/text'
+                                    field2: {
+                                        '@id': 'https://www.schema.org/text',
                                     },
-                                }
+                                },
                             },
-                        }
+                        },
                     },
                 };
             }
-            if (iri.startsWith('did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001')) {
+            if (
+                iri.startsWith(
+                    'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001'
+                )
+            ) {
                 return {
                     documentUrl: iri,
                     document: {
-                        '@context': [
-                            'https://www.w3.org/ns/did/v1',
-                            'https://ns.did.ai/transmute/v1'
-                        ],
-                        'id': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-                        'verificationMethod': [
+                        '@context': ['https://www.w3.org/ns/did/v1', 'https://ns.did.ai/transmute/v1'],
+                        id: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+                        verificationMethod: [
                             {
-                                'id': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key',
-                                'type': 'Ed25519VerificationKey2018',
-                                'controller': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-                                'publicKeyBase58': '2kDCE2VVVdSQbbu217aa6yg6rTTbv4vvpw1nDyEQHCLu'
-                            }
+                                id: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key',
+                                type: 'Ed25519VerificationKey2018',
+                                controller:
+                                    'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+                                publicKeyBase58: '2kDCE2VVVdSQbbu217aa6yg6rTTbv4vvpw1nDyEQHCLu',
+                            },
                         ],
-                        'authentication': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key',
-                        'assertionMethod': [
-                            '#did-root-key'
-                        ]
-                    }
-                }
+                        authentication:
+                            'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001#did-root-key',
+                        assertionMethod: ['#did-root-key'],
+                    },
+                };
             }
             throw new Error('IRI not found');
-        }
+        };
         data = {
             '@context': ['https://www.w3.org/2018/credentials/v1'],
-            'id': 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
-            'type': ['VerifiableCredential', 'Test'],
-            'credentialSubject': [{
-                '@context': ['https://localhost/schema'],
-                'type': 'Test',
-                'field1': 'field1',
-                'field2': 'field2'
-            }],
-            'issuer': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-            'issuanceDate': '2021-10-13T11:21:47.894Z'
-        }
+            id: 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
+            type: ['VerifiableCredential', 'Test'],
+            credentialSubject: [
+                {
+                    '@context': ['https://localhost/schema'],
+                    type: 'Test',
+                    field1: 'field1',
+                    field2: 'field2',
+                },
+            ],
+            issuer: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+            issuanceDate: '2021-10-13T11:21:47.894Z',
+        };
     });
 
     it('Test createSuite', async function () {
@@ -126,19 +127,25 @@ describe('HcsVpDocument', function () {
         assert.equal(verify, false);
 
         try {
-            doc = HcsVcDocument.fromJsonTree({
-                '@context': ['https://www.w3.org/2018/credentials/v1'],
-                'id': 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
-                'type': ['VerifiableCredential', 'Test'],
-                'credentialSubject': [{
-                    '@context': ['https://localhost/schema'],
-                    'type': 'Test',
-                    'field1': 'field1',
-                    'field3': 'field3'
-                }],
-                'issuer': 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
-                'issuanceDate': '2021-10-13T11:21:47.894Z'
-            }, null, VcSubject);
+            doc = HcsVcDocument.fromJsonTree(
+                {
+                    '@context': ['https://www.w3.org/2018/credentials/v1'],
+                    id: 'f5630d9a-3c27-4ccc-a371-f4d30c2da4e1',
+                    type: ['VerifiableCredential', 'Test'],
+                    credentialSubject: [
+                        {
+                            '@context': ['https://localhost/schema'],
+                            type: 'Test',
+                            field1: 'field1',
+                            field3: 'field3',
+                        },
+                    ],
+                    issuer: 'did:hedera:testnet:VtgqXgMSanpX3v85ypZbysTKeggMvdEupcz2AbAYPRR;hedera:testnet:fid=0.0.2859001',
+                    issuanceDate: '2021-10-13T11:21:47.894Z',
+                },
+                null,
+                VcSubject
+            );
             doc.setIssuer(didId);
             doc = await VCJS.issue(doc, suite, loader);
         } catch (error) {
@@ -163,6 +170,3 @@ describe('HcsVpDocument', function () {
         assert.exists(vp.getProof());
     });
 });
-
-
-

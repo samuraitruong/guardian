@@ -35,7 +35,7 @@ export class ApprovalDocument implements IApprovalDocument {
 
     @Column()
     schema: string;
-    
+
     @BeforeInsert()
     setDefaults() {
         this.option = this.option || {};

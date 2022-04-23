@@ -1,8 +1,6 @@
 # Policy Workflow Step 8
 
-
-
-Next, we want to add another step to our policy action. To do this we again go back to the Policy Action itself by clicking on the “init\_installer\_steps” Policy Action icon on the left.
+Next, we want to add another step to our policy action. To do this we again go back to the Policy Action itself by clicking on the “init_installer_steps” Policy Action icon on the left.
 
 At this point, we need to create a sub Policy Action process as a dependent workflow. We can always do this by adding a container block by clicking on the “Container” button in the top navigation bar.
 

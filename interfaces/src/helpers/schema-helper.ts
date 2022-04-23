@@ -2,7 +2,7 @@ import { ModelHelper } from './model-helper';
 import { ISchemaDocument, SchemaDataTypes } from '../interface/schema-document.interface';
 import { ISchema } from '../interface/schema.interface';
 import { Schema } from '../models/schema';
-import { SchemaField } from "../interface/schema-field.interface";
+import { SchemaField } from '../interface/schema-field.interface';
 import { SchemaCondition } from '..';
 
 export class SchemaHelper {
@@ -14,34 +14,34 @@ export class SchemaHelper {
     } {
         try {
             let ref: string;
-            if (typeof data == "string") {
+            if (typeof data == 'string') {
                 ref = data;
             } else {
                 const document = JSON.parse(data.document);
                 ref = document.$id;
             }
             if (ref) {
-                const id = ref.split("#");
-                const keys = id[id.length - 1].split("&");
+                const id = ref.split('#');
+                const keys = id[id.length - 1].split('&');
                 return {
                     iri: ref,
                     type: id[id.length - 1],
                     uuid: keys[0] || null,
-                    version: keys[1] || null
+                    version: keys[1] || null,
                 };
             }
             return {
                 iri: null,
                 type: null,
                 uuid: null,
-                version: null
+                version: null,
             };
         } catch (error) {
             return {
                 iri: null,
                 type: null,
                 uuid: null,
-                version: null
+                version: null,
             };
         }
     }
@@ -55,7 +55,12 @@ export class SchemaHelper {
         }
     }
 
-    public static parseConditions(document: ISchemaDocument, context: string, fields: SchemaField[], defs: any = null): SchemaCondition[] {
+    public static parseConditions(
+        document: ISchemaDocument,
+        context: string,
+        fields: SchemaField[],
+        defs: any = null
+    ): SchemaCondition[] {
         const conditions: SchemaCondition[] = [];
 
         if (!document || !document.allOf) {
@@ -65,21 +70,20 @@ export class SchemaHelper {
         const allOf = Object.keys(document.allOf);
         for (let i = 0; i < allOf.length; i++) {
             const condition = document.allOf[allOf[i]];
-            if (!condition.if)
-            {
+            if (!condition.if) {
                 continue;
             }
 
             const ifConditionFieldName = Object.keys(condition.if.properties)[0];
-            
+
             let conditionToAdd: SchemaCondition = {
                 ifCondition: {
-                    field: fields.find(field => field.name === ifConditionFieldName),
-                    fieldValue: condition.if.properties[ifConditionFieldName].const
+                    field: fields.find((field) => field.name === ifConditionFieldName),
+                    fieldValue: condition.if.properties[ifConditionFieldName].const,
                 },
                 thenFields: this.parseFields(condition.then, context, document.$defs || defs) as SchemaField[],
-                elseFields: this.parseFields(condition.else, context, document.$defs || defs) as SchemaField[]
-            }; 
+                elseFields: this.parseFields(condition.else, context, document.$defs || defs) as SchemaField[],
+            };
 
             conditions.push(conditionToAdd);
         }
@@ -121,17 +125,26 @@ export class SchemaHelper {
             const isRef = !!property.$ref;
             let ref = String(property.type);
             let context = null;
-            let subFields: any = null
-            let conditions: any = null
+            let subFields: any = null;
+            let conditions: any = null;
             if (isRef) {
                 ref = property.$ref;
                 const { type } = SchemaHelper.parseRef(ref);
                 context = {
                     type: type,
-                    context: [contextURL]
+                    context: [contextURL],
                 };
-                subFields = this.parseFields(defs ? defs[property.$ref] : document.$defs[property.$ref], contextURL, defs ? defs : document.$defs);
-                conditions = this.parseConditions(defs ? defs[property.$ref] : document.$defs[property.$ref], contextURL, subFields, defs ? defs : document.$defs);
+                subFields = this.parseFields(
+                    defs ? defs[property.$ref] : document.$defs[property.$ref],
+                    contextURL,
+                    defs ? defs : document.$defs
+                );
+                conditions = this.parseConditions(
+                    defs ? defs[property.$ref] : document.$defs[property.$ref],
+                    contextURL,
+                    subFields,
+                    defs ? defs : document.$defs
+                );
             }
             const format = isRef || !property.format ? null : String(property.format);
             const pattern = isRef || !property.pattern ? null : String(property.pattern);
@@ -149,7 +162,7 @@ export class SchemaHelper {
                 readOnly: readOnly,
                 fields: subFields,
                 context: context,
-                conditions: conditions
+                conditions: conditions,
             });
         }
 
@@ -161,7 +174,11 @@ export class SchemaHelper {
         const ref = SchemaHelper.buildRef(type);
         const document = {
             $id: ref,
-            $comment: SchemaHelper.buildComment(type, SchemaHelper.buildUrl(schema.contextURL, ref), schema.previousVersion),
+            $comment: SchemaHelper.buildComment(
+                type,
+                SchemaHelper.buildUrl(schema.contextURL, ref),
+                schema.previousVersion
+            ),
             title: schema.name,
             description: schema.description,
             type: SchemaDataTypes.object,
@@ -171,38 +188,38 @@ export class SchemaHelper {
                         { type: SchemaDataTypes.string },
                         {
                             type: SchemaDataTypes.array,
-                            items: { type: SchemaDataTypes.string }
+                            items: { type: SchemaDataTypes.string },
                         },
                     ],
-                    readOnly: true
+                    readOnly: true,
                 },
                 type: {
                     oneOf: [
                         {
-                            type: SchemaDataTypes.string
+                            type: SchemaDataTypes.string,
                         },
                         {
                             type: SchemaDataTypes.array,
                             items: {
-                                type: SchemaDataTypes.string
-                            }
+                                type: SchemaDataTypes.string,
+                            },
                         },
                     ],
-                    readOnly: true
+                    readOnly: true,
                 },
                 id: {
                     type: SchemaDataTypes.string,
-                    readOnly: true
-                }
+                    readOnly: true,
+                },
             },
             required: ['@context', 'type'],
             additionalProperties: false,
-            allOf: []
+            allOf: [],
         };
 
         const properties = document.properties;
         const required = document.required;
-        
+
         this.getFieldsFromObject(fields, required, properties, schema);
 
         if (conditions.length === 0) {
@@ -213,44 +230,44 @@ export class SchemaHelper {
         for (let i = 0; i < conditions.length; i++) {
             const element = conditions[i];
             let ifCondition = {};
-            ifCondition[element.ifCondition.field.name] = { 'const': element.ifCondition.fieldValue };
+            ifCondition[element.ifCondition.field.name] = {
+                const: element.ifCondition.fieldValue,
+            };
             let condition = {
-                "if": {
-                    "properties": ifCondition
+                if: {
+                    properties: ifCondition,
                 },
-                "then": {},
-                "else": {}
+                then: {},
+                else: {},
             };
 
-            let req = []
-            let props = {}
+            let req = [];
+            let props = {};
 
             this.getFieldsFromObject(element.thenFields, req, props, schema, true);
             fields.push(...element.thenFields);
             if (Object.keys(props).length > 0) {
                 condition.then = {
-                    'properties': props,
-                    'required': req
-                }
-                document.properties = {...document.properties, ...props};
-            }
-            else {
+                    properties: props,
+                    required: req,
+                };
+                document.properties = { ...document.properties, ...props };
+            } else {
                 delete condition.then;
             }
 
-            req = []
-            props = {}
+            req = [];
+            props = {};
 
             this.getFieldsFromObject(element.elseFields, req, props, schema, true);
             fields.push(...element.elseFields);
             if (Object.keys(props).length > 0) {
                 condition.else = {
-                    'properties': props,
-                    'required': req
-                }
-                document.properties = {...document.properties, ...props};
-            }
-            else {
+                    properties: props,
+                    required: req,
+                };
+                document.properties = { ...document.properties, ...props };
+            } else {
                 delete condition.else;
             }
 
@@ -278,21 +295,24 @@ export class SchemaHelper {
                     description: field.description,
                     readOnly: !!field.readOnly,
                     type: SchemaDataTypes.array,
-                    items: item
+                    items: item,
                 };
             } else {
                 item = {
                     title: field.title,
                     description: field.description,
-                    readOnly: !!field.readOnly
+                    readOnly: !!field.readOnly,
                 };
                 property = item;
             }
             if (field.isRef) {
-                property.$comment = SchemaHelper.buildComment(field.name, SchemaHelper.buildUrl(schema.contextURL, field.type));
+                property.$comment = SchemaHelper.buildComment(
+                    field.name,
+                    SchemaHelper.buildUrl(schema.contextURL, field.type)
+                );
                 item.$ref = field.type;
             } else {
-                property.$comment = SchemaHelper.buildComment(field.name, "https://www.schema.org/text");
+                property.$comment = SchemaHelper.buildComment(field.name, 'https://www.schema.org/text');
                 item.type = field.type;
                 if (field.format) {
                     item.format = field.format;
@@ -338,7 +358,7 @@ export class SchemaHelper {
             const { previousVersion } = SchemaHelper.parseComment(document.$comment);
             return { version, previousVersion };
         } catch (error) {
-            return { version: null, previousVersion: null }
+            return { version: null, previousVersion: null };
         }
     }
 
@@ -348,7 +368,11 @@ export class SchemaHelper {
         const type = SchemaHelper.buildType(uuid, version);
         const ref = SchemaHelper.buildRef(type);
         document.$id = ref;
-        document.$comment = SchemaHelper.buildComment(type, SchemaHelper.buildUrl(data.contextURL, ref), previousVersion);
+        document.$comment = SchemaHelper.buildComment(
+            type,
+            SchemaHelper.buildUrl(data.contextURL, ref),
+            previousVersion
+        );
         data.version = version;
         data.document = JSON.stringify(document);
         return data;
@@ -365,10 +389,10 @@ export class SchemaHelper {
         let _uuid = data.uuid || uuid;
 
         if (!ModelHelper.checkVersionFormat(newVersion)) {
-            throw new Error("Invalid version format");
+            throw new Error('Invalid version format');
         }
         if (ModelHelper.versionCompare(newVersion, _version) <= 0) {
-            throw new Error("Version must be greater than " + _version);
+            throw new Error('Version must be greater than ' + _version);
         }
         previousVersion = _version;
         _version = newVersion;
@@ -381,7 +405,11 @@ export class SchemaHelper {
         const type = SchemaHelper.buildType(_uuid, _version);
         const ref = SchemaHelper.buildRef(type);
         document.$id = ref;
-        document.$comment = SchemaHelper.buildComment(type, SchemaHelper.buildUrl(data.contextURL, ref), previousVersion);
+        document.$comment = SchemaHelper.buildComment(
+            type,
+            SchemaHelper.buildUrl(data.contextURL, ref),
+            previousVersion
+        );
         data.document = JSON.stringify(document);
         return data;
     }
@@ -397,7 +425,11 @@ export class SchemaHelper {
         const type = SchemaHelper.buildType(data.uuid, data.version);
         const ref = SchemaHelper.buildRef(type);
         document.$id = ref;
-        document.$comment = SchemaHelper.buildComment(type, SchemaHelper.buildUrl(data.contextURL, ref), previousVersion);
+        document.$comment = SchemaHelper.buildComment(
+            type,
+            SchemaHelper.buildUrl(data.contextURL, ref),
+            previousVersion
+        );
         data.document = JSON.stringify(document);
         return data;
     }
@@ -412,7 +444,7 @@ export class SchemaHelper {
 
     public static map(data: ISchema[]): Schema[] {
         if (data) {
-            return data.map(e => new Schema(e));
+            return data.map((e) => new Schema(e));
         }
         return [];
     }
@@ -472,12 +504,15 @@ export class SchemaHelper {
         return newMap;
     }
 
-    public static getContext(item: ISchema): { 'type': string, '@context': string[] } {
+    public static getContext(item: ISchema): {
+        type: string;
+        '@context': string[];
+    } {
         try {
             const { type } = SchemaHelper.parseRef(item.iri);
             return {
-                'type': type,
-                '@context': [item.contextURL]
+                type: type,
+                '@context': [item.contextURL],
             };
         } catch (error) {
             return null;
@@ -490,7 +525,7 @@ export class SchemaHelper {
         for (let i = 0; i < versions.length; i++) {
             const element = versions[i];
             if (!element) {
-                continue
+                continue;
             }
             const index = element.lastIndexOf('.');
             const max = element.slice(0, index);
