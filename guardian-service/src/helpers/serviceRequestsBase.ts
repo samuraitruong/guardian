@@ -1,21 +1,21 @@
-import { IMessageResponse } from 'interfaces';
+import { MessageBrokerChannel, IMessageResponse } from "common";
 
 export abstract class ServiceRequestsBase {
-    protected channel: any;
+    protected channel: MessageBrokerChannel;
     abstract readonly target: string;
 
     /**
      * Register channel
      * @param channel
      */
-    public setChannel(channel: any): any {
+    public setChannel(channel: MessageBrokerChannel): any {
         this.channel = channel;
     }
 
     /**
      * Get channel
      */
-    public getChannel(): any {
+    public getChannel(): MessageBrokerChannel {
         return this.channel;
     }
 
@@ -27,15 +27,14 @@ export abstract class ServiceRequestsBase {
      */
     public async request<T>(entity: string, params?: any, type?: string): Promise<T> {
         try {
-            const response = await this.channel.request(this.target, entity, params, type);
+            const response = await this.channel.request<any, T>(`${this.target}.${entity}`, params);
             if (!response) {
                 throw 'Server is not available';
             }
-            const payload: IMessageResponse<T> = response.payload;
-            if (payload.error) {
-                throw payload.error;
+            if (response.error) {
+                throw response.error;
             }
-            return payload.body;
+            return response.body;
         } catch (e) {
             throw new Error(`Guardian (${entity}) send: ` + e);
         }

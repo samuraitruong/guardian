@@ -2,13 +2,11 @@ import { Schema as SchemaCollection } from '@entity/schema';
 import {
     ISchema,
     MessageAPI,
-    MessageError,
-    MessageResponse,
-    ModelHelper,
     SchemaEntity,
-    SchemaHelper,
     SchemaStatus,
-    TopicType
+    TopicType,
+    SchemaHelper,
+    ModelHelper,
 } from 'interfaces';
 import { getMongoRepository } from 'typeorm';
 import { readJSON } from 'fs-extra';
@@ -21,6 +19,7 @@ import { Users } from '@helpers/users';
 import { ApiResponse } from '@api/api-response';
 import { Topic } from '@entity/topic';
 import { TopicHelper } from '@helpers/topicHelper';
+import { MessageBrokerChannel, MessageResponse, MessageError } from 'common';
 
 export const schemaCache = {};
 
@@ -316,7 +315,7 @@ export async function publishSchema(id: string, version: string, owner: string):
  * @param channel - channel
  * @param schemaRepository - table with schemes
  */
-export const schemaAPI = async function (channel: any, schemaRepository): Promise<void> {
+export const schemaAPI = async function (channel: MessageBrokerChannel, schemaRepository): Promise<void> {
 
     /**
      * Create schema
@@ -325,17 +324,17 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {ISchema[]} - all schemes
      */
-    ApiResponse(channel, MessageAPI.CREATE_SCHEMA, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.CREATE_SCHEMA, async (msg) => {
         try {
-            const schemaObject = msg.payload as ISchema;
+            const schemaObject = msg as ISchema;
             console.log('c', schemaObject)
             SchemaHelper.setVersion(schemaObject, null, schemaObject.version);
             await createSchema(schemaObject, schemaObject.owner);
             const schemes = await schemaRepository.find();
-            res.send(new MessageResponse(schemes));
+            return (new MessageResponse(schemes));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
-            res.send(new MessageError(error));
+            return (new MessageError(error));
         }
     });
 
@@ -346,25 +345,25 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {ISchema[]} - all schemes
      */
-    ApiResponse(channel, MessageAPI.UPDATE_SCHEMA, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.UPDATE_SCHEMA, async (msg) => {
         try {
-            const id = msg.payload.id as string;
+            const id = msg.id as string;
             const item = await schemaRepository.findOne(id);
             if (item) {
-                item.name = msg.payload.name;
-                item.description = msg.payload.description;
-                item.entity = msg.payload.entity;
-                item.document = msg.payload.document;
+                item.name = msg.name;
+                item.description = msg.description;
+                item.entity = msg.entity;
+                item.document = msg.document;
                 item.status = SchemaStatus.DRAFT;
                 SchemaHelper.setVersion(item, null, item.version);
                 SchemaHelper.updateIRI(item);
                 await schemaRepository.update(item.id, item);
             }
             const schemes = await schemaRepository.find();
-            res.send(new MessageResponse(schemes));
+            return (new MessageResponse(schemes));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
-            res.send(new MessageError(error));
+            return (new MessageError(error));
         }
     });
 
@@ -375,17 +374,17 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {ISchema[]} - all schemes
      */
-    ApiResponse(channel, MessageAPI.GET_SCHEMA, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.GET_SCHEMA, async (msg) => {
         try {
-            if (!msg.payload) {
-                res.send(new MessageError('Invalid load schema parameter'));
+            if (!msg) {
+                return (new MessageError('Invalid load schema parameter'));
                 return;
             }
-            const schema = await schemaRepository.findOne(msg.payload.id);
-            res.send(new MessageResponse(schema));
+            const schema = await schemaRepository.findOne(msg.id);
+            return (new MessageResponse(schema));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
-            res.send(new MessageError(error));
+            return (new MessageError(error));
         }
     });
 
@@ -396,14 +395,14 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {ISchema[]} - all schemes
      */
-    ApiResponse(channel, MessageAPI.GET_SCHEMES, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.GET_SCHEMES, async (msg) => {
         try {
-            if (!msg.payload) {
-                res.send(new MessageError('Invalid load schema parameter'));
+            if (!msg) {
+                return (new MessageError('Invalid load schema parameter'));
                 return;
             }
 
-            const { owner, uuid, topicId, pageIndex, pageSize } = msg.payload;
+            const { owner, uuid, topicId, pageIndex, pageSize } = msg;
             const filter: any = {
                 where: {
                     readonly: false
@@ -431,13 +430,13 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
             }
 
             const result = await schemaRepository.findAndCount(filter);
-            res.send(new MessageResponse({
+            return (new MessageResponse({
                 schemes: result[0],
                 count: result[1]
             }));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
-            res.send(new MessageError(error));
+            return (new MessageError(error));
         }
     });
 
@@ -449,21 +448,21 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {ISchema[]} - all schemes
      */
-    ApiResponse(channel, MessageAPI.PUBLISH_SCHEMA, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.PUBLISH_SCHEMA, async (msg) => {
         try {
-            if (msg.payload) {
-                const id = msg.payload.id as string;
-                const version = msg.payload.version as string;
-                const owner = msg.payload.owner as string;
+            if (msg) {
+                const id = msg.id as string;
+                const version = msg.version as string;
+                const owner = msg.owner as string;
                 const item = await publishSchema(id, version, owner);
-                res.send(new MessageResponse(item));
+                return (new MessageResponse(item));
             } else {
-                res.send(new MessageError('Invalid id'));
+                return (new MessageError('Invalid id'));
             }
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
             console.error(error);
-            res.send(new MessageError(error.message));
+            return (new MessageError(error.message));
         }
     });
 
@@ -475,10 +474,10 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {ISchema[]} - all schemes
      */
-    ApiResponse(channel, MessageAPI.DELETE_SCHEMA, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.DELETE_SCHEMA, async (msg) => {
         try {
-            if (msg.payload) {
-                const id = msg.payload as string;
+            if (msg) {
+                const id = msg as string;
                 const item = await schemaRepository.findOne(id);
                 if (item) {
                     if (item.topicId) {
@@ -496,9 +495,9 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
                 }
             }
             const schemes = await schemaRepository.find();
-            res.send(new MessageResponse(schemes));
+            return (new MessageResponse(schemes));
         } catch (error) {
-            res.send(new MessageError(error.message));
+            return (new MessageError(error.message));
         }
     });
 
@@ -509,15 +508,15 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {Schema} Found or uploaded schema
      */
-    ApiResponse(channel, MessageAPI.IMPORT_SCHEMES_BY_MESSAGES, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.IMPORT_SCHEMES_BY_MESSAGES, async (msg) => {
         try {
-            if (!msg.payload) {
-                res.send(new MessageError('Invalid import schema parameter'));
+            if (!msg) {
+                return (new MessageError('Invalid import schema parameter'));
                 return;
             }
-            const { owner, messageIds, topicId } = msg.payload;
+            const { owner, messageIds, topicId } = msg;
             if (!owner || !messageIds) {
-                res.send(new MessageError('Invalid import schema parameter'));
+                return (new MessageError('Invalid import schema parameter'));
                 return;
             }
 
@@ -529,11 +528,11 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
             }
 
             const schemesMap = await importSchemaByFiles(owner, files, topicId);
-            res.send(new MessageResponse(schemesMap));
+            return (new MessageResponse(schemesMap));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
             console.error(error);
-            res.send(new MessageError(error.message));
+            return (new MessageError(error.message));
         }
     });
 
@@ -544,24 +543,24 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {Schema} Found or uploaded schema
      */
-    ApiResponse(channel, MessageAPI.IMPORT_SCHEMES_BY_FILE, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.IMPORT_SCHEMES_BY_FILE, async (msg) => {
         try {
-            if (!msg.payload) {
-                res.send(new MessageError('Invalid import schema parameter'));
+            if (!msg) {
+                return (new MessageError('Invalid import schema parameter'));
                 return;
             }
-            const { owner, files, topicId } = msg.payload;
+            const { owner, files, topicId } = msg;
             if (!owner || !files) {
-                res.send(new MessageError('Invalid import schema parameter'));
+                return (new MessageError('Invalid import schema parameter'));
                 return;
             }
 
             const schemesMap = await importSchemaByFiles(owner, files, topicId);
-            res.send(new MessageResponse(schemesMap));
+            return (new MessageResponse(schemesMap));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
             console.error(error);
-            res.send(new MessageError(error.message));
+            return (new MessageError(error.message));
         }
     });
 
@@ -572,15 +571,15 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {Schema} Found or uploaded schema
      */
-    ApiResponse(channel, MessageAPI.PREVIEW_SCHEMA, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.PREVIEW_SCHEMA, async (msg) => {
         try {
-            if (!msg.payload) {
-                res.send(new MessageError('Invalid preview schema parameters'));
+            if (!msg) {
+                return (new MessageError('Invalid preview schema parameters'));
                 return;
             }
-            const { messageIds } = msg.payload as { messageIds: string[] };
+            const { messageIds } = msg as { messageIds: string[] };
             if (!messageIds) {
-                res.send(new MessageError('Invalid preview schema parameters'));
+                return (new MessageError('Invalid preview schema parameters'));
                 return;
             }
             const result = [];
@@ -624,11 +623,11 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
                     schema.newVersions = newVersions.reverse();
                 }
             }
-            res.send(new MessageResponse(result));
+            return (new MessageResponse(result));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
             console.error(error);
-            res.send(new MessageError(error.message));
+            return (new MessageError(error.message));
         }
     });
 
@@ -640,9 +639,9 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
      *
      * @returns {any} - Response result
      */
-    ApiResponse(channel, MessageAPI.EXPORT_SCHEMES, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.EXPORT_SCHEMES, async (msg) => {
         try {
-            const ids = msg.payload as string[];
+            const ids = msg as string[];
             const schemas = await schemaRepository.findByIds(ids);
             const map: any = {};
             const relationships: ISchema[] = [];
@@ -664,21 +663,21 @@ export const schemaAPI = async function (channel: any, schemaRepository): Promis
                     }
                 }
             }
-            res.send(new MessageResponse(relationships));
+            return (new MessageResponse(relationships));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
-            res.send(new MessageError(error.message));
+            return (new MessageError(error.message));
         }
     });
 
-    ApiResponse(channel, MessageAPI.INCREMENT_SCHEMA_VERSION, async (msg, res) => {
+    ApiResponse(channel, MessageAPI.INCREMENT_SCHEMA_VERSION, async (msg) => {
         try {
-            const { owner, iri } = msg.payload as { owner: string, iri: string };
+            const { owner, iri } = msg as { owner: string, iri: string };
             const schema = await incrementSchemaVersion(iri, owner);
-            res.send(new MessageResponse(schema));
+            return (new MessageResponse(schema));
         } catch (error) {
             new Logger().error(error.message, ['GUARDIAN_SERVICE']);
-            res.send(new MessageError(error.message));
+            return (new MessageError(error.message));
         }
     });
 }

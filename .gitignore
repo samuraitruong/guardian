@@ -31,3 +31,5 @@ ui-service/.vs/
 /guardian-service/config.json
 /threads-test/node_modules/
 api-docs/dist/
+.env
+tsconfig.tsbuildinfo
