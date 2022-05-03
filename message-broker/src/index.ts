@@ -1,5 +1,5 @@
 import FastMQ from 'fastmq'
-import express, {Request, Response} from 'express'
+import express, { Request, Response } from 'express'
 
 const mqServer = FastMQ.Server.create('master', 7500, '0.0.0.0');
 
