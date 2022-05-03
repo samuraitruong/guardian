@@ -71,12 +71,13 @@ To get a local copy up and running, follow these simple example steps. When buil
    ```
    docker-compose up -d --build
    ```
+   
 5. If you want to manually build every component with debug information, then build and run the services and packages in the following sequence: Interfaces, Logger Helper, Message Broker, Logger Service, Auth Service, IPFS, Guardian Service, UI Service, and lastly, the MRV Sender Service. See below for commands.
 
    **From the interfaces folder**
 
    Build package
-   ```
+   ```sh
    npm install
    npm run build
    ```
@@ -84,7 +85,7 @@ To get a local copy up and running, follow these simple example steps. When buil
    **From the logger-helper folder**
 
    Build package
-   ```
+   ```sh
    npm install
    npm run build
    ```
@@ -92,60 +93,40 @@ To get a local copy up and running, follow these simple example steps. When buil
    **From the interfaces folder**
 
    Build package
-   ```
+   ```sh
    npm install
    npm run build
    ```
 
+
+  **From the common folder**
+
+  Build package
+  ```sh
+  npm install
+  npm run build
+  ```
+
+   **From the logger-helper folder**
 
    Build package
-   ```
+   ```sh
    npm install
    npm run build
    ```
 
-   **From the Message broker folder (Need to run first)**
+   **From the Message broker folder (Need to run first)** 
 
    To build the service:
 
-   ```
+   ```sh
    npm install
    npm run build
    ```
 
    To start the service:
 
-   ```
-   npm start
-   ```
-
-   **From the Logger service folder**
-
-   To build the service:
-
-   ```
-   npm install
-   npm run build
-   ```
-
-   To start the service:
-
-   ```
-   npm start
-   ```
-
-   **From the Auth service folder**
-
-   To build the service:
-
-   ```
-   npm install
-   npm run build
-   ```
-
-   To start the service:
-
-   ```
+   ```sh
    npm start
    ```
 
@@ -255,6 +236,18 @@ To get a local copy up and running, follow these simple example steps. When buil
    ```
   ### Note: Once you start the service, please wait for the Initialization Process to be completed.
   
+  ### Local development using docker
+  1. create .env file at the root level and update all variable requires for docker
+  ```sh
+      cp .env.example .env
+  ```
+  2. Start local development using docker compose
+  ```
+   docker-compose -f docker-compose-dev.yml up --build
+
+  ```
+  3. Access local development using http://localhost:3000 or http://localhost:4200
+
   ### Troubleshoot 
   
   **To delete all the Containers**
