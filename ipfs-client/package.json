@@ -16,7 +16,7 @@
     "js-yaml": "^4.1.0",
     "mathjs": "^10.1.0",
     "module-alias": "^2.2.2",
-    "nft.storage": "^5.2.0",
+    "nft.storage": "^6.3.0",
     "mongodb": "^4.2.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.41",
