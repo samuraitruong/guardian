@@ -6,7 +6,7 @@ const fs = require('fs');
     const buildAndWatch = async (folder, skipWatch = false) => {
         const log = (message) => console.log(`${folder}: ${message}`);
 
-        await execSync(`npm install --prefix ${folder}`, { stdio: 'inherit', shell: true });
+        // await execSync(`npm install --prefix ${folder}`, { stdio: 'inherit', shell: true });
 
         if (skipWatch) {
             log('skip watch project')
@@ -30,6 +30,7 @@ const fs = require('fs');
         });
 
     }
+    await execSync('yarn', { stdio: 'inherit', shell: true })
     console.log('Building and watching...');
     await Promise.all([
         "interfaces",

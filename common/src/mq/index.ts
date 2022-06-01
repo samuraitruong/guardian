@@ -1,12 +1,11 @@
 import assert from 'assert';
 import { JSONCodec, Subscription, NatsConnection, StringCodec, connect } from 'nats';
 import { IMessageResponse, MessageError } from '../models/message-response';
-import * as zlib from 'zlib';
 
 const MQ_TIMEOUT = +process.env.MQ_TIMEOUT || 300000;
 
 export class MessageBrokerChannel {
-    constructor(private channel: NatsConnection, public channelName: string) { }
+    constructor(public connection: NatsConnection, public channelName: string) { }
 
     private getTarget(eventType: string) {
         if (eventType.includes(this.channelName) || eventType.includes('*')) {
@@ -22,24 +21,23 @@ export class MessageBrokerChannel {
     public async response<TData, TResponse>(eventType: string, handleFunc: (data: TData) => Promise<IMessageResponse<TResponse>>) {
         const target = this.getTarget(eventType);
         console.log('MQ subscribed: %s', target);
-        const sub = this.channel.subscribe(target);
-        const fn = async (sub: Subscription) => {
+        const sub = this.connection.subscribe(target);
+        const sc = JSONCodec<{ payload: TData }>();
+        const responseSc = JSONCodec<IMessageResponse<TResponse>>();
+        (async (sub: Subscription) => {
             for await (const m of sub) {
+                console.log('MQ response start:  %s', m.subject);
+                const data = sc.decode(m.data);
                 let responseMessage: IMessageResponse<TResponse>;
                 try {
-                    responseMessage = await handleFunc(JSON.parse(StringCodec().decode(m.data)));
+                    responseMessage = await handleFunc(data.payload || data as any);
                 } catch (err) {
                     responseMessage = new MessageError(err.message, err.code);
                 }
-                const archResponse = zlib.deflateSync(JSON.stringify(responseMessage)).toString('binary');
-                m.respond(StringCodec().encode(archResponse));
+                m.respond(responseSc.encode(responseMessage));
+                console.log('MQ response end: ', m.subject);
             }
-        };
-        try {
-            await fn(sub);
-        } catch (err) {
-            console.error(err.message);
-        }
+        })(sub);
     }
     /**
      * sending the request to the MQ and waiting for response
@@ -50,33 +48,23 @@ export class MessageBrokerChannel {
      */
     public async request<T, TResponse>(eventType: string, payload: T, timeout?: number): Promise<IMessageResponse<TResponse>> {
         try {
-            let stringPayload: string;
-            switch (typeof payload) {
-                case 'string':
-                    stringPayload = payload;
-                    break;
+            const target = eventType;
+            console.log('MQ request: %s', target);
 
-                case 'object':
-                    stringPayload = JSON.stringify(payload);
-                    break;
-
-                default:
-                    stringPayload = '{}';
-            }
-
-            const msg = await this.channel.request(eventType, StringCodec().encode(stringPayload), {
+            const sc = payload && typeof payload === 'string' ? StringCodec() : JSONCodec<T>();
+            const msg = await this.connection.request(eventType, sc.encode((payload as any) || {}), {
                 timeout: timeout || MQ_TIMEOUT,
             });
 
-            const unpackedString = zlib.inflateSync(new Buffer(StringCodec().decode(msg.data), 'binary')).toString();
-            return JSON.parse(unpackedString);
-
+            const responseSc = JSONCodec<IMessageResponse<TResponse>>();
+            return responseSc.decode(msg.data);
         } catch (e) {
             // Nats no subscribe error
             if (e.code === '503') {
                 console.warn('No listener for message event type =  %s', eventType);
                 return;
             }
+
             console.error(e.message, e.stack, e);
             throw e;
         }
@@ -86,12 +74,12 @@ export class MessageBrokerChannel {
         const target = this.getTarget(eventType);
         console.log('MQ publish: %s', target);
         const sc = StringCodec();
-        this.channel.publish(target, sc.encode(data));
+        this.connection.publish(target, sc.encode(data));
     }
     /**
      * Create the Nats MQ connection
-     * @param connectionName
-     * @returns
+     * @param connectionName 
+     * @returns 
      */
     public static async connect(connectionName: string) {
         assert(process.env.MQ_ADDRESS, 'Missing MQ_ADDRESS environment variable');
