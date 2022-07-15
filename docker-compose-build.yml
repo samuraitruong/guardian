@@ -1,0 +1,38 @@
+version: "3.8"
+services:
+  
+  logger-service:
+    build:
+      context: .
+      dockerfile: ./logger-service/Dockerfile
+    image: gcr.io/hedera-registry/logger-service:local
+  auth-service:
+    build:
+      context: .
+      dockerfile: ./auth-service/Dockerfile
+    image: gcr.io/hedera-registry/auth-service:local
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: ./api-gateway/Dockerfile
+    image: gcr.io/hedera-registry/api-gateway:local
+    
+
+  guardian-service:
+    build:
+      context: .
+      dockerfile: ./guardian-service/Dockerfile
+    image: gcr.io/hedera-registry/guardian-service:local
+
+  ipfs-client:
+    build:
+      context: .
+      dockerfile: ./ipfs-client/Dockerfile
+    image: gcr.io/hedera-registry/ipfs-client:local
+
+  frontend:
+    build:
+      context: .
+      dockerfile: ./web-proxy/Dockerfile
+    image: gcr.io/hedera-registry/frontend:local
